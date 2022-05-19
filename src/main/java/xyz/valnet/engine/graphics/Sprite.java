@@ -10,6 +10,10 @@ public class Sprite {
     public final int width;
     public final int height;
 
+    public Sprite(Texture tex, int x, int y, int w, int h) {
+      this(tex, new Vector4i(x, y, w, h));
+    }
+
     public Sprite(Texture tex, Vector4i box) {
         sourceBoxPixels = box;
         sourceBoxUV = new Vector4f(

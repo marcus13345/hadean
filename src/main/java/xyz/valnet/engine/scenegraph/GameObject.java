@@ -1,10 +1,16 @@
 package xyz.valnet.engine.scenegraph;
 
-public class GameObject implements IRenderable, ITickable {
-  // private IScene scene;
+import xyz.valnet.hadean.scenes.GameScene;
 
-  public GameObject(IScene scene) {
-    // this.scene = scene;
+public class GameObject implements IRenderable, ITickable {
+  private final GameScene scene;
+
+  public GameObject(GameScene scene) {
+    this.scene = scene;
+  }
+
+  protected <T> T get(Class<T> clazz) {
+    return this.scene.get(clazz);
   }
 
   @Override

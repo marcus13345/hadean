@@ -5,6 +5,7 @@ import java.util.List;
 
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IScene;
+import xyz.valnet.hadean.gameobjects.Pawn;
 import xyz.valnet.hadean.gameobjects.Terrain;
 
 public class GameScene implements IScene {
@@ -14,12 +15,20 @@ public class GameScene implements IScene {
   // private List<IRenderable> renderables = new ArrayList<IRenderable>();
 
   // specific
-  private GameObject terrain;
+
+  public <T> T get(Class<T> clazz) {
+    for(GameObject obj : objects) {
+      if(clazz.isInstance(obj)) {
+        return clazz.cast(obj);
+      }
+    }
+    return null;
+  }
 
   @Override
   public void render() {
     for(GameObject obj : objects) {
-      ((Terrain)obj).render();
+      obj.render();
     }
   }
 
@@ -32,8 +41,10 @@ public class GameScene implements IScene {
 
   @Override
   public void enable() {
-    terrain = new Terrain(this);
-    objects.add(terrain);
+    objects.add(new Terrain(this));
+    for(int i = 0; i < 3; i ++) {
+      objects.add(new Pawn(this));
+    }
   }
 
   @Override

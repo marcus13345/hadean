@@ -19,6 +19,7 @@ public class Assets {
   public static final Tile9 fireFrame;
 
   public static final Sprite[] defaultTerrain;
+  public static final Sprite pawn;
 
   public static final SimpleShader flat;
 
@@ -33,6 +34,8 @@ public class Assets {
       new Sprite(atlas, new Vector4i(32, 72, 8, 8)),
       new Sprite(atlas, new Vector4i(32, 64, 8, 8))
     };
+
+    pawn = new Sprite(atlas, 48, 88, 8, 8);
 
     Map<Character, Sprite> charset = new HashMap<Character, Sprite>();
 

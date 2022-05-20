@@ -20,7 +20,7 @@ public class App {
   // The window handle
   private long window;
   private int width = 1024, height = 576;
-  private Matrix4f matrix = Matrix4f.orthographic(0, width, height, 0, 1, -1);
+  private Matrix4f matrix = Matrix4f.orthographic(0, width, height, 0, 0, 100);
   public static int mouseX, mouseY;
   public static boolean mouseLeft, mouseMiddle, mouseRight;
   
@@ -126,6 +126,9 @@ public class App {
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glDepthMask(true);
 
     game.start();
   }

@@ -18,14 +18,11 @@ public class Terrain extends GameObject implements IPathable {
 
   private Camera camera;
 
-  public Terrain(GameScene scene) {
-    super(scene);
-  }
-
   public void start() {
     for (int i = 0; i < WORLD_SIZE; i++) {
       for (int j = 0; j < WORLD_SIZE; j++) {
         tiles[i][j] = new Tile(i, j);
+        add(tiles[i][j]);
       }
     }
     camera = get(Camera.class);
@@ -42,12 +39,12 @@ public class Terrain extends GameObject implements IPathable {
     // left = 400 - (WORLD_SIZE * TILE_SIZE / 2);
     // top = 225 - (WORLD_SIZE * TILE_SIZE / 2);
 
-    Drawing.setLayer(0f);
-    for (int i = 0; i < WORLD_SIZE; i++) {
-      for (int j = 0; j < WORLD_SIZE; j++) {
-        tiles[i][j].render(camera);
-      }
-    }
+    // Drawing.setLayer(0f);
+    // for (int i = 0; i < WORLD_SIZE; i++) {
+    //   for (int j = 0; j < WORLD_SIZE; j++) {
+    //     tiles[i][j].render(camera);
+    //   }
+    // }
   }
 
   @Override

@@ -13,6 +13,7 @@ public class GameScene implements IScene {
 
   // generic
   private List<GameObject> objects = new ArrayList<GameObject>();
+  private List<GameObject> newObjects = new ArrayList<GameObject>();
   // private List<IRenderable> renderables = new ArrayList<IRenderable>();
 
   // specific
@@ -35,6 +36,20 @@ public class GameScene implements IScene {
 
   @Override
   public void update(float dTime) {
+    if(!newObjects.isEmpty()) {
+      List<GameObject> added = new ArrayList<GameObject>();
+
+      for(GameObject obj : newObjects) {
+        objects.add(obj);
+        added.add(obj);
+      }
+      newObjects.clear();
+
+      for(GameObject obj : added) {
+        obj.start();
+      }
+    }
+
     for(GameObject obj : objects) {
       obj.tick(dTime);
     }
@@ -42,13 +57,17 @@ public class GameScene implements IScene {
 
   @Override
   public void enable() {
-    objects.add(new Terrain(this));
+    objects.add(new Terrain());
     for(int i = 0; i < 3; i ++) {
-      objects.add(new Pawn(this));
+      objects.add(new Pawn());
     }
-    Camera camera = new Camera(this);
+    Camera camera = new Camera();
     objects.add(camera);
     
+    for(GameObject obj : objects) {
+      obj.link(this);
+    }
+
     for(GameObject obj : objects) {
       obj.start();
     }
@@ -57,6 +76,11 @@ public class GameScene implements IScene {
   @Override
   public void disable() {
     objects.clear();
+  }
+
+  public void add(GameObject obj) {
+    newObjects.add(obj);
+    obj.link(this);
   }
   
 }

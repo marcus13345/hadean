@@ -32,10 +32,6 @@ public class Pawn extends GameObject {
   private Terrain terrain;
   private IPathfinder pathfinder;
 
-  public Pawn(GameScene scene) {
-    super(scene);
-  }
-
   @Override
   public void start() {
     camera = get(Camera.class);
@@ -46,7 +42,7 @@ public class Pawn extends GameObject {
   @Override
   public void render() {
     
-    Drawing.setLayer(0.5f);
+    Drawing.setLayer(3f);
 
     if(path != null && !path.isComplete()) {
       Node next = path.peek();
@@ -128,8 +124,6 @@ public class Pawn extends GameObject {
     x = nextNode.x + 0.5f;
     y = nextNode.y + 0.5f;
     counter = 0;
-
-    nextTile.wall();
   }
   
 }

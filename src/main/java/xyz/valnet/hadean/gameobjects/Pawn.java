@@ -6,13 +6,14 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 import static xyz.valnet.engine.util.Math.lerp;
 
-import java.util.Stack;
-
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.Tile;
+import xyz.valnet.hadean.pathfinding.AStarPathfinder;
+import xyz.valnet.hadean.pathfinding.IPathfinder;
 import xyz.valnet.hadean.pathfinding.Node;
+import xyz.valnet.hadean.pathfinding.Path;
 import xyz.valnet.hadean.scenes.GameScene;
 import xyz.valnet.hadean.util.Assets;
 
@@ -23,12 +24,13 @@ public class Pawn extends GameObject {
 
   private float counter = 0;
 
-  private Stack<Node> path;
+  private Path path;
 
   private final float speed = 50f;
 
   private Camera camera;
   private Terrain terrain;
+  private IPathfinder pathfinder;
 
   public Pawn(GameScene scene) {
     super(scene);
@@ -38,6 +40,7 @@ public class Pawn extends GameObject {
   public void start() {
     camera = get(Camera.class);
     terrain = get(Terrain.class);
+    pathfinder = new AStarPathfinder(terrain);
   }
 
   @Override
@@ -45,7 +48,7 @@ public class Pawn extends GameObject {
     
     Drawing.setLayer(0.5f);
 
-    if(path != null && path.size() > 0) {
+    if(path != null && !path.isComplete()) {
       Node next = path.peek();
       float t = counter / speed;
       camera.draw(Assets.pawn, lerp(x - 0.5f, next.x, t), lerp(y - 0.5f, next.y, t));
@@ -80,7 +83,7 @@ public class Pawn extends GameObject {
 
   @Override
   public void tick(float dTime) {
-    if(path != null && !path.empty()) move();
+    if(path != null && !path.isComplete()) move();
     else newPath();
   }
 
@@ -102,7 +105,7 @@ public class Pawn extends GameObject {
     int idy = (int)Math.floor(dy);
 
     // try to make a new path.
-    path = get(Terrain.class).getPath(ix, iy, idx, idy);
+    path = pathfinder.getPath(ix, iy, idx, idy);
   }
 
   private void move() {

@@ -1,10 +1,8 @@
 package xyz.valnet.hadean;
 
-import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.graphics.Sprite;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.Camera;
-import xyz.valnet.hadean.gameobjects.Terrain;
 import xyz.valnet.hadean.util.Assets;
 
 // TODO make these tiles REAL gameobjects...
@@ -24,7 +22,6 @@ public class Tile {
   public void render(Camera camera) {
     Assets.flat.pushColor(isWalkable() ? color : new Vector4f(0.1f, 0.1f, 0.1f, 1f));
     camera.draw(sprite, x, y);
-    // Drawing.drawSprite(sprite, Terrain.left + x * Terrain.TILE_SIZE, Terrain.top + y * Terrain.TILE_SIZE);
     Assets.flat.popColor();
   }
 

@@ -8,7 +8,7 @@ import xyz.valnet.hadean.scenes.GameScene;
 
 public class Camera extends GameObject {
 
-  private int tileWidth = 24;
+  private int tileWidth = 16;
   // TODO link these in some way to the real resolution.
   private int screenWidth = 1024, screenHeight = 576;
 

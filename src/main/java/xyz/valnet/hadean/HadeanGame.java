@@ -39,7 +39,7 @@ public class HadeanGame extends Game {
     Assets.font.drawString("FPS: " + Math.round(averageFPS) + "/" + measuredFPS + " | AVG/MEASURED", 1, 1);
     Assets.font.drawString("Mouse: <" + App.mouseX + ", " + App.mouseY + ">", 1, 17);
     Assets.font.drawString("MEMORY: " + (int)((allocated / (double)max) * 100) + "% (" + (allocated / (1024 * 1024)) + "/" + (max / (1024 * 1024)) + "MB)", 1, 33);
-    Assets.font.drawString("", 1, 49);
+    Assets.font.drawString("IPATHABLE", 1, 49);
     Assets.font.drawString("", 1, 65);
     Assets.font.drawString("", 1, 81);
 
@@ -47,7 +47,7 @@ public class HadeanGame extends Game {
     Assets.font.drawString("FPS: " + Math.round(averageFPS) + "/" + measuredFPS + " | AVG/MEASURED", 0, 0);
     Assets.font.drawString("Mouse: <" + App.mouseX + ", " + App.mouseY + ">", 0, 16);
     Assets.font.drawString("MEMORY: " + (int)((allocated / (double)max) * 100) + "% (" + (allocated / (1024 * 1024)) + "/" + (max / (1024 * 1024)) + "MB)", 0, 32);
-    Assets.font.drawString("", 0, 48);
+    Assets.font.drawString("IPATHABLE", 0, 48);
     Assets.font.drawString("", 0, 64);
     Assets.font.drawString("", 0, 80);
     

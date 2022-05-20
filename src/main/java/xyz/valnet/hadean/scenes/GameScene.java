@@ -5,6 +5,7 @@ import java.util.List;
 
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IScene;
+import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.Pawn;
 import xyz.valnet.hadean.gameobjects.Terrain;
 
@@ -44,6 +45,12 @@ public class GameScene implements IScene {
     objects.add(new Terrain(this));
     for(int i = 0; i < 3; i ++) {
       objects.add(new Pawn(this));
+    }
+    Camera camera = new Camera(this);
+    objects.add(camera);
+    
+    for(GameObject obj : objects) {
+      obj.start();
     }
   }
 

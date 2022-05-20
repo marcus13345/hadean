@@ -19,7 +19,7 @@ public class App {
 
   // The window handle
   private long window;
-  private int width = 800, height = 450;
+  private int width = 1024, height = 576;
   private Matrix4f matrix = Matrix4f.orthographic(0, width, height, 0, 1, -1);
   public static int mouseX, mouseY;
   public static boolean mouseLeft, mouseMiddle, mouseRight;

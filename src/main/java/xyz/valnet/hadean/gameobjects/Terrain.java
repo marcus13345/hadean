@@ -2,34 +2,40 @@ package xyz.valnet.hadean.gameobjects;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.scenegraph.GameObject;
-import xyz.valnet.engine.scenegraph.IScene;
 import xyz.valnet.hadean.Tile;
 import xyz.valnet.hadean.pathfinding.Node;
 import xyz.valnet.hadean.scenes.GameScene;
-
-// implements IPathable, the thing that has callbacks for interfacing with a pathfinder.
+ 
+// TODO SPLIT PATHABLES. | implements IPathable, the thing that has callbacks for interfacing with a pathfinder.
 public class Terrain extends GameObject {
 
-  public static final int WORLD_SIZE = 40;
+  public static final int WORLD_SIZE = 24;
   public static final int TILE_SIZE = 8;
 
-  public static int left, top;
+  // public static int left, top;
 
   private Tile[][] tiles = new Tile[WORLD_SIZE][WORLD_SIZE];
 
+  private Camera camera;
+
   public Terrain(GameScene scene) {
     super(scene);
+  }
+
+  public void start() {
     for (int i = 0; i < WORLD_SIZE; i++) {
       for (int j = 0; j < WORLD_SIZE; j++) {
         tiles[i][j] = new Tile(i, j);
       }
     }
+    camera = get(Camera.class);
+    
+    camera.focus(WORLD_SIZE / 2, WORLD_SIZE / 2);
   }
 
   public Tile getTile(int x, int y) {
@@ -44,8 +50,8 @@ public class Terrain extends GameObject {
   }
 
   private Node getPathfindingNode(int x, int y, List<Node> open, List<Node> closed, Node parent, int dstX, int dstY) {
+    // TODO this isnt necessarily the BOUNDS so... think about that.
     if(x < 0 || y < 0 || x >= WORLD_SIZE || y >= WORLD_SIZE) {
-      // * out of bounds
       return null;
     }
 
@@ -126,6 +132,8 @@ public class Terrain extends GameObject {
           n = n.from;
         }
 
+        path.pop();
+
         return path;
       }
 
@@ -164,13 +172,13 @@ public class Terrain extends GameObject {
 
   @Override
   public void render() {
-    left = 400 - (WORLD_SIZE * TILE_SIZE / 2);
-    top = 225 - (WORLD_SIZE * TILE_SIZE / 2);
+    // left = 400 - (WORLD_SIZE * TILE_SIZE / 2);
+    // top = 225 - (WORLD_SIZE * TILE_SIZE / 2);
 
     Drawing.setLayer(0f);
     for (int i = 0; i < WORLD_SIZE; i++) {
       for (int j = 0; j < WORLD_SIZE; j++) {
-        tiles[i][j].render();
+        tiles[i][j].render(camera);
       }
     }
   }

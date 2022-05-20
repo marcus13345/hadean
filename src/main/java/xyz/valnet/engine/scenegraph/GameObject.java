@@ -18,4 +18,6 @@ public class GameObject implements IRenderable, ITickable {
 
   @Override
   public void tick(float dTime) {}
+
+  public void start() {}
 }

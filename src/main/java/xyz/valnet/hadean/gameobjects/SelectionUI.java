@@ -7,16 +7,27 @@ import java.util.List;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.input.Button;
 import xyz.valnet.hadean.input.IButtonListener;
+import xyz.valnet.hadean.input.SimpleButton;
 import xyz.valnet.hadean.util.Assets;
 
 public class SelectionUI extends GameObject implements ISelectionChangeListener, IButtonListener {
 
+  private String name = "";
+  private int count = 0;
   private List<ISelectable> selected = new ArrayList<ISelectable>();
   private HashMap<String, Integer> selectedTypes = new HashMap<String, Integer>();
   private HashMap<String, Button> narrowButtons = new HashMap<String, Button>();
   private HashMap<Button, List<ISelectable>> narrowBuckets = new HashMap<Button, List<ISelectable>>();
 
   private Selection selectionManager;
+
+  // this will be null normally, but set if
+  // a button has been pressed to update the selection.
+  // its a simple workaround to get rid of a concurrent
+  // exception, where the buttons are attempting to
+  // change while updating. 
+  // TODO this could be fixed by delaying button clicks to the next frame.
+  private List<ISelectable> newSelection = null;;
 
   public void start() {
     selectionManager = get(Selection.class);
@@ -35,13 +46,22 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
     //   i ++;
     // }
 
-    for(Button btn : narrowButtons.values()) {
-      btn.draw();
+    if(selectedTypes.size() == 1) {
+      Assets.font.drawString("" + count + "x " + name, 26, 376);
+    } else {
+      for(Button btn : narrowButtons.values()) {
+        btn.draw();
+      }
     }
+
   }
 
   @Override
   public void tick(float dTime) {
+    if(newSelection != null) {
+      selectionManager.updateSelection(newSelection);
+      newSelection = null;
+    }
     for(Button btn : narrowButtons.values()) {
       btn.update();
     }
@@ -56,11 +76,7 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
     narrowBuckets.clear();
     for(ISelectable selectable : selected) {
       String name = selectable.getClass().getName();
-      System.out.println(name);
       String[] splitName = name.split("\\.");
-      for(String s : splitName) {
-        System.out.println(s);
-      }
       String shortName = splitName[splitName.length - 1];
       
       if(selectedTypes.containsKey(name)) {
@@ -68,20 +84,25 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
         Button btn = narrowButtons.get(name);
         List<ISelectable> items = narrowBuckets.get(btn);
         items.add(selectable);
+        btn.setText("" + items.size() + "x " + shortName);
+        count ++;
       } else {
-        Button btn = new Button(Assets.uiFrame, shortName, 20, 376 + 30 * selectedTypes.size(), 280, 24);
+        Button btn = new SimpleButton("1x " + shortName, 20, 376 + 30 * selectedTypes.size(), 280, 24);
         btn.registerClickListener(this);
         selectedTypes.put(name, 1);
         narrowButtons.put(name, btn);
         List<ISelectable> list = new ArrayList<ISelectable>();
         list.add(selectable);
         narrowBuckets.put(btn, list);
+        count = 1;
+        this.name = shortName;
       }
     }
   }
 
   @Override
   public void click(Button target) {
-    
+    if(! narrowBuckets.containsKey(target)) return;
+    newSelection = narrowBuckets.get(target);
   }
 }

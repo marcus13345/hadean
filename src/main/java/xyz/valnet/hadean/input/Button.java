@@ -11,9 +11,11 @@ import xyz.valnet.hadean.util.Assets;
 public class Button {
 
   private final int x, y, width, height;
-  private final String text;
-  private final Tile9 frame;
-  private final int textWidth, textHeight;
+  private String text;
+  protected Tile9 frame;
+  protected Tile9 frameHover;
+  protected Tile9 frameActive;
+  private int textWidth, textHeight;
   private float hPad, vPad;
   private Vector4i box;
 
@@ -27,16 +29,28 @@ public class Button {
     this.y = y;
     width = w;
     height = h;
-    this.text = text;
     this.frame = frame;
-    Vector4i measuredText = Assets.font.measure(text);
-    textWidth = measuredText.x;
-    textHeight = measuredText.y;
+    this.frameActive = frame;
+    this.frameHover = frame;
+    setText(text);
     box = new Vector4i(x, y, w, h);
   }
 
+  public void setText(String text) {
+    this.text = text;
+    Vector4i measuredText = Assets.font.measure(text);
+    textWidth = measuredText.x;
+    textHeight = measuredText.y;
+  }
+
   public void draw() {
-    frame.draw(box.x, box.y, box.z, box.w);
+    if(state == HOVER) {
+      frameHover.draw(box.x, box.y, box.z, box.w);
+    } else if(state == ACTIVE) {
+      frameActive.draw(box.x, box.y, box.z, box.w);
+    } else {
+      frame.draw(box.x, box.y, box.z, box.w);
+    }
 
     Assets.flat.pushColor(Vector4f.black);
     Assets.font.drawString(text, 1 + x + (width - textWidth) / 2, 1 + y + (height - textHeight) / 2);

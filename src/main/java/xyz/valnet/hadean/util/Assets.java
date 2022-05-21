@@ -20,6 +20,8 @@ public class Assets {
   public static final Tile9 selectionFrame;
   public static final Tile9 selectedFrame;
   public static final Tile9 uiFrame;
+  public static final Tile9 uiFrameLight;
+  public static final Tile9 uiFrameDark;
   
 
   public static final Sprite[] defaultTerrain;
@@ -212,6 +214,30 @@ public class Assets {
       new Sprite(atlas, new Vector4i(32, 87, 1, 1)),
       new Sprite(atlas, new Vector4i(33, 87, 6, 1)),
       new Sprite(atlas, new Vector4i(39, 87, 1, 1))
+    );
+    
+    uiFrameLight = new Tile9(
+      new Sprite(atlas, new Vector4i(24, 80, 1, 1)),
+      new Sprite(atlas, new Vector4i(25, 80, 6, 1)),
+      new Sprite(atlas, new Vector4i(31, 80, 1, 1)),
+      new Sprite(atlas, new Vector4i(24, 81, 1, 6)),
+      new Sprite(atlas, new Vector4i(25, 81, 6, 6)),
+      new Sprite(atlas, new Vector4i(31, 81, 1, 6)),
+      new Sprite(atlas, new Vector4i(24, 87, 1, 1)),
+      new Sprite(atlas, new Vector4i(25, 87, 6, 1)),
+      new Sprite(atlas, new Vector4i(31, 87, 1, 1))
+    );
+    
+    uiFrameDark = new Tile9(
+      new Sprite(atlas, new Vector4i(0,  96, 1, 1)),
+      new Sprite(atlas, new Vector4i(1,  96, 6, 1)),
+      new Sprite(atlas, new Vector4i(7,  96, 1, 1)),
+      new Sprite(atlas, new Vector4i(0,  97, 1, 6)),
+      new Sprite(atlas, new Vector4i(1,  97, 6, 6)),
+      new Sprite(atlas, new Vector4i(7,  97, 1, 6)),
+      new Sprite(atlas, new Vector4i(0, 103, 1, 1)),
+      new Sprite(atlas, new Vector4i(1, 103, 6, 1)),
+      new Sprite(atlas, new Vector4i(7, 103, 1, 1))
     );
 
   }

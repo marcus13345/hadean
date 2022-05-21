@@ -29,9 +29,10 @@ public class Selection extends GameObject {
     listeners.add(listener);
   }
 
-  private float distance(Vector2f a, Vector2f b) {
-    return (float) Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
-  }
+  // TODO implement click vs single select using distance
+  // private float distance(Vector2f a, Vector2f b) {
+  //   return (float) Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+  // }
 
   @Override
   public void tick(float dTime) {
@@ -39,7 +40,7 @@ public class Selection extends GameObject {
     if(animation > animationMax) animation = animationMax;
 
     // TODO at some point, this will need to be blocked by other things on top. like a ui over the scene should make selections like, not happen?!
-    if(App.mouseLeft) {
+    if(App.mouseRight) {
       Vector2f currentMouseCoords = new Vector2f(App.mouseX, App.mouseY);
       if(initialCoords == null) {
         initialCoords = currentMouseCoords;

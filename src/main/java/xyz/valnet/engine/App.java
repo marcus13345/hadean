@@ -80,7 +80,6 @@ public class App {
       public void invoke(long window, int button, int action, int mods) {
         
         if(button >= 3) return;
-        // System.out.println("window: " + window + ", button: " + button + ", action: " + action + ", mods: " + mods);
         if(button == GLFW_MOUSE_BUTTON_LEFT) { mouseLeft = action == 1; return; }
         if(button == GLFW_MOUSE_BUTTON_RIGHT) { mouseRight = action == 1; return; }
         if(button == GLFW_MOUSE_BUTTON_MIDDLE) { mouseMiddle = action == 1; return ; }

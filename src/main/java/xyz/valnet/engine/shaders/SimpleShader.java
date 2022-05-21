@@ -18,9 +18,7 @@ public class SimpleShader extends Shader {
   }
 
   public void pushColor(Vector4f color) {
-    // System.out.println("pushing " + color + " onto color stack");
     colorStack.push(color);
-    // printColorStack();
 
     setUniform4f("uColor", color);
   }
@@ -31,10 +29,8 @@ public class SimpleShader extends Shader {
   }
   
   public void popColor() {
-    // System.out.println("popping the color stack");
     colorStack.pop();
     Vector4f newColor = colorStack.peek();
-    // printColorStack();
 
     if(newColor == null) {
       setUniform4f("uColor", Vector4f.one);
@@ -42,13 +38,6 @@ public class SimpleShader extends Shader {
     }
     setUniform4f("uColor", newColor);
   }
-
-  // private void printColorStack() {
-  //   for(Vector4f color : colorStack) {
-  //     System.out.println("  " + color);
-  //   }
-  //   System.out.println("");
-  // }
   
   @Override
   protected void bindAttributes(int program) {

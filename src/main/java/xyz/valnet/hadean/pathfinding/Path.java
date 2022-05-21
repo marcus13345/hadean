@@ -5,9 +5,11 @@ import java.util.Stack;
 
 public class Path implements Iterable<Node> {
   private Stack<Node> nodes;
+  public final int cost;
 
-  public Path(Stack<Node> nodes) {
+  public Path(Stack<Node> nodes, int cost) {
     this.nodes = nodes;
+    this.cost = cost;
   }
 
   public Node peek() {

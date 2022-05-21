@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Stack;
 
+import xyz.valnet.engine.math.Vector2i;
+
 public class AStarPathfinder implements IPathfinder {
 
   private IPathable pathable;
@@ -105,7 +107,7 @@ public class AStarPathfinder implements IPathfinder {
 
         path.pop();
 
-        return new Path(path);
+        return new Path(path, current.getCost());
       }
 
       Node[] neighbors = getNeighbors(current, open, closed, x2, y2);
@@ -139,5 +141,19 @@ public class AStarPathfinder implements IPathfinder {
     // i guess theres no path?!
 
     return null;
+  }
+
+  @Override
+  public Path getBestPath(Vector2i src, Vector2i[] dsts) {
+    int cost = Integer.MAX_VALUE;
+    Path bestPath = null;
+    for(Vector2i dst : dsts) {
+      Path path = getPath(src.x, src.y, dst.x, dst.y);
+      if(path.cost < cost) {
+        cost = path.cost;
+        bestPath = path;
+      }
+    }
+    return bestPath;
   }
 }

@@ -22,6 +22,10 @@ public class Camera extends GameObject {
     return new Vector2f(x * tileWidth + screenWidth / 2 - focus.x * tileWidth, y * tileWidth + screenHeight / 2 - focus.y * tileWidth);
   }
 
+  public Vector2f screen2world(float x, float y) {
+    return new Vector2f((x - screenWidth / 2 + focus.x * tileWidth) / tileWidth, (y - screenHeight / 2 + focus.y * tileWidth) / tileWidth);
+  }
+
   public void draw(Sprite sprite, float x, float y) {
     Vector2f screenPos = world2screen(x, y);
     Drawing.drawSprite(sprite, (int)(screenPos.x), (int)(screenPos.y), tileWidth, tileWidth);

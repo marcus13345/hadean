@@ -35,15 +35,20 @@ public class Tile9 {
     }
 
     public void draw(int x, int y, int w, int h) {
-        Drawing.drawSprite(topLeft,        x,                            y,                            topLeft.width,                               topLeft.height);
-        Drawing.drawSprite(top,            x + topLeft.width,            y,                            w - topLeft.width - topRight.width,          top.height);
-        Drawing.drawSprite(topRight,       x + w - topRight.width,       y,                            topLeft.width,                               topLeft.height);
-        Drawing.drawSprite(left,           x,                            y + topLeft.height,           left.width,                                  h - top.height - bottom.height);
-        Drawing.drawSprite(center,         x + left.width,               y + top.height,               w - left.width - right.width,                h - top.height - bottom.height);
-        Drawing.drawSprite(right,          x + w - right.width,          y + topRight.height,          right.width,                                 h - top.height - bottom.height);
-        Drawing.drawSprite(bottomLeft,     x,                            y + h - bottomLeft.height,    bottomLeft.width,                            bottomLeft.height);
-        Drawing.drawSprite(bottom,         x + bottomLeft.width,         y + h - bottom.height,        w - bottomLeft.width - bottomRight.width,    bottom.height);
-        Drawing.drawSprite(bottomRight,    x + w - bottomRight.width,    y + h - bottomRight.height,   bottomLeft.width,                            bottomLeft.height);
+      int a = w < 0 ? x + w : x; // top left x
+      int b = h < 0 ? y + h : y; // top left y
+      int c = w < 0 ? -w : w;    // abs width
+      int d = h < 0 ? -h : h;    // abs height
+
+      Drawing.drawSprite(topLeft,        a,                            b,                            topLeft.width,                               topLeft.height);
+      Drawing.drawSprite(top,            a + topLeft.width,            b,                            c - topLeft.width - topRight.width,          top.height);
+      Drawing.drawSprite(topRight,       a + c - topRight.width,       b,                            topLeft.width,                               topLeft.height);
+      Drawing.drawSprite(left,           a,                            b + topLeft.height,           left.width,                                  d - top.height - bottom.height);
+      Drawing.drawSprite(center,         a + left.width,               b + top.height,               c - left.width - right.width,                d - top.height - bottom.height);
+      Drawing.drawSprite(right,          a + c - right.width,          b + topRight.height,          right.width,                                 d - top.height - bottom.height);
+      Drawing.drawSprite(bottomLeft,     a,                            b + d - bottomLeft.height,    bottomLeft.width,                            bottomLeft.height);
+      Drawing.drawSprite(bottom,         a + bottomLeft.width,         b + d - bottom.height,        c - bottomLeft.width - bottomRight.width,    bottom.height);
+      Drawing.drawSprite(bottomRight,    a + c - bottomRight.width,    b + d - bottomRight.height,   bottomLeft.width,                            bottomLeft.height);
     }
 
 }

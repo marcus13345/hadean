@@ -18,11 +18,7 @@ public class Drawing {
     Drawing.layer = layer;
   }
 
-  public static void drawSprite(Sprite sprite, int x, int y, int w, int h) {
-    drawSprite(sprite, x, y, w, h, 0);
-  }
-
-  public static void drawSprite(Sprite sprite, int x, int y, int width, int height, float lift) {
+  public static void drawSprite(Sprite sprite, int x, int y, int width, int height) {
     // lazy texture binding
     if(bound != sprite.atlas) {
         if(bound != null) bound.unbind();
@@ -31,10 +27,10 @@ public class Drawing {
 
     glBegin(GL_QUADS);
       glVertexAttrib2f(SimpleShader.TEX_COORD, sprite.sourceBoxUV.x, sprite.sourceBoxUV.y);
-      glVertex3f(x, y, layer + height * lift);
+      glVertex3f(x, y, layer);
 
       glVertexAttrib2f(SimpleShader.TEX_COORD, sprite.sourceBoxUV.x + sprite.sourceBoxUV.z, sprite.sourceBoxUV.y);
-      glVertex3f(x + width, y, layer + height * lift);
+      glVertex3f(x + width, y, layer);
 
       glVertexAttrib2f(SimpleShader.TEX_COORD, sprite.sourceBoxUV.x + sprite.sourceBoxUV.z, sprite.sourceBoxUV.y + sprite.sourceBoxUV.w);
       glVertex3f(x + width, y + height, layer);

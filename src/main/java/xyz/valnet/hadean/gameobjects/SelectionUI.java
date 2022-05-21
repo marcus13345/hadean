@@ -8,6 +8,7 @@ import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.input.Button;
 import xyz.valnet.hadean.input.IButtonListener;
 import xyz.valnet.hadean.input.SimpleButton;
+import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 
 public class SelectionUI extends GameObject implements ISelectionChangeListener, IButtonListener {
@@ -18,6 +19,10 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
   private HashMap<String, Integer> selectedTypes = new HashMap<String, Integer>();
   private HashMap<String, Button> narrowButtons = new HashMap<String, Button>();
   private HashMap<Button, List<ISelectable>> narrowBuckets = new HashMap<Button, List<ISelectable>>();
+
+  private static final Button[] ACTIONS_BUTTONS_NULL = new Button[] {};
+
+  private Button[] actionButtons = ACTIONS_BUTTONS_NULL;
 
   private Selection selectionManager;
 
@@ -46,8 +51,14 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
     //   i ++;
     // }
 
+
     if(selectedTypes.size() == 1) {
       Assets.font.drawString("" + count + "x " + name, 26, 376);
+      
+      for(Button btn : actionButtons) {
+        btn.draw();
+      }
+
     } else {
       for(Button btn : narrowButtons.values()) {
         btn.draw();
@@ -62,10 +73,19 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
       selectionManager.updateSelection(newSelection);
       newSelection = null;
     }
-    for(Button btn : narrowButtons.values()) {
-      btn.update();
+
+    if(selectedTypes.size() == 1) {
+      for(Button btn : actionButtons) {
+        btn.update();
+      }
+    } else {
+      for(Button btn : narrowButtons.values()) {
+        btn.update();
+      }
     }
   }
+
+  private HashMap<Button, Action> buttonActionMap = new HashMap<Button, Action>();
 
   @Override
   public void selectionChanged(List<ISelectable> selected) {
@@ -74,6 +94,8 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
     selectedTypes.clear();
     narrowButtons.clear();
     narrowBuckets.clear();
+    buttonActionMap.clear();
+    actionButtons = ACTIONS_BUTTONS_NULL;
     for(ISelectable selectable : selected) {
       String name = selectable.getClass().getName();
       String[] splitName = name.split("\\.");
@@ -96,13 +118,29 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
         narrowBuckets.put(btn, list);
         count = 1;
         this.name = shortName;
+        if(actionButtons == ACTIONS_BUTTONS_NULL) {
+          Action[] actions = selectable.getActions();
+          Button[] actionButtons = new Button[actions.length];
+          for(int i = 0; i < actions.length; i ++) {
+            actionButtons[i] = new SimpleButton(actions[i].name, 320 + i * 110, 466, 100, 100);
+            actionButtons[i].registerClickListener(this);
+            buttonActionMap.put(actionButtons[i], actions[i]);
+          }
+          this.actionButtons = actionButtons;
+        }
       }
     }
   }
 
   @Override
   public void click(Button target) {
-    if(! narrowBuckets.containsKey(target)) return;
-    newSelection = narrowBuckets.get(target);
+    if(narrowBuckets.containsKey(target)) {
+      newSelection = narrowBuckets.get(target);
+    } else if(buttonActionMap.containsKey(target)) {
+      Action action = buttonActionMap.get(target);
+      for(ISelectable selectable : selected) {
+        selectable.runAction(action);
+      }
+    }
   }
 }

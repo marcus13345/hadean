@@ -1,9 +1,10 @@
 package xyz.valnet.hadean.gameobjects;
 
+import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.util.Assets;
 
-public class Tree extends GameObject implements ITileThing {
+public class Tree extends GameObject implements ITileThing, ISelectable {
   private Camera camera;
 
   private int x, y;
@@ -25,5 +26,10 @@ public class Tree extends GameObject implements ITileThing {
   @Override
   public boolean isWalkable() {
     return false;
+  }
+
+  @Override
+  public Vector4f getWorldBox() {
+    return new Vector4f(x - 1, y - 2, x + 2, y + 1);
   }
 }

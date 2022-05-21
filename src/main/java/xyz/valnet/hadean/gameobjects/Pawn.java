@@ -8,6 +8,7 @@ import static xyz.valnet.engine.util.Math.lerp;
 
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2f;
+import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.Tile;
 import xyz.valnet.hadean.pathfinding.AStarPathfinder;
@@ -17,7 +18,7 @@ import xyz.valnet.hadean.pathfinding.Path;
 import xyz.valnet.hadean.scenes.GameScene;
 import xyz.valnet.hadean.util.Assets;
 
-public class Pawn extends GameObject {
+public class Pawn extends GameObject implements ISelectable {
 
   private float x = 0.5f, y = 0.5f;
   private float dx, dy;
@@ -26,7 +27,7 @@ public class Pawn extends GameObject {
 
   private Path path;
 
-  private final float speed = 50f;
+  private final float speed = 70f;
 
   private Camera camera;
   private Terrain terrain;
@@ -124,6 +125,19 @@ public class Pawn extends GameObject {
     x = nextNode.x + 0.5f;
     y = nextNode.y + 0.5f;
     counter = 0;
+  }
+
+  @Override
+  public Vector4f getWorldBox() {
+    if(path != null && !path.isComplete()) {
+      float t = counter / speed;
+      Node n = path.peek();
+      float x1 = lerp(x - 0.5f, n.x, t);
+      float y1 = lerp(y - 0.5f, n.y, t);
+      return new Vector4f(x1, y1, x1 + 1, y1 + 1);
+    } else {
+      return new Vector4f(x - 0.5f, y - 0.5f, x + 0.5f, y + 0.5f);
+    }
   }
   
 }

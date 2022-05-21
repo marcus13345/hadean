@@ -73,8 +73,9 @@ public class GameScene implements IScene {
     for(int i = 0; i < 3; i ++) {
       objects.add(new Pawn());
     }
-    Camera camera = new Camera();
-    objects.add(camera);
+    objects.add(new Camera());
+    objects.add(new Selection());
+    objects.add(new SelectionUI());
     
     for(GameObject obj : objects) {
       obj.link(this);

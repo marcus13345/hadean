@@ -27,6 +27,7 @@ public class Assets {
   public static final Sprite[] defaultTerrain;
   public static final Sprite pawn;
   public static final Sprite tree;
+  public static final Sprite rocks;
 
   public static final SimpleShader flat;
 
@@ -44,6 +45,7 @@ public class Assets {
 
     pawn = new Sprite(atlas, 48, 88, 8, 8);
     tree = new Sprite(atlas, 64, 64, 24, 24);
+    rocks = new Sprite(atlas, 64, 104, 8, 8);
 
     Map<Character, Sprite> charset = new HashMap<Character, Sprite>();
 

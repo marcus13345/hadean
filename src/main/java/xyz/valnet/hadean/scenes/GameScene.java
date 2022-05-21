@@ -7,6 +7,8 @@ import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IScene;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.Pawn;
+import xyz.valnet.hadean.gameobjects.Selection;
+import xyz.valnet.hadean.gameobjects.SelectionUI;
 import xyz.valnet.hadean.gameobjects.Terrain;
 
 public class GameScene implements IScene {
@@ -25,6 +27,16 @@ public class GameScene implements IScene {
       }
     }
     return null;
+  }
+
+  public <T> List<T> getAll(Class<T> clazz) {
+    List<T> stuff = new ArrayList<T>();
+    for(GameObject obj : objects) {
+      if(clazz.isInstance(obj)) {
+        stuff.add(clazz.cast(obj));
+      }
+    }
+    return stuff;
   }
 
   @Override

@@ -17,6 +17,10 @@ public class Assets {
   public static final Tile9 redFrame;
   public static final Tile9 frame;
   public static final Tile9 fireFrame;
+  public static final Tile9 selectionFrame;
+  public static final Tile9 selectedFrame;
+  public static final Tile9 uiFrame;
+  
 
   public static final Sprite[] defaultTerrain;
   public static final Sprite pawn;
@@ -172,6 +176,42 @@ public class Assets {
       new Sprite(atlas, new Vector4i( 0, 104 - 24, 8, 8)),
       new Sprite(atlas, new Vector4i( 8, 104 - 24, 8, 8)),
       new Sprite(atlas, new Vector4i(16, 104 - 24, 8, 8))
+    );
+
+    selectionFrame = new Tile9(
+      new Sprite(atlas, new Vector4i(56, 88, 3, 3)),
+      new Sprite(atlas, new Vector4i(59, 88, 2, 3)),
+      new Sprite(atlas, new Vector4i(61, 88, 3, 3)),
+      new Sprite(atlas, new Vector4i(56, 91, 3, 2)),
+      new Sprite(atlas, new Vector4i(59, 91, 2, 2)),
+      new Sprite(atlas, new Vector4i(61, 91, 3, 2)),
+      new Sprite(atlas, new Vector4i(56, 93, 3, 3)),
+      new Sprite(atlas, new Vector4i(59, 93, 2, 3)),
+      new Sprite(atlas, new Vector4i(61, 93, 3, 3))
+    );
+    
+    selectedFrame = new Tile9(
+      new Sprite(atlas, new Vector4i( 8, 88, 5, 5)),
+      new Sprite(atlas, new Vector4i(13, 88, 6, 5)),
+      new Sprite(atlas, new Vector4i(19, 88, 5, 5)),
+      new Sprite(atlas, new Vector4i( 8, 93, 5, 6)),
+      new Sprite(atlas, new Vector4i(13, 93, 6, 6)),
+      new Sprite(atlas, new Vector4i(19, 93, 5, 6)),
+      new Sprite(atlas, new Vector4i( 8, 99, 5, 5)),
+      new Sprite(atlas, new Vector4i(13, 99, 6, 5)),
+      new Sprite(atlas, new Vector4i(19, 99, 5, 5))
+    );
+    
+    uiFrame = new Tile9(
+      new Sprite(atlas, new Vector4i(32, 80, 1, 1)),
+      new Sprite(atlas, new Vector4i(33, 80, 6, 1)),
+      new Sprite(atlas, new Vector4i(39, 80, 1, 1)),
+      new Sprite(atlas, new Vector4i(32, 81, 1, 6)),
+      new Sprite(atlas, new Vector4i(33, 81, 6, 6)),
+      new Sprite(atlas, new Vector4i(39, 81, 1, 6)),
+      new Sprite(atlas, new Vector4i(32, 87, 1, 1)),
+      new Sprite(atlas, new Vector4i(33, 87, 6, 1)),
+      new Sprite(atlas, new Vector4i(39, 87, 1, 1))
     );
 
   }

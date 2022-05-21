@@ -11,6 +11,10 @@ public class GameObject implements IRenderable, ITickable {
     this.scene = scene;
   }
 
+  public boolean inScene() {
+    return scene.inScene(this);
+  }
+
   protected <T> T get(Class<T> clazz) {
     return this.scene.get(clazz);
   }
@@ -30,4 +34,8 @@ public class GameObject implements IRenderable, ITickable {
   public void tick(float dTime) {}
 
   public void start() {}
+
+  public void remove(GameObject obj) {
+    scene.remove(obj);
+  }
 }

@@ -54,6 +54,11 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
 
     if(selectedTypes.size() == 1) {
       Assets.font.drawString("" + count + "x " + name, 26, 376);
+
+      if(count == 1) {
+        String details = selected.get(0).details();
+        Assets.font.drawString(details, 26, 376 + 32);
+      }
       
       for(Button btn : actionButtons) {
         btn.draw();

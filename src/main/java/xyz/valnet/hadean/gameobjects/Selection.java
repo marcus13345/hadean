@@ -34,6 +34,8 @@ public class Selection extends GameObject {
   //   return (float) Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
   // }
 
+  private List<ISelectable> toRemove = new ArrayList<ISelectable>();
+
   @Override
   public void tick(float dTime) {
     if(animation < animationMax) animation ++;
@@ -58,6 +60,18 @@ public class Selection extends GameObject {
         initialCoords = null;
       }
     }
+
+    for(ISelectable selectable : selected) {
+      if(selectable instanceof GameObject) {
+        if(!((GameObject)selectable).inScene()) {
+          toRemove.add(selectable);
+        }
+      }
+    }
+    for(ISelectable removeMe : toRemove) {
+      selected.remove(removeMe);
+    }
+    toRemove.clear();
   }
 
   @Override

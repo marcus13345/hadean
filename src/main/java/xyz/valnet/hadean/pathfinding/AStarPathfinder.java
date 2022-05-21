@@ -24,7 +24,7 @@ public class AStarPathfinder implements IPathfinder {
 
   private Node getPathfindingNode(int x, int y, List<Node> open, List<Node> closed, Node parent, int dstX, int dstY) {
     // TODO this isnt necessarily the BOUNDS so... think about that.
-    if(pathable.isInBounds(x, y)) {
+    if(pathable.isOutOfBounds(x, y)) {
       return null;
     }
 
@@ -107,7 +107,7 @@ public class AStarPathfinder implements IPathfinder {
 
         path.pop();
 
-        return new Path(path, current.getCost());
+        return new Path(path, current);
       }
 
       Node[] neighbors = getNeighbors(current, open, closed, x2, y2);
@@ -149,6 +149,7 @@ public class AStarPathfinder implements IPathfinder {
     Path bestPath = null;
     for(Vector2i dst : dsts) {
       Path path = getPath(src.x, src.y, dst.x, dst.y);
+      if(path == null) continue;
       if(path.cost < cost) {
         cost = path.cost;
         bestPath = path;

@@ -16,6 +16,7 @@ public class GameScene implements IScene {
   // generic
   private List<GameObject> objects = new ArrayList<GameObject>();
   private List<GameObject> newObjects = new ArrayList<GameObject>();
+  private List<GameObject> removeObjects = new ArrayList<GameObject>();
   // private List<IRenderable> renderables = new ArrayList<IRenderable>();
 
   // specific
@@ -62,6 +63,13 @@ public class GameScene implements IScene {
       }
     }
 
+    if(!removeObjects.isEmpty()) {
+      for(GameObject obj : removeObjects) {
+        objects.remove(obj);
+      }
+      removeObjects.clear();
+    }
+
     for(GameObject obj : objects) {
       obj.tick(dTime);
     }
@@ -70,7 +78,7 @@ public class GameScene implements IScene {
   @Override
   public void enable() {
     objects.add(new Terrain());
-    for(int i = 0; i < 3; i ++) {
+    for(int i = 0; i < 1; i ++) {
       objects.add(new Pawn());
     }
     objects.add(new Camera());
@@ -94,6 +102,14 @@ public class GameScene implements IScene {
   public void add(GameObject obj) {
     newObjects.add(obj);
     obj.link(this);
+  }
+
+  public void remove(GameObject obj) {
+    removeObjects.add(obj);
+  }
+
+  public boolean inScene(GameObject gameObject) {
+    return objects.contains(gameObject);
   }
   
 }

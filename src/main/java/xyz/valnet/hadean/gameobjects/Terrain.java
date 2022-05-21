@@ -35,25 +35,14 @@ public class Terrain extends GameObject implements IPathable {
   }
 
   @Override
-  public void render() {
-    // left = 400 - (WORLD_SIZE * TILE_SIZE / 2);
-    // top = 225 - (WORLD_SIZE * TILE_SIZE / 2);
-
-    // Drawing.setLayer(0f);
-    // for (int i = 0; i < WORLD_SIZE; i++) {
-    //   for (int j = 0; j < WORLD_SIZE; j++) {
-    //     tiles[i][j].render(camera);
-    //   }
-    // }
-  }
-
-  @Override
   public boolean isWalkable(int x, int y, int fromX, int fromY) {
-    return getTile(x, y).isWalkable();
+    if(!isOutOfBounds(x, y)) {
+      return getTile(x, y).isWalkable();
+    } else return false;
   }
 
   @Override
-  public boolean isInBounds(int x, int y) {
+  public boolean isOutOfBounds(int x, int y) {
     return x < 0 || y < 0 || x >= WORLD_SIZE || y >= WORLD_SIZE;
   }
 

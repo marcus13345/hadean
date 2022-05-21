@@ -14,4 +14,17 @@ public class Vector2i {
 		this.y = y;
 	}
 
+  public boolean equals(Vector2i other) {
+    return x == other.x && y == other.y;
+  }
+
+  public boolean isOneOf(Vector2i[] others) {
+    for(Vector2i other : others) {
+      if(other.equals(this)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }

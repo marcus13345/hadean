@@ -7,4 +7,5 @@ public interface ISelectable {
   public Vector4f getWorldBox();
   public Action[] getActions();
   public void runAction(Action action);
+  public String details();
 }

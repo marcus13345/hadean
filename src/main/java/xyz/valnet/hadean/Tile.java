@@ -22,6 +22,7 @@ public class Tile extends GameObject {
   private final Sprite sprite = Assets.defaultTerrain[(int)Math.floor(Math.random() * Assets.defaultTerrain.length)];
 
   private List<ITileThing> stuff = new ArrayList<ITileThing>();
+  private List<ITileThing> toRemove = new ArrayList<ITileThing>();
 
   public Tile(int x, int y) {
     this.x = x;
@@ -36,6 +37,23 @@ public class Tile extends GameObject {
       stuff.add(tree);
       add(tree);
     }
+  }
+
+  @Override
+  public void tick(float dTime) {
+    for(ITileThing thing : stuff) {
+      if(thing.shouldRemove()) {
+        toRemove.add(thing);
+      }
+    }
+    for(ITileThing thing : toRemove) {
+      stuff.remove(thing);
+      thing.onRemove();
+      if(thing instanceof GameObject) {
+        remove((GameObject)thing);
+      }
+    }
+    toRemove.clear();
   }
 
   @Override

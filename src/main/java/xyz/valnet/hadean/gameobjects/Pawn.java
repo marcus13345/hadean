@@ -7,8 +7,11 @@ import static org.lwjgl.opengl.GL11.glVertex3f;
 import static org.lwjgl.opengl.GL20.glVertexAttrib2f;
 import static xyz.valnet.engine.util.Math.lerp;
 
+import java.util.List;
+
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2f;
+import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.shaders.SimpleShader;
@@ -23,7 +26,6 @@ import xyz.valnet.hadean.util.Assets;
 public class Pawn extends GameObject implements ISelectable {
 
   private float x = 0.5f, y = 0.5f;
-  private float dx, dy;
 
   private float counter = 0;
 
@@ -86,26 +88,68 @@ public class Pawn extends GameObject implements ISelectable {
 
   @Override
   public void tick(float dTime) {
-    if(path != null && !path.isComplete()) move();
-    else newPath();
+    // firstly, TRY PATHING.
+    if(path != null && !path.isComplete()) {
+      move();
+      return;
+    }
+    
+    // then, try to do work!
+    if(currentJob != null && currentJob.hasWork()) {
+      if(getCurrentPos().isOneOf(currentJob.getWorablePositions())) {
+        currentJob.doWork();
+        return;
+      }
+    }
+
+
+    // then try to get work?!
+    currentJob = null;
+    tryStartWork();
+
+    // then wander...
+
   }
 
-  private void newPath() {
-    // set new destination
-    dx = 0.5f + (float)Math.floor(Math.random() * Terrain.WORLD_SIZE);
-    dy = 0.5f + (float)Math.floor(Math.random() * Terrain.WORLD_SIZE);
-
-    // and route there.
-    route();
+  private Vector2i getCurrentPos() {
+    return new Vector2i((int)Math.floor(x), (int)Math.floor(y));
   }
 
-  private void route() {
+  private IWorkable currentJob;
+
+  private void tryStartWork() {
+    List<IWorkable> workables = getAll(IWorkable.class);
+    if(workables.size() > 0) {
+      for(IWorkable job : workables) {
+        if(!job.hasWork()) continue;
+        Vector2i[] workablePositions = job.getWorablePositions();
+        Path bestPathToJob = pathfinder.getBestPath(
+          new Vector2i((int)Math.floor(x), (int)Math.floor(y)),
+          workablePositions
+        );
+        if(bestPathToJob == null) continue;
+        this.path = bestPathToJob;
+        currentJob = job;
+      }
+    }
+  }
+
+  // private void newPath() {
+  //   // set new destination
+  //   dx = 0.5f + (float)Math.floor(Math.random() * Terrain.WORLD_SIZE);
+  //   dy = 0.5f + (float)Math.floor(Math.random() * Terrain.WORLD_SIZE);
+
+  //   // and route there.
+  //   route();
+  // }
+
+  private void reroute() {
     // intify all the coordinates
     int ix = (int)Math.floor(x);
     int iy = (int)Math.floor(y);
 
-    int idx = (int)Math.floor(dx);
-    int idy = (int)Math.floor(dy);
+    int idx = path.dst.x;
+    int idy = path.dst.y;
 
     // try to make a new path.
     path = pathfinder.getPath(ix, iy, idx, idy);
@@ -126,7 +170,7 @@ public class Pawn extends GameObject implements ISelectable {
       if(counter > 0) counter --;
       if(counter < 0) counter = 0;
       if(counter == 0) {
-        route();
+        reroute();
       }
       return;
     }
@@ -160,7 +204,7 @@ public class Pawn extends GameObject implements ISelectable {
   @Override
   public Action[] getActions() {
     return new Action[] {
-      ACTION_REROUTE,
+      // ACTION_REROUTE,
       ACTION_TOGGLE_DEBUG,
       ACTION_PAUSE
     };
@@ -171,10 +215,15 @@ public class Pawn extends GameObject implements ISelectable {
     if(action == ACTION_PAUSE) {
       paused = !paused;
     } else if(action == ACTION_REROUTE) {
-      newPath();
+      reroute();
     } else if(action == ACTION_TOGGLE_DEBUG) {
       debug = !debug;
     }
+  }
+
+  @Override
+  public String details() {
+    return "IM A PAWNNNNN!!!!";
   }
   
 }

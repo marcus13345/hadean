@@ -78,7 +78,7 @@ public class GameScene implements IScene {
   @Override
   public void enable() {
     objects.add(new Terrain());
-    for(int i = 0; i < 1; i ++) {
+    for(int i = 0; i < 5; i ++) {
       objects.add(new Pawn());
     }
     objects.add(new Camera());

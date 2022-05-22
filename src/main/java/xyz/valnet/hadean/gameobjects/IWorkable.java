@@ -6,4 +6,5 @@ public interface IWorkable {
   public boolean hasWork();
   public Vector2i[] getWorablePositions();
   public void doWork();
+  public Vector2i getLocation();
 }

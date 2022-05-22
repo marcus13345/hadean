@@ -29,6 +29,9 @@ public class Tree extends GameObject implements ITileThing, ISelectable, IWorkab
     Assets.flat.pushColor(new Vector4f(1 - getProgress(), 1 - getProgress(), 1 - getProgress(), 1.0f));
     camera.draw(Assets.tree, x - 1, y - 2, 3, 3);
     Assets.flat.popColor();
+    if(hasWork()) {
+      camera.draw(Assets.lilAxe, x, y);
+    }
   }
 
   @Override
@@ -38,7 +41,7 @@ public class Tree extends GameObject implements ITileThing, ISelectable, IWorkab
 
   @Override
   public Vector4f getWorldBox() {
-    return new Vector4f(x - 1, y - 2, x + 2, y + 1);
+    return new Vector4f(x, y, x + 1, y + 1);
   }
 
   public static final Action ACTION_CHOP = new Action("Chop");
@@ -111,5 +114,10 @@ public class Tree extends GameObject implements ITileThing, ISelectable, IWorkab
   @Override
   public void onRemove() {
     add(new Log(x, y));
+  }
+
+  @Override
+  public Vector2i getLocation() {
+    return new Vector2i(x, y);
   }
 }

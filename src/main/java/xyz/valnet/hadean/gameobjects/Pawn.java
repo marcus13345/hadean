@@ -7,6 +7,7 @@ import static org.lwjgl.opengl.GL11.glVertex3f;
 import static org.lwjgl.opengl.GL20.glVertexAttrib2f;
 import static xyz.valnet.engine.util.Math.lerp;
 
+import java.util.Comparator;
 import java.util.List;
 
 import xyz.valnet.engine.graphics.Drawing;
@@ -31,7 +32,7 @@ public class Pawn extends GameObject implements ISelectable {
 
   private Path path;
 
-  private final float invocationThreshold = 70f;
+  private final float invocationThreshold = 50 + (float)(Math.random() * 20);
 
   private Camera camera;
   private Terrain terrain;
@@ -88,12 +89,7 @@ public class Pawn extends GameObject implements ISelectable {
 
   @Override
   public void tick(float dTime) {
-    // firstly, TRY PATHING.
-    if(path != null && !path.isComplete()) {
-      move();
-      return;
-    }
-    
+
     // then, try to do work!
     if(currentJob != null && currentJob.hasWork()) {
       if(getCurrentPos().isOneOf(currentJob.getWorablePositions())) {
@@ -102,12 +98,22 @@ public class Pawn extends GameObject implements ISelectable {
       }
     }
 
+    // firstly, TRY PATHING.
+    if(path != null && !path.isComplete()) {
+      move();
+    }
 
     // then try to get work?!
-    currentJob = null;
-    tryStartWork();
+    if(counter == 0) {
+      currentJob = null;
+      tryStartWork();
+      
 
-    // then wander...
+      if(currentJob == null && (path == null || path.isComplete())) {
+        // then wander...
+        newPath();
+      }
+    }
 
   }
 
@@ -119,6 +125,18 @@ public class Pawn extends GameObject implements ISelectable {
 
   private void tryStartWork() {
     List<IWorkable> workables = getAll(IWorkable.class);
+
+    workables.sort(new Comparator<IWorkable>() {
+      @Override
+      public int compare(IWorkable a, IWorkable b) {
+        float distA = a.getLocation().distanceTo((int)x, (int)y);
+        float distB = b.getLocation().distanceTo((int)x, (int)y);
+        if(distA > distB) return -1;
+        if(distB > distA) return 1;
+        return 0;
+      }
+    });
+
     if(workables.size() > 0) {
       for(IWorkable job : workables) {
         if(!job.hasWork()) continue;
@@ -134,14 +152,15 @@ public class Pawn extends GameObject implements ISelectable {
     }
   }
 
-  // private void newPath() {
-  //   // set new destination
-  //   dx = 0.5f + (float)Math.floor(Math.random() * Terrain.WORLD_SIZE);
-  //   dy = 0.5f + (float)Math.floor(Math.random() * Terrain.WORLD_SIZE);
+  private void newPath() {
+    // set new destination
+    int randomX = (int)Math.floor(Math.random() * Terrain.WORLD_SIZE);
+    int randomY = (int)Math.floor(Math.random() * Terrain.WORLD_SIZE);
+    path = pathfinder.getPath((int)x, (int)y, randomX, randomY);
 
-  //   // and route there.
-  //   route();
-  // }
+    // // and route there.
+    // reroute();
+  }
 
   private void reroute() {
     // intify all the coordinates

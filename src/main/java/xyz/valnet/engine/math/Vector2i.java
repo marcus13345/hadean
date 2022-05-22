@@ -27,4 +27,10 @@ public class Vector2i {
     return false;
   }
 
+  public float distanceTo(int x, int y) {
+    int a = this.x - x;
+    int b = this.y - y;
+    return (float) Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+  }
+
 }

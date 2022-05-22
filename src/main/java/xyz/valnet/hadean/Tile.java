@@ -32,7 +32,7 @@ public class Tile extends GameObject {
   public void start() {
     camera = get(Camera.class);
 
-    if(Math.random() > 0.98) {
+    if(Math.random() > 0.90) {
       Tree tree = new Tree(x, y);
       stuff.add(tree);
       add(tree);

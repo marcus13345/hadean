@@ -2,6 +2,7 @@ package xyz.valnet.hadean;
 
 import xyz.valnet.engine.App;
 import xyz.valnet.engine.Game;
+import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Matrix4f;
 import xyz.valnet.engine.math.Vector4f;
 
@@ -24,7 +25,9 @@ public class HadeanGame extends Game {
 
   @Override
   public void render() {
+    Drawing.setLayer(0);
     super.render();
+    Drawing.setLayer(99);
     renderDebugInfo();
   }
 
@@ -32,6 +35,7 @@ public class HadeanGame extends Game {
   private static Vector4f fontColor = new Vector4f(0, 1, 1, 1);
 
   private void renderDebugInfo() {
+    
     long allocated = runtime.totalMemory();
     long max = runtime.maxMemory();
 

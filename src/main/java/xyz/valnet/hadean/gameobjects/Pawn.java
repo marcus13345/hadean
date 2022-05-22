@@ -48,6 +48,26 @@ public class Pawn extends GameObject implements ISelectable {
   }
 
   @Override
+  public void selectedRender() {
+    if(path != null) {
+      for(Node node : path) {
+        glBegin(GL_LINES);
+          Vector2f u, v;
+          
+          if(node.from == null) u = camera.world2screen(x, y);
+          else u = camera.world2screen(node.from.x + 0.5f, node.from.y + 0.5f);
+          
+          v = camera.world2screen(node.x + 0.5f, node.y + 0.5f);
+          glVertexAttrib2f(SimpleShader.TEX_COORD, 0, 88 / 256f);
+          glVertex3f(u.x, u.y, 3f);
+          glVertexAttrib2f(SimpleShader.TEX_COORD, 0, 88 / 255f);
+          glVertex3f(v.x, v.y, 3f);
+        glEnd();
+      }
+    }
+  }
+
+  @Override
   public void render() {
     
     Drawing.setLayer(3f);

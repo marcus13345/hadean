@@ -1,10 +1,8 @@
 package xyz.valnet.hadean.gameobjects;
 
-import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.Tile;
 import xyz.valnet.hadean.pathfinding.IPathable;
-import xyz.valnet.hadean.scenes.GameScene;
  
 // TODO SPLIT PATHABLES. | implements IPathable, the thing that has callbacks for interfacing with a pathfinder.
 public class Terrain extends GameObject implements IPathable {

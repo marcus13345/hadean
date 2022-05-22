@@ -8,4 +8,5 @@ public interface ISelectable {
   public Action[] getActions();
   public void runAction(Action action);
   public String details();
+  public default void selectedRender() {}
 }

@@ -85,6 +85,7 @@ public class Selection extends GameObject {
       Vector2f min = camera.world2screen(box.x - p, box.y - p);
       Vector2f max = camera.world2screen(box.z + p, box.w + p);
       Assets.selectedFrame.draw((int)min.x, (int)min.y, (int)(max.x - min.x), (int)(max.y - min.y));
+      thing.selectedRender();
     }
 
     if(initialCoords != null) {

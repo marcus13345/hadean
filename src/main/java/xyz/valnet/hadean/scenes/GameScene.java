@@ -5,11 +5,14 @@ import java.util.List;
 
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IScene;
+import xyz.valnet.hadean.gameobjects.BottomBar;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.Pawn;
 import xyz.valnet.hadean.gameobjects.Selection;
 import xyz.valnet.hadean.gameobjects.SelectionUI;
 import xyz.valnet.hadean.gameobjects.Terrain;
+import xyz.valnet.hadean.gameobjects.tabs.ArchitectTab;
+import xyz.valnet.hadean.gameobjects.tabs.MenuTab;
 
 public class GameScene implements IScene {
 
@@ -84,6 +87,9 @@ public class GameScene implements IScene {
     objects.add(new Camera());
     objects.add(new Selection());
     objects.add(new SelectionUI());
+    objects.add(new BottomBar());
+    objects.add(new ArchitectTab());
+    objects.add(new MenuTab());
     
     for(GameObject obj : objects) {
       obj.link(this);

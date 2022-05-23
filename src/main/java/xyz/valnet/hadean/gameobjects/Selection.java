@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xyz.valnet.engine.App;
+import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
+import xyz.valnet.hadean.Layers;
+import xyz.valnet.hadean.input.IMouseListener;
 import xyz.valnet.hadean.util.Assets;
 
 import static xyz.valnet.engine.util.Math.lerp;
 
-public class Selection extends GameObject {
+public class Selection extends GameObject implements IMouseListener {
 
   public Vector2f initialCoords;
   private Camera camera;
@@ -37,30 +40,14 @@ public class Selection extends GameObject {
   private List<ISelectable> toRemove = new ArrayList<ISelectable>();
 
   @Override
-  public void tick(float dTime) {
+  public void update(float dTime) {
     if(animation < animationMax) animation ++;
     if(animation > animationMax) animation = animationMax;
 
-    // TODO at some point, this will need to be blocked by other things on top. like a ui over the scene should make selections like, not happen?!
-    if(App.mouseRight) {
-      Vector2f currentMouseCoords = new Vector2f(App.mouseX, App.mouseY);
-      if(initialCoords == null) {
-        initialCoords = currentMouseCoords;
-      }
-    } else {
-      if(initialCoords != null) {
+    // if(!active) return;
 
-        makeSelection(new Vector4f(
-          initialCoords.x,
-          initialCoords.y,
-          App.mouseX,
-          App.mouseY
-        ));
-
-        initialCoords = null;
-      }
-    }
-
+    // if any of our selection just RANDOMLY isnt in the scene anymore, well
+    // stop selecting it dumbass
     for(ISelectable selectable : selected) {
       if(selectable instanceof GameObject) {
         if(!((GameObject)selectable).inScene()) {
@@ -84,6 +71,7 @@ public class Selection extends GameObject {
       Vector4f box = thing.getWorldBox();
       Vector2f min = camera.world2screen(box.x - p, box.y - p);
       Vector2f max = camera.world2screen(box.z + p, box.w + p);
+      Drawing.setLayer(Layers.SELECTION_IDENTIFIERS);
       Assets.selectedFrame.draw((int)min.x, (int)min.y, (int)(max.x - min.x), (int)(max.y - min.y));
       thing.selectedRender();
     }
@@ -150,5 +138,53 @@ public class Selection extends GameObject {
     boolean aBelowB = maxAy < minBy;
 
     return !( aLeftOfB || aRightOfB || aAboveB || aBelowB );
+  }
+
+  private boolean active = false;
+
+  @Override
+  public void mouseEnter() {
+    active = true;
+  }
+
+  @Override
+  public void mouseLeave() {
+    active = false;
+  }
+
+  @Override
+  public Vector4f getBox() {
+    return new Vector4f(0, 0, 1000, 1000);
+  }
+
+  @Override
+  public int getLayer() {
+    return 0;
+  }
+
+  @Override
+  public boolean mouseDown(int button) {
+    if(!active) return false;
+    if(button == 0) {
+      if(initialCoords == null) {
+        initialCoords = new Vector2f(App.mouseX, App.mouseY);
+      }
+    }
+    return false;
+  }
+
+  @Override
+  public void mouseUp(int button) {
+    if(initialCoords != null && button == 0) {
+
+      makeSelection(new Vector4f(
+        initialCoords.x,
+        initialCoords.y,
+        App.mouseX,
+        App.mouseY
+      ));
+
+      initialCoords = null;
+    }
   }
 }

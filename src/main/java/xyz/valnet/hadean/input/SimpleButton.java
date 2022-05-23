@@ -4,8 +4,8 @@ import xyz.valnet.hadean.util.Assets;
 
 public class SimpleButton extends Button {
 
-  public SimpleButton(String text, int x, int y, int w, int h) {
-    super(Assets.uiFrame, text, x, y, w, h);
+  public SimpleButton(String text, int x, int y, int w, int h, int l) {
+    super(Assets.uiFrame, text, x, y, w, h, l);
 
     this.activeHPad = 0f;
     this.activeVPad = 0f;

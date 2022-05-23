@@ -40,7 +40,7 @@ public class Tile extends GameObject {
   }
 
   @Override
-  public void tick(float dTime) {
+  public void update(float dTime) {
     for(ITileThing thing : stuff) {
       if(thing.shouldRemove()) {
         toRemove.add(thing);

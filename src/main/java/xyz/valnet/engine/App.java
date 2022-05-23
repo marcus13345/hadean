@@ -22,6 +22,8 @@ public class App {
   private int width = 1024, height = 576;
   private Matrix4f matrix = Matrix4f.orthographic(0, width, height, 0, 0, 100);
   public static int mouseX, mouseY;
+  
+  @Deprecated
   public static boolean mouseLeft, mouseMiddle, mouseRight;
   
   private Game game;
@@ -78,7 +80,13 @@ public class App {
     glfwSetMouseButtonCallback(window, new GLFWMouseButtonCallback() {
       @Override
       public void invoke(long window, int button, int action, int mods) {
-        
+        if(action == 1) {
+          game.mouseDown(button);
+        } else if(action == 0) {
+          game.mouseUp(button);
+        }
+
+        // TODO deprecate these.
         if(button >= 3) return;
         if(button == GLFW_MOUSE_BUTTON_LEFT) { mouseLeft = action == 1; return; }
         if(button == GLFW_MOUSE_BUTTON_RIGHT) { mouseRight = action == 1; return; }

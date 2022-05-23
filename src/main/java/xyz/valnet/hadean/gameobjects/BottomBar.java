@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import xyz.valnet.engine.scenegraph.GameObject;
+import xyz.valnet.hadean.Layers;
 import xyz.valnet.hadean.input.Button;
 import xyz.valnet.hadean.input.IButtonListener;
 import xyz.valnet.hadean.input.SimpleButton;
@@ -21,11 +22,11 @@ public class BottomBar extends GameObject implements IButtonListener {
   @Override
   public void start() {
     items.clear();
-    btnItemTable.clear();
+    clearButtons();
   }
 
   public void registerButton(IBottomBarItem newItem) {
-    btnItemTable.clear();
+    clearButtons();
     items.add(newItem);
     int n = items.size();
 
@@ -35,9 +36,9 @@ public class BottomBar extends GameObject implements IButtonListener {
       int r = (int)(((i + 1) / (float) n) * screenWidth);
 
       int w = r - l;
-      Button btn = new SimpleButton(item.getTabName(), l, 576 - bottomBarHeight, w, bottomBarHeight);
-
+      Button btn = new SimpleButton(item.getTabName(), l, 576 - bottomBarHeight, w, bottomBarHeight, Layers.BOTTOM_BAR);
       btn.registerClickListener(this);
+      add(btn);
 
       btnItemTable.put(btn, item);
 
@@ -45,17 +46,11 @@ public class BottomBar extends GameObject implements IButtonListener {
     }
   }
 
-  @Override
-  public void render() {
+  private void clearButtons() {
     for(Button btn : btnItemTable.keySet()) {
-      btn.draw();
+      remove(btn);
     }
-  }
-  @Override
-  public void tick(float dTime) {
-    for(Button btn : btnItemTable.keySet()) {
-      btn.update();
-    }
+    btnItemTable.clear();
   }
 
   @Override

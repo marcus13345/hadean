@@ -1,7 +1,9 @@
 package xyz.valnet.hadean.scenes;
 
+import xyz.valnet.engine.App;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.IScene;
+import xyz.valnet.hadean.Layers;
 import xyz.valnet.hadean.input.Button;
 import xyz.valnet.hadean.input.IButtonListener;
 import xyz.valnet.hadean.util.Assets;
@@ -10,10 +12,10 @@ import static xyz.valnet.hadean.HadeanGame.Hadean;
 
 public class MenuScene implements IScene, IButtonListener {
 
-  private Button btnNewGame = new Button(Assets.frame, "New Game", 50, 200, 128, 32);
-  private Button btnLoadGame = new Button(Assets.frame, "Load Game", 50, 240, 128, 32);
-  private Button btnOptions = new Button(Assets.frame, "Options", 50, 280, 128, 32);
-  private Button btnQuit = new Button(Assets.frame, "Quit", 50, 320, 128, 32);
+  private Button btnNewGame = new Button(Assets.frame, "New Game", 50, 200, 128, 32, Layers.GENERAL_UI);
+  private Button btnLoadGame = new Button(Assets.frame, "Load Game", 50, 240, 128, 32, Layers.GENERAL_UI);
+  private Button btnOptions = new Button(Assets.frame, "Options", 50, 280, 128, 32, Layers.GENERAL_UI);
+  private Button btnQuit = new Button(Assets.frame, "Quit", 50, 320, 128, 32, Layers.GENERAL_UI);
 
   public MenuScene() {
     btnNewGame.registerClickListener(this);
@@ -30,18 +32,22 @@ public class MenuScene implements IScene, IButtonListener {
   @Override
   public void render() {
     Assets.flat.pushColor(green);
-    btnNewGame.draw();
+    btnNewGame.render();
     Assets.flat.swapColor(cyan);
-    btnLoadGame.draw();
+    btnLoadGame.render();
     Assets.flat.swapColor(yellow);
-    btnOptions.draw();
+    btnOptions.render();
     Assets.flat.swapColor(red);
-    btnQuit.draw();
+    btnQuit.render();
     Assets.flat.popColor();
   }
 
   @Override
   public void update(float dTime) {
+    btnNewGame.setMouseCoords(App.mouseX, App.mouseY);
+    btnLoadGame.setMouseCoords(App.mouseX, App.mouseY);
+    btnOptions.setMouseCoords(App.mouseX, App.mouseY);
+    btnQuit.setMouseCoords(App.mouseX, App.mouseY);
     btnNewGame.update();
     btnLoadGame.update();
     btnOptions.update();
@@ -73,6 +79,22 @@ public class MenuScene implements IScene, IButtonListener {
   @Override
   public void disable() {
     
+  }
+
+  @Override
+  public void mouseDown(int button) {
+    btnNewGame.mouseDown(button);
+    btnLoadGame.mouseDown(button);
+    btnOptions.mouseDown(button);
+    btnQuit.mouseDown(button);
+  }
+
+  @Override
+  public void mouseUp(int button) {
+    btnNewGame.mouseUp(button);
+    btnLoadGame.mouseUp(button);
+    btnOptions.mouseUp(button);
+    btnQuit.mouseUp(button);
   }
   
 }

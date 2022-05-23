@@ -4,7 +4,6 @@ import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.Tile;
 import xyz.valnet.hadean.pathfinding.IPathable;
  
-// TODO SPLIT PATHABLES. | implements IPathable, the thing that has callbacks for interfacing with a pathfinder.
 public class Terrain extends GameObject implements IPathable {
 
   public static final int WORLD_SIZE = 24;
@@ -32,6 +31,7 @@ public class Terrain extends GameObject implements IPathable {
     return tiles[x][y];
   }
 
+  // TODO implement directionality. even the pathfinder doesnt give this info...
   @Override
   public boolean isWalkable(int x, int y, int fromX, int fromY) {
     if(!isOutOfBounds(x, y)) {

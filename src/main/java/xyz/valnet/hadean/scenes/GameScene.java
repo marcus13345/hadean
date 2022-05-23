@@ -1,8 +1,10 @@
 package xyz.valnet.hadean.scenes;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
+import xyz.valnet.engine.App;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IScene;
 import xyz.valnet.hadean.gameobjects.BottomBar;
@@ -13,6 +15,16 @@ import xyz.valnet.hadean.gameobjects.SelectionUI;
 import xyz.valnet.hadean.gameobjects.Terrain;
 import xyz.valnet.hadean.gameobjects.tabs.ArchitectTab;
 import xyz.valnet.hadean.gameobjects.tabs.MenuTab;
+import xyz.valnet.hadean.input.IMouseListener;
+
+// TODO BIG IDEAS
+// have caches of types that ill need (Like IMouseListener)
+// and the add method, simply puts things into the newObjects
+// then at the beginning of each frame, they are all loaded.
+// then, even userspace scenes can add all their objects in 
+// one fell swoop and the timings will be maintained
+// IE: all objects will be linked and able to be `get`ed
+// at their start call! :D
 
 public class GameScene implements IScene {
 
@@ -21,6 +33,8 @@ public class GameScene implements IScene {
   private List<GameObject> newObjects = new ArrayList<GameObject>();
   private List<GameObject> removeObjects = new ArrayList<GameObject>();
   // private List<IRenderable> renderables = new ArrayList<IRenderable>();
+
+  private IMouseListener hoveredMouseListener = null;
 
   // specific
 
@@ -52,6 +66,7 @@ public class GameScene implements IScene {
 
   @Override
   public void update(float dTime) {
+    // ADD OBJECTS
     if(!newObjects.isEmpty()) {
       List<GameObject> added = new ArrayList<GameObject>();
 
@@ -66,6 +81,7 @@ public class GameScene implements IScene {
       }
     }
 
+    // REMOVE OBJECTS
     if(!removeObjects.isEmpty()) {
       for(GameObject obj : removeObjects) {
         objects.remove(obj);
@@ -73,8 +89,38 @@ public class GameScene implements IScene {
       removeObjects.clear();
     }
 
+    // TICK OBJECTS
     for(GameObject obj : objects) {
-      obj.tick(dTime);
+      obj.update(dTime);
+    }
+
+    // DO MOUSE UPDATES!
+    List<IMouseListener> mouseListeners = getAll(IMouseListener.class);
+    mouseListeners.sort(new Comparator<IMouseListener>() {
+      @Override
+      public int compare(IMouseListener a, IMouseListener b) {
+        int al = a.getLayer();
+        int bl = b.getLayer();
+        return al < bl ? 1 : bl < al ? -1 : 0;
+      }
+    });
+    for(IMouseListener listener : mouseListeners) {
+      boolean currentlyEntered = listener.getBox().contains(App.mouseX, App.mouseY);
+      if(currentlyEntered) {
+        if(listener != hoveredMouseListener) {
+          if(hoveredMouseListener != null) {
+            hoveredMouseListener.mouseLeave();
+          }
+          hoveredMouseListener = listener;
+          listener.mouseEnter();
+        }
+        break;
+      } else if(listener == hoveredMouseListener) {
+        // this is the one that is currently hovered, but it isnt!
+        // turn that shit OFF
+        hoveredMouseListener.mouseLeave();
+        hoveredMouseListener = null;
+      }
     }
   }
 
@@ -84,6 +130,7 @@ public class GameScene implements IScene {
     for(int i = 0; i < 5; i ++) {
       objects.add(new Pawn());
     }
+    
     objects.add(new Camera());
     objects.add(new Selection());
     objects.add(new SelectionUI());
@@ -116,6 +163,20 @@ public class GameScene implements IScene {
 
   public boolean inScene(GameObject gameObject) {
     return objects.contains(gameObject);
+  }
+
+  @Override
+  public void mouseDown(int button) {
+    for(IMouseListener iml : getAll(IMouseListener.class)) {
+      iml.mouseDown(button);
+    }
+  }
+
+  @Override
+  public void mouseUp(int button) {
+    for(IMouseListener iml : getAll(IMouseListener.class)) {
+      iml.mouseUp(button);
+    }
   }
   
 }

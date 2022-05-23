@@ -1,14 +1,15 @@
 package xyz.valnet.hadean.gameobjects;
 
+import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
+import xyz.valnet.hadean.Layers;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 
 public class Tree extends GameObject implements ITileThing, ISelectable, IWorkable {
   private Camera camera;
-  private Terrain terrain;
 
   private boolean chopFlag = false;
   
@@ -21,15 +22,16 @@ public class Tree extends GameObject implements ITileThing, ISelectable, IWorkab
 
   public void start() {
     camera = get(Camera.class);
-    terrain = get(Terrain.class);
   }
 
   @Override
   public void render() {
     Assets.flat.pushColor(new Vector4f(1 - getProgress(), 1 - getProgress(), 1 - getProgress(), 1.0f));
+    Drawing.setLayer(Layers.AIR);
     camera.draw(Assets.tree, x - 1, y - 2, 3, 3);
     Assets.flat.popColor();
     if(hasWork()) {
+      Drawing.setLayer(Layers.MARKERS);
       camera.draw(Assets.lilAxe, x, y);
     }
   }
@@ -76,7 +78,7 @@ public class Tree extends GameObject implements ITileThing, ISelectable, IWorkab
   }
 
   protected float choppage = 0;
-  protected int strength = 500;
+  protected int strength = 5000;
 
   private float getProgress() {
     return (choppage / (float) strength);
@@ -94,7 +96,7 @@ public class Tree extends GameObject implements ITileThing, ISelectable, IWorkab
   }
 
   @Override
-  public void tick(float dTime) {
+  public void update(float dTime) {
     if(choppage >= strength) {
       return;
     }

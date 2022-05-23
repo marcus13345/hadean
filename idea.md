@@ -20,3 +20,7 @@ worker knows it can move on to another action.
 
 A Worker may also tell a job board, that it no longer
 wishes to do work, and the job will be released.
+
+# IMouseCaptureArea
+
+its just a name, but reframe current mouse shit to it.

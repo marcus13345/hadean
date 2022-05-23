@@ -26,13 +26,13 @@ import xyz.valnet.hadean.util.Assets;
 
 public class Pawn extends GameObject implements ISelectable {
 
-  private float x = 0.5f, y = 0.5f;
+  private float x = 0.5f + (int)(Math.random() * Terrain.WORLD_SIZE), y = 0.5f + (int)(Math.random() * Terrain.WORLD_SIZE);
 
   private float counter = 0;
 
   private Path path;
 
-  private final float invocationThreshold = 50 + (float)(Math.random() * 20);
+  private final float invocationThreshold = 100 + (float)(Math.random() * 50);
 
   private Camera camera;
   private Terrain terrain;
@@ -108,7 +108,7 @@ public class Pawn extends GameObject implements ISelectable {
   }
 
   @Override
-  public void tick(float dTime) {
+  public void update(float dTime) {
 
     // then, try to do work!
     if(currentJob != null && currentJob.hasWork()) {

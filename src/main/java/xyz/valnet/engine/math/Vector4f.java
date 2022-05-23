@@ -26,4 +26,8 @@ public class Vector4f {
     return "(" + this.x + ", " + this.y + ", " + this.z + ", " + this.w + ")";
   }
 
+  public boolean contains(float x, float y) {
+    return x >= this.x && x < this.x + this.z && y >= this.y && y < this.y + this.w;
+  }
+
 }

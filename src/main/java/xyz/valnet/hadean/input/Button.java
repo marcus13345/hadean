@@ -2,15 +2,16 @@ package xyz.valnet.hadean.input;
 
 import static xyz.valnet.engine.util.Math.lerp;
 
-import xyz.valnet.engine.App;
+import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.graphics.Tile9;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.math.Vector4i;
+import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.util.Assets;
 
-public class Button {
+public class Button extends GameObject implements IMouseListener {
 
-  private final int x, y, width, height;
+  private int x, y, width, height;
   private String text;
   protected Tile9 frame;
   protected Tile9 frameHover;
@@ -24,7 +25,9 @@ public class Button {
   protected float activeVPad = 0.1f;
   protected float activeHPad = 0.0f;
 
-  public Button(Tile9 frame, String text, int x, int y, int w, int h) {
+  protected int layer;
+
+  public Button(Tile9 frame, String text, int x, int y, int w, int h, int l) {
     this.x = x;
     this.y = y;
     width = w;
@@ -34,6 +37,7 @@ public class Button {
     this.frameHover = frame;
     setText(text);
     box = new Vector4i(x, y, w, h);
+    layer = l;
   }
 
   public void setText(String text) {
@@ -43,7 +47,9 @@ public class Button {
     textHeight = measuredText.y;
   }
 
-  public void draw() {
+  @Override
+  public void render() {
+    Drawing.setLayer(layer);
     if(state == HOVER) {
       frameHover.draw(box.x, box.y, box.z, box.w);
     } else if(state == ACTIVE) {
@@ -61,7 +67,16 @@ public class Button {
     Assets.flat.popColor();
   }
 
+  // public void draw(int x, int y, int w, int h) {
+  //   this.x = x;
+  //   this.y = y;
+  //   width = w;
+  //   height = h;
+  //   render();
+  // }
+
   private boolean hovered = false;
+  private boolean mouseDown = false;
 
   private int state = 0;
   private final static int IDLE = 0;
@@ -73,13 +88,15 @@ public class Button {
   private IButtonListener listener = null;
 
   public void update() {
+    update(1);
+  }
+
+  @Override
+  public void update(float dTime) {
     box.x = x - (int)hPad;
     box.y = y - (int)vPad;
     box.z = width + ((int)hPad) * 2;
     box.w = height + ((int)vPad) * 2;
-
-    hovered = App.mouseX >= box.x && App.mouseX <= box.x + box.z && App.mouseY >= box.y && App.mouseY <= box.y + box.w;
-    boolean mouseDown = App.mouseLeft;
 
     float desiredVPad = 0, desiredHPad = 0;
 
@@ -131,5 +148,47 @@ public class Button {
 
   public void registerClickListener(IButtonListener listener) {
     this.listener = listener;
+  }
+
+  @Override
+  public void mouseEnter() {
+    hovered = true;
+  }
+
+  @Override
+  public void mouseLeave() {
+    hovered = false;
+  }
+
+  @Deprecated 
+  // this should only be used when its not added to a scene (with gameobjects!),
+  // which increasingly should NOT be the case.
+  public void setMouseCoords(float x, float y) {
+    hovered = x >= box.x && x <= box.x + box.z && y >= box.y && y <= box.y + box.w;
+  }
+
+  @Override
+  public boolean mouseDown(int button) {
+    if(button == 0) {
+      mouseDown = true;
+    }
+    return false;
+  }
+
+  @Override
+  public void mouseUp(int button) {
+    if(button == 0) {
+      mouseDown = false;
+    }
+  }
+
+  @Override
+  public Vector4f getBox() {
+    return new Vector4f(x, y, width, height);
+  }
+
+  @Override
+  public int getLayer() {
+    return layer;
   }
 }

@@ -31,7 +31,7 @@ public class GameObject implements IRenderable, ITickable {
   public void render() {}
 
   @Override
-  public void tick(float dTime) {}
+  public void update(float dTime) {}
 
   public void start() {}
 

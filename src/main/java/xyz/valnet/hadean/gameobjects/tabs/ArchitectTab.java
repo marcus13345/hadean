@@ -37,11 +37,13 @@ public class ArchitectTab extends Tab implements ISelectionChangeListener {
   public void start() {
     super.start();
     selection = get(Selection.class);
-    selection.subscribe(this);
+    if(selection != null) {
+      selection.subscribe(this);
+    }
   }
 
   @Override
-  public void tick(float dTime) {
+  public void update(float dTime) {
     progress = lerp(progress, opened ? 1 : 0, 0.05f);
   }
 

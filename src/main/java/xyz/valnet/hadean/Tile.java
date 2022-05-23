@@ -5,6 +5,7 @@ import java.util.List;
 
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.graphics.Sprite;
+import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.gameobjects.Camera;
@@ -29,6 +30,10 @@ public class Tile extends GameObject {
     this.y = y;
   }
 
+  public Vector2i getCoords() {
+    return new Vector2i(x, y);
+  }
+
   public void start() {
     camera = get(Camera.class);
 
@@ -36,6 +41,13 @@ public class Tile extends GameObject {
       Tree tree = new Tree(x, y);
       stuff.add(tree);
       add(tree);
+    }
+  }
+
+  public void placeThing(ITileThing thing) {
+    stuff.add(thing);
+    if(thing instanceof GameObject) {
+      add((GameObject)thing);
     }
   }
 
@@ -58,7 +70,7 @@ public class Tile extends GameObject {
 
   @Override
   public void render() {
-    Drawing.setLayer(2f);
+    Drawing.setLayer(Layers.TILES);
     Assets.flat.pushColor(color);
     camera.draw(sprite, x, y);
     Assets.flat.popColor();

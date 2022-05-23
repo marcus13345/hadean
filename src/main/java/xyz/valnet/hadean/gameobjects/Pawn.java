@@ -26,6 +26,8 @@ import xyz.valnet.hadean.util.Assets;
 
 public class Pawn extends GameObject implements ISelectable {
 
+  private ITransferrable carrying = null;
+
   private float x = 0.5f + (int)(Math.random() * Terrain.WORLD_SIZE), y = 0.5f + (int)(Math.random() * Terrain.WORLD_SIZE);
 
   private float counter = 0;

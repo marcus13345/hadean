@@ -1,5 +1,6 @@
 package xyz.valnet.hadean.gameobjects;
 
+import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.Tile;
 import xyz.valnet.hadean.pathfinding.IPathable;
@@ -22,9 +23,20 @@ public class Terrain extends GameObject implements IPathable {
         add(tiles[i][j]);
       }
     }
+
+    Tile randomTile = getRandomTile();
+    Vector2i coords = randomTile.getCoords();
+    Stockpile stockpile = new Stockpile(coords.x, coords.y);
+    randomTile.placeThing(stockpile);
+
     camera = get(Camera.class);
-    
     camera.focus(WORLD_SIZE / 2, WORLD_SIZE / 2);
+  }
+
+  private Tile getRandomTile() {
+    int x = (int) Math.floor(Math.random() * WORLD_SIZE);
+    int y = (int) Math.floor(Math.random() * WORLD_SIZE);
+    return getTile(x, y);
   }
 
   public Tile getTile(int x, int y) {

@@ -30,6 +30,7 @@ public class Assets {
   public static final Sprite log;
   public static final Sprite lilAxe;
   public static final Sprite haulArrow;
+  public static final Sprite stockpile;
 
   public static final SimpleShader flat;
 
@@ -51,6 +52,7 @@ public class Assets {
     log = new Sprite(atlas, 48, 96, 16, 16);
     lilAxe = new Sprite(atlas, 64, 88, 16, 16);
     haulArrow = new Sprite(atlas, 80, 88, 16, 16);
+    stockpile = new Sprite(atlas, 40, 64, 16, 16);
 
     Map<Character, Sprite> charset = new HashMap<Character, Sprite>();
 

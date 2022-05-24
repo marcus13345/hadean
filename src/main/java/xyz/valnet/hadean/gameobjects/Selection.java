@@ -64,6 +64,8 @@ public class Selection extends GameObject implements IMouseListener {
   @Override
   public void render() {
 
+    Drawing.setLayer(Layers.AREA_SELECT_BOX);
+
     float t = animation / animationMax;
     float p = lerp(animationAmplitude, 0, t);
 

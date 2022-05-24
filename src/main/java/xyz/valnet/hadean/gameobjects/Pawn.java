@@ -26,7 +26,7 @@ import xyz.valnet.hadean.util.Assets;
 
 public class Pawn extends GameObject implements ISelectable {
 
-  private ITransferrable carrying = null;
+  private IHaulable carrying = null;
 
   private float x = 0.5f + (int)(Math.random() * Terrain.WORLD_SIZE), y = 0.5f + (int)(Math.random() * Terrain.WORLD_SIZE);
 
@@ -146,18 +146,20 @@ public class Pawn extends GameObject implements ISelectable {
   private IWorkable currentJob;
 
   private void tryStartWork() {
-    List<IWorkable> workables = getAll(IWorkable.class);
-
-    workables.sort(new Comparator<IWorkable>() {
-      @Override
-      public int compare(IWorkable a, IWorkable b) {
-        float distA = a.getLocation().distanceTo((int)x, (int)y);
-        float distB = b.getLocation().distanceTo((int)x, (int)y);
-        if(distA > distB) return -1;
-        if(distB > distA) return 1;
-        return 0;
-      }
-    });
+    List<IWorkable> workables = getAll(IWorkable.class)
+      .stream()
+      .filter(workable -> workable.hasWork())
+      .sorted(new Comparator<IWorkable>() {
+        @Override
+        public int compare(IWorkable a, IWorkable b) {
+          float distA = a.getLocation().distanceTo((int)x, (int)y);
+          float distB = b.getLocation().distanceTo((int)x, (int)y);
+          if(distA > distB) return -1;
+          if(distB > distA) return 1;
+          return 0;
+        }
+      })
+      .toList();
 
     if(workables.size() > 0) {
       for(IWorkable job : workables) {

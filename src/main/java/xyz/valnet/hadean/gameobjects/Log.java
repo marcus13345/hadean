@@ -8,11 +8,13 @@ import xyz.valnet.hadean.Layers;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 
-public class Log extends GameObject implements ITileThing, ISelectable, ITransferrable, IWorkable {
+public class Log extends GameObject implements ITileThing, ISelectable, IHaulable, IWorkable {
 
   private Camera camera;
 
   private int x, y;
+
+  private boolean haul = false;
 
   public Log(int x, int y) {
     this.x = x;
@@ -28,6 +30,10 @@ public class Log extends GameObject implements ITileThing, ISelectable, ITransfe
   public void render() {
     Drawing.setLayer(Layers.GROUND);
     camera.draw(Assets.log, x, y);
+    if(haul) {
+      Drawing.setLayer(Layers.MARKERS);
+      camera.draw(Assets.haulArrow, x, y);
+    }
   }
 
   @Override

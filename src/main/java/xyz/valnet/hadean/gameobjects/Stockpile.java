@@ -2,7 +2,6 @@ package xyz.valnet.hadean.gameobjects;
 
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector4f;
-import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.Layers;
 import xyz.valnet.hadean.Tile;
 import xyz.valnet.hadean.util.Action;
@@ -10,18 +9,9 @@ import xyz.valnet.hadean.util.Assets;
 
 public class Stockpile extends WorldObject implements ITileThing, ISelectable {
 
-  private Camera camera;
-  private Terrain terrain;
-
   public Stockpile(int x, int y) {
     this.x = x;
     this.y = y;
-  }
-
-  @Override
-  public void start() {
-    camera = get(Camera.class);
-    terrain = get(Terrain.class);
   }
 
   @Override

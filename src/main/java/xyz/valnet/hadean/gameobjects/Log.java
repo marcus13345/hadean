@@ -10,20 +10,11 @@ import xyz.valnet.hadean.util.Assets;
 
 public class Log extends WorldObject implements ITileThing, ISelectable, IHaulable {
 
-  private Camera camera;
-  private Terrain terrain;
-
   private boolean haul = false;
 
   public Log(int x, int y) {
     this.x = x;
     this.y = y;
-  }
-
-  @Override
-  public void start() {
-    camera = get(Camera.class);
-    terrain = get(Terrain.class);
   }
 
   @Override

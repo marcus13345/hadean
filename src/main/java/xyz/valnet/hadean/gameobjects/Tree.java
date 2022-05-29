@@ -8,7 +8,6 @@ import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 
 public class Tree extends WorldObject implements ITileThing, ISelectable, IWorkable {
-  private Camera camera;
 
   private boolean chopFlag = false;
   
@@ -17,10 +16,6 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   public Tree(int x, int y) {
     this.x = x;
     this.y = y;
-  }
-
-  public void start() {
-    camera = get(Camera.class);
   }
 
   @Override

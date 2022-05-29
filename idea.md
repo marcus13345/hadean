@@ -24,3 +24,11 @@ wishes to do work, and the job will be released.
 # IMouseCaptureArea
 
 its just a name, but reframe current mouse shit to it.
+
+# Create class for x/y positioned things.
+
+can be STUPID SIMPLE TO START
+
+# Convert ITileThing to class
+
+getTile() needs to be a common method.

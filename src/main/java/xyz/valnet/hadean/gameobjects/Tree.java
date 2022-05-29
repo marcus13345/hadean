@@ -122,4 +122,10 @@ public class Tree extends GameObject implements ITileThing, ISelectable, IWorkab
   public Vector2i getLocation() {
     return new Vector2i(x, y);
   }
+
+  @Override
+  public void updatePosition(int x, int y) {
+    this.x = x;
+    this.y = y;
+  }
 }

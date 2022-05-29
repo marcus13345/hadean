@@ -112,46 +112,76 @@ public class Pawn extends GameObject implements ISelectable {
   @Override
   public void update(float dTime) {
 
-    // then, try to do work!
-    if(currentJob != null && currentJob.hasWork()) {
-      if(getCurrentPos().isOneOf(currentJob.getWorablePositions())) {
-        currentJob.doWork();
+    // cleanup current job...
+    if(currentJob != null && !currentJob.hasWork()) {
+      currentJob = null;
+    }
+
+    // if you dont have a job
+    if(currentJob == null && carrying == null) {
+      // and its a frame to try and get one...
+      if(counter == 0) {
+        tryStartWork();
+      }
+      
+      // if we still dont have a job, try path to wander.
+      if(currentJob == null && (path == null || path.isComplete())) {
+        newPath();
         return;
       }
+      
+      // TODO possibly take care of needs here idk
     }
 
-    // firstly, TRY PATHING.
     if(path != null && !path.isComplete()) {
       move();
+      return;
     }
 
-    // then try to get work?!
-    if(counter == 0) {
-      currentJob = null;
-      tryStartWork();
-      
-
-      if(currentJob == null && (path == null || path.isComplete())) {
-        // then wander...
-        newPath();
+    // try to do your work!
+    if(currentJob != null && currentJob.hasWork()) {
+      if(getCurrentPos().isOneOf(currentJob.getWorablePositions())) {
+        if(currentJob instanceof IWorkable) {
+          ((IWorkable)currentJob).doWork();
+        } else if (currentJob instanceof IHaulable) {
+          if(carrying == null) {
+            IHaulable thing = (IHaulable) currentJob;
+            Log log = thing.take();
+            carrying = log;
+            Vector2i dst = thing.getDestination().getCoords();
+            path = pathfinder.getPath((int)x, (int)y, dst.x, dst.y);
+          }
+        }
+        return;
+      }
+    } else if (carrying != null) {
+      // if we're at our destination, or if for some reason we just like
+      // didnt make it? but our path is so totally completed...
+      if(carrying.getDestination() == this.getTile() || path == null || path.isComplete()) {
+        this.getTile().placeThing((ITileThing) carrying);
+        carrying = null;
       }
     }
 
+  }
+
+  private Tile getTile() {
+    return terrain.getTile((int) x, (int) y);
   }
 
   private Vector2i getCurrentPos() {
     return new Vector2i((int)Math.floor(x), (int)Math.floor(y));
   }
 
-  private IWorkable currentJob;
+  private IJob currentJob;
 
   private void tryStartWork() {
-    List<IWorkable> workables = getAll(IWorkable.class)
+    List<IJob> workables = getAll(IJob.class)
       .stream()
       .filter(workable -> workable.hasWork())
-      .sorted(new Comparator<IWorkable>() {
+      .sorted(new Comparator<IJob>() {
         @Override
-        public int compare(IWorkable a, IWorkable b) {
+        public int compare(IJob a, IJob b) {
           float distA = a.getLocation().distanceTo((int)x, (int)y);
           float distB = b.getLocation().distanceTo((int)x, (int)y);
           if(distA > distB) return -1;
@@ -162,7 +192,7 @@ public class Pawn extends GameObject implements ISelectable {
       .toList();
 
     if(workables.size() > 0) {
-      for(IWorkable job : workables) {
+      for(IJob job : workables) {
         if(!job.hasWork()) continue;
         Vector2i[] workablePositions = job.getWorablePositions();
         Path bestPathToJob = pathfinder.getBestPath(
@@ -264,9 +294,15 @@ public class Pawn extends GameObject implements ISelectable {
     }
   }
 
+  private String getCarriedName() {
+    if(carrying == null) return "Nothing";
+    String[] names = carrying.getClass().getName().split("\\.");
+    return names[names.length - 1];
+  }
+
   @Override
   public String details() {
-    return "IM A PAWNNNNN!!!!";
+    return "Held | " + getCarriedName();
   }
   
 }

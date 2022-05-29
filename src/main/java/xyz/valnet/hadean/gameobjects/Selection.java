@@ -55,10 +55,13 @@ public class Selection extends GameObject implements IMouseListener {
         }
       }
     }
-    for(ISelectable removeMe : toRemove) {
-      selected.remove(removeMe);
+    if(!toRemove.isEmpty()) {
+      for(ISelectable removeMe : toRemove) {
+        selected.remove(removeMe);
+      }
+      toRemove.clear();
+      broadcastSelectionChanged();
     }
-    toRemove.clear();
   }
 
   @Override

@@ -4,6 +4,7 @@ import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.Layers;
+import xyz.valnet.hadean.Tile;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 
@@ -11,6 +12,7 @@ public class Stockpile extends GameObject implements ITileThing, ISelectable {
 
   private int x, y;
   private Camera camera;
+  private Terrain terrain;
 
   public Stockpile(int x, int y) {
     this.x = x;
@@ -20,6 +22,7 @@ public class Stockpile extends GameObject implements ITileThing, ISelectable {
   @Override
   public void start() {
     camera = get(Camera.class);
+    terrain = get(Terrain.class);
   }
 
   @Override
@@ -60,6 +63,16 @@ public class Stockpile extends GameObject implements ITileThing, ISelectable {
   @Override
   public String details() {
     return "";
+  }
+
+  public Tile getTile() {
+    return terrain.getTile(x, y);
+  }
+
+  @Override
+  public void updatePosition(int x, int y) {
+    this.x = x;
+    this.y = y;
   }
   
 }

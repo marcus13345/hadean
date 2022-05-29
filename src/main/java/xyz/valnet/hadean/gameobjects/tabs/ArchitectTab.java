@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xyz.valnet.hadean.gameobjects.BottomBar;
-import xyz.valnet.hadean.gameobjects.ISelectable;
-import xyz.valnet.hadean.gameobjects.ISelectionChangeListener;
 import xyz.valnet.hadean.gameobjects.Selection;
+import xyz.valnet.hadean.interfaces.ISelectable;
+import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
 import xyz.valnet.hadean.util.Assets;
 
 import static xyz.valnet.engine.util.Math.lerp;

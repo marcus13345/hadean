@@ -1,4 +1,4 @@
-package xyz.valnet.hadean.gameobjects;
+package xyz.valnet.hadean.interfaces;
 
 public interface IBottomBarItem {
   public void evoke();

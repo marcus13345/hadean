@@ -1,4 +1,4 @@
-package xyz.valnet.hadean;
+package xyz.valnet.hadean.util;
 
 public class Layers {
   private static int current = 0;

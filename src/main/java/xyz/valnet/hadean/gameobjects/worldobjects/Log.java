@@ -1,12 +1,16 @@
-package xyz.valnet.hadean.gameobjects;
+package xyz.valnet.hadean.gameobjects.worldobjects;
 
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
-import xyz.valnet.hadean.Layers;
-import xyz.valnet.hadean.Tile;
+import xyz.valnet.hadean.gameobjects.Stockpile;
+import xyz.valnet.hadean.gameobjects.Tile;
+import xyz.valnet.hadean.interfaces.IHaulable;
+import xyz.valnet.hadean.interfaces.ISelectable;
+import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
+import xyz.valnet.hadean.util.Layers;
 
 public class Log extends WorldObject implements ITileThing, ISelectable, IHaulable {
 

@@ -1,4 +1,4 @@
-package xyz.valnet.hadean.gameobjects;
+package xyz.valnet.hadean.gameobjects.worldobjects;
 
 import static org.lwjgl.opengl.GL11.GL_LINES;
 import static org.lwjgl.opengl.GL11.glBegin;
@@ -15,7 +15,14 @@ import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.shaders.SimpleShader;
-import xyz.valnet.hadean.Tile;
+import xyz.valnet.hadean.gameobjects.Camera;
+import xyz.valnet.hadean.gameobjects.Terrain;
+import xyz.valnet.hadean.gameobjects.Tile;
+import xyz.valnet.hadean.interfaces.IHaulable;
+import xyz.valnet.hadean.interfaces.IJob;
+import xyz.valnet.hadean.interfaces.ISelectable;
+import xyz.valnet.hadean.interfaces.ITileThing;
+import xyz.valnet.hadean.interfaces.IWorkable;
 import xyz.valnet.hadean.pathfinding.AStarPathfinder;
 import xyz.valnet.hadean.pathfinding.IPathfinder;
 import xyz.valnet.hadean.pathfinding.Node;
@@ -162,10 +169,6 @@ public class Pawn extends WorldObject implements ISelectable {
       }
     }
 
-  }
-
-  private Tile getTile() {
-    return terrain.getTile((int) x, (int) y);
   }
 
   private Vector2i getCurrentPos() {

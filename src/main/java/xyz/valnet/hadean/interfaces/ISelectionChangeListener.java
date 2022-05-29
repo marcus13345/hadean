@@ -1,4 +1,4 @@
-package xyz.valnet.hadean.gameobjects;
+package xyz.valnet.hadean.interfaces;
 
 import java.util.List;
 

@@ -3,10 +3,10 @@ package xyz.valnet.hadean.scenes;
 import xyz.valnet.engine.App;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.IScene;
-import xyz.valnet.hadean.Layers;
 import xyz.valnet.hadean.input.Button;
 import xyz.valnet.hadean.input.IButtonListener;
 import xyz.valnet.hadean.util.Assets;
+import xyz.valnet.hadean.util.Layers;
 
 import static xyz.valnet.hadean.HadeanGame.Hadean;
 

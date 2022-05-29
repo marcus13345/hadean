@@ -1,4 +1,4 @@
-package xyz.valnet.hadean;
+package xyz.valnet.hadean.gameobjects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,13 +8,12 @@ import xyz.valnet.engine.graphics.Sprite;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
-import xyz.valnet.hadean.gameobjects.Camera;
-import xyz.valnet.hadean.gameobjects.ITileThing;
-import xyz.valnet.hadean.gameobjects.Log;
-import xyz.valnet.hadean.gameobjects.Tree;
+import xyz.valnet.hadean.gameobjects.worldobjects.Log;
+import xyz.valnet.hadean.gameobjects.worldobjects.Tree;
+import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.util.Assets;
+import xyz.valnet.hadean.util.Layers;
 
-// TODO make these tiles REAL gameobjects...
 public class Tile extends GameObject {
 
   private Camera camera;

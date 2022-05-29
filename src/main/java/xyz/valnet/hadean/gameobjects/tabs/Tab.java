@@ -2,7 +2,7 @@ package xyz.valnet.hadean.gameobjects.tabs;
 
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.gameobjects.BottomBar;
-import xyz.valnet.hadean.gameobjects.IBottomBarItem;
+import xyz.valnet.hadean.interfaces.IBottomBarItem;
 
 public abstract class Tab extends GameObject implements IBottomBarItem {
 

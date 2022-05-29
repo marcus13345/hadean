@@ -2,10 +2,12 @@ package xyz.valnet.hadean.gameobjects;
 
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector4f;
-import xyz.valnet.hadean.Layers;
-import xyz.valnet.hadean.Tile;
+import xyz.valnet.hadean.gameobjects.worldobjects.WorldObject;
+import xyz.valnet.hadean.interfaces.ISelectable;
+import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
+import xyz.valnet.hadean.util.Layers;
 
 public class Stockpile extends WorldObject implements ITileThing, ISelectable {
 
@@ -52,10 +54,6 @@ public class Stockpile extends WorldObject implements ITileThing, ISelectable {
   @Override
   public String details() {
     return "";
-  }
-
-  public Tile getTile() {
-    return terrain.getTile((int)x, (int)y);
   }
 
   @Override

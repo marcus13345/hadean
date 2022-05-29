@@ -2,7 +2,6 @@ package xyz.valnet.hadean.gameobjects;
 
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.scenegraph.GameObject;
-import xyz.valnet.hadean.Tile;
 import xyz.valnet.hadean.pathfinding.IPathable;
  
 public class Terrain extends GameObject implements IPathable {

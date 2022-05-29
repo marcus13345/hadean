@@ -23,7 +23,6 @@ public class AStarPathfinder implements IPathfinder {
   }
 
   private Node getPathfindingNode(int x, int y, List<Node> open, List<Node> closed, Node parent, int dstX, int dstY) {
-    // TODO this isnt necessarily the BOUNDS so... think about that.
     if(pathable.isOutOfBounds(x, y)) {
       return null;
     }

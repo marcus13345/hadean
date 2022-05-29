@@ -8,9 +8,8 @@ import xyz.valnet.hadean.Tile;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 
-public class Stockpile extends GameObject implements ITileThing, ISelectable {
+public class Stockpile extends WorldObject implements ITileThing, ISelectable {
 
-  private int x, y;
   private Camera camera;
   private Terrain terrain;
 
@@ -66,7 +65,7 @@ public class Stockpile extends GameObject implements ITileThing, ISelectable {
   }
 
   public Tile getTile() {
-    return terrain.getTile(x, y);
+    return terrain.getTile((int)x, (int)y);
   }
 
   @Override

@@ -29,17 +29,11 @@ import xyz.valnet.hadean.gameobjects.tabs.MenuTab;
 
 public class GameScene extends SceneGraph {
 
-  // generic
-  // private List<IRenderable> renderables = new ArrayList<IRenderable>();
-
-
-  // specific
-
-
-
   @Override
   protected void construct() {
+    
     objects.add(new Terrain());
+
     for(int i = 0; i < 5; i ++) {
       objects.add(new Pawn());
     }
@@ -52,6 +46,4 @@ public class GameScene extends SceneGraph {
     objects.add(new MenuTab());
     
   }
-
-  
 }

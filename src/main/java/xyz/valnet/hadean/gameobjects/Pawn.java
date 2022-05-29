@@ -14,7 +14,6 @@ import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
-import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.shaders.SimpleShader;
 import xyz.valnet.hadean.Tile;
 import xyz.valnet.hadean.pathfinding.AStarPathfinder;
@@ -24,11 +23,9 @@ import xyz.valnet.hadean.pathfinding.Path;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 
-public class Pawn extends GameObject implements ISelectable {
+public class Pawn extends WorldObject implements ISelectable {
 
   private IHaulable carrying = null;
-
-  private float x = 0.5f + (int)(Math.random() * Terrain.WORLD_SIZE), y = 0.5f + (int)(Math.random() * Terrain.WORLD_SIZE);
 
   private float counter = 0;
 
@@ -47,6 +44,8 @@ public class Pawn extends GameObject implements ISelectable {
     camera = get(Camera.class);
     terrain = get(Terrain.class);
     pathfinder = new AStarPathfinder(terrain);
+    x = 0.5f + (int)(Math.random() * Terrain.WORLD_SIZE);
+    y = 0.5f + (int)(Math.random() * Terrain.WORLD_SIZE);
   }
 
   @Override

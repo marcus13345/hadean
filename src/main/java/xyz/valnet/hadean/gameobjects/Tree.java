@@ -3,12 +3,11 @@ package xyz.valnet.hadean.gameobjects;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
-import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.Layers;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 
-public class Tree extends GameObject implements ITileThing, ISelectable, IWorkable {
+public class Tree extends WorldObject implements ITileThing, ISelectable, IWorkable {
   private Camera camera;
 
   private boolean chopFlag = false;

@@ -3,18 +3,15 @@ package xyz.valnet.hadean.gameobjects;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
-import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.Layers;
 import xyz.valnet.hadean.Tile;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 
-public class Log extends GameObject implements ITileThing, ISelectable, IHaulable {
+public class Log extends WorldObject implements ITileThing, ISelectable, IHaulable {
 
   private Camera camera;
   private Terrain terrain;
-
-  private int x, y;
 
   private boolean haul = false;
 
@@ -86,22 +83,22 @@ public class Log extends GameObject implements ITileThing, ISelectable, IHaulabl
   @Override
   public Vector2i[] getWorablePositions() {
     return new Vector2i[] {
-      new Vector2i(x + 1, y),
-      new Vector2i(x - 1, y),
-      new Vector2i(x, y + 1),
-      new Vector2i(x, y - 1)
+      new Vector2i((int)x + 1, (int)y),
+      new Vector2i((int)x - 1, (int)y),
+      new Vector2i((int)x, (int)y + 1),
+      new Vector2i((int)x, (int)y - 1)
     };
   }
 
   @Override
   public Vector2i getLocation() {
-    return new Vector2i(x, y);
+    return new Vector2i((int)x, (int)y);
   }
 
   @Override
   public Log take() {
     haul = false;
-    Tile tile = terrain.getTile(x, y);
+    Tile tile = terrain.getTile((int)x, (int)y);
     tile.remove(this);
     return this;
   }

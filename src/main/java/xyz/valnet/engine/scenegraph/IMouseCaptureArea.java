@@ -1,8 +1,8 @@
-package xyz.valnet.hadean.input;
+package xyz.valnet.engine.scenegraph;
 
 import xyz.valnet.engine.math.Vector4f;
 
-public interface IMouseListener {
+public interface IMouseCaptureArea {
   public void mouseEnter();
   public void mouseLeave();
   public boolean mouseDown(int button);

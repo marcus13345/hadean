@@ -3,9 +3,10 @@ package xyz.valnet.hadean.input;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
+import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.hadean.util.Assets;
 
-public class GOButton extends GameObject implements IMouseListener {
+public class GOButton extends GameObject implements IMouseCaptureArea {
 
   private boolean hovered = false;
   public int layer = 1;

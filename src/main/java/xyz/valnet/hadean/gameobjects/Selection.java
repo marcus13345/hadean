@@ -8,13 +8,13 @@ import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
+import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.hadean.Layers;
-import xyz.valnet.hadean.input.IMouseListener;
 import xyz.valnet.hadean.util.Assets;
 
 import static xyz.valnet.engine.util.Math.lerp;
 
-public class Selection extends GameObject implements IMouseListener {
+public class Selection extends GameObject implements IMouseCaptureArea {
 
   public Vector2f initialCoords;
   private Camera camera;

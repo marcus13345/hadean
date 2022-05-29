@@ -7,9 +7,10 @@ import xyz.valnet.engine.graphics.Tile9;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.scenegraph.GameObject;
+import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.hadean.util.Assets;
 
-public class Button extends GameObject implements IMouseListener {
+public class Button extends GameObject implements IMouseCaptureArea {
 
   private int x, y, width, height;
   private String text;

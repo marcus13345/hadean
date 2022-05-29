@@ -2,12 +2,10 @@ package xyz.valnet.engine.scenegraph;
 
 import java.util.List;
 
-import xyz.valnet.hadean.scenes.GameScene;
-
 public class GameObject implements IRenderable, ITickable {
-  private GameScene scene;
+  private SceneGraph scene;
 
-  public void link(GameScene scene) {
+  public void link(SceneGraph scene) {
     this.scene = scene;
   }
 

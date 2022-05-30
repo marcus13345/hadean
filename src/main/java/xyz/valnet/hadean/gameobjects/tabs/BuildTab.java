@@ -7,6 +7,7 @@ import java.util.List;
 
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector4f;
+import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.hadean.gameobjects.BottomBar;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.Stockpile;
@@ -21,7 +22,7 @@ import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.SmartBoolean;
 
-public class BuildTab extends Tab implements ISelectionChangeListener {
+public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCaptureArea {
   
   private Selection selection;
   private BuildLayer buildLayer;
@@ -123,5 +124,28 @@ public class BuildTab extends Tab implements ISelectionChangeListener {
   @Override
   public String getTabName() {
     return "Build";
+  }
+
+  @Override
+  public void mouseEnter() {}
+
+  @Override
+  public void mouseLeave() {}
+
+  @Override
+  public void mouseDown(int button) {}
+
+  @Override
+  public void mouseUp(int button) {}
+
+  @Override
+  public Vector4f getBox() {
+    float left = lerp(-width - padding, padding, progress);
+    return new Vector4f((int) left, padding, (int) width, 576 - padding * 2 - BottomBar.bottomBarHeight);
+  }
+
+  @Override
+  public int getLayer() {
+    return Layers.GENERAL_UI;
   }
 }

@@ -11,6 +11,8 @@ import xyz.valnet.hadean.util.Layers;
 
 public class BuildLayer extends GameObject implements IMouseCaptureArea {
 
+  private boolean hovered = false;
+
   private Camera camera;
 
   private boolean active = false;
@@ -46,14 +48,12 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea {
 
   @Override
   public void mouseEnter() {
-    // TODO Auto-generated method stub
-    
+    hovered = true;
   }
 
   @Override
   public void mouseLeave() {
-    // TODO Auto-generated method stub
-    
+    hovered = false;
   }
 
   private float x, y;
@@ -61,10 +61,10 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea {
 
   @Override
   public void mouseDown(int button) {
-    if(button == 1 && active) {
+    if(button == 1 && active && hovered) {
       listener.cancel();
       deactiveate();
-    } else if(button == 0 && active) {
+    } else if(button == 0 && active && hovered) {
       Vector2f worldcoords = camera.screen2world(App.mouseX, App.mouseY);
       mouseDown = true;
       x = worldcoords.x;

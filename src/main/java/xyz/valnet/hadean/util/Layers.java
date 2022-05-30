@@ -13,6 +13,7 @@ public class Layers {
   public static final int MARKERS = current ++;
   public static final int SELECTION_IDENTIFIERS = current ++;
   public static final int AREA_SELECT_BOX = current ++;
+  public static final int BUILD_INTERACTABLE = current ++;
   public static final int GENERAL_UI = current ++;
   public static final int GENERAL_UI_INTERACTABLE = current ++;
   public static final int BOTTOM_BAR = current ++;

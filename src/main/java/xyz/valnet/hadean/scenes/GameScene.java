@@ -3,10 +3,13 @@ package xyz.valnet.hadean.scenes;
 import xyz.valnet.engine.scenegraph.SceneGraph;
 import xyz.valnet.hadean.gameobjects.BottomBar;
 import xyz.valnet.hadean.gameobjects.Camera;
-import xyz.valnet.hadean.gameobjects.Selection;
+import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.gameobjects.SelectionUI;
 import xyz.valnet.hadean.gameobjects.Terrain;
-import xyz.valnet.hadean.gameobjects.tabs.ArchitectTab;
+import xyz.valnet.hadean.gameobjects.inputlayer.BuildLayer;
+import xyz.valnet.hadean.gameobjects.inputlayer.Selection;
+import xyz.valnet.hadean.gameobjects.tabs.BuildTab;
+import xyz.valnet.hadean.gameobjects.tabs.JobBoardTab;
 import xyz.valnet.hadean.gameobjects.tabs.MenuTab;
 import xyz.valnet.hadean.gameobjects.worldobjects.Pawn;
 
@@ -26,6 +29,7 @@ public class GameScene extends SceneGraph {
     
     objects.add(new Terrain());
     objects.add(new Camera());
+    objects.add(new JobBoard());
 
     for(int i = 0; i < 5; i ++) {
       objects.add(new Pawn());
@@ -34,8 +38,11 @@ public class GameScene extends SceneGraph {
     objects.add(new Selection());
     objects.add(new SelectionUI());
 
+    objects.add(new BuildLayer());
+
     objects.add(new BottomBar());
-    objects.add(new ArchitectTab());
+    objects.add(new BuildTab());
+    objects.add(new JobBoardTab());
     objects.add(new MenuTab());
     
   }

@@ -23,10 +23,10 @@ public class Terrain extends GameObject implements IPathable {
       }
     }
 
-    Tile randomTile = getRandomTile();
-    Vector2i coords = randomTile.getCoords();
-    Stockpile stockpile = new Stockpile(coords.x, coords.y);
-    randomTile.placeThing(stockpile);
+    // Tile randomTile = getRandomTile();
+    // Vector2i coords = randomTile.getCoords();
+    // Stockpile stockpile = new Stockpile(coords.x, coords.y);
+    // randomTile.placeThing(stockpile);
 
     camera = get(Camera.class);
     camera.focus(WORLD_SIZE / 2, WORLD_SIZE / 2);

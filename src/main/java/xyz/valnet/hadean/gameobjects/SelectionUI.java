@@ -7,6 +7,7 @@ import java.util.List;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
+import xyz.valnet.hadean.gameobjects.inputlayer.Selection;
 import xyz.valnet.hadean.input.Button;
 import xyz.valnet.hadean.input.IButtonListener;
 import xyz.valnet.hadean.input.SimpleButton;
@@ -181,8 +182,8 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
   }
 
   @Override
-  public boolean mouseDown(int button) {
-    return false;
+  public void mouseDown(int button) {
+    return;
   }
 
   @Override

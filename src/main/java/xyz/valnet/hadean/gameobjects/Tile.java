@@ -37,17 +37,17 @@ public class Tile extends GameObject {
   public void start() {
     camera = get(Camera.class);
 
-    if(Math.random() > 0.99) {
+    if(Math.random() > 0.97) {
       Tree tree = new Tree(x, y);
       stuff.add(tree);
       add(tree);
     }
 
-    if(Math.random() > 0.98) {
-      Log log = new Log(x, y);
-      stuff.add(log);
-      add(log);
-    }
+    // if(Math.random() > 0.98) {
+    //   Log log = new Log(x, y);
+    //   stuff.add(log);
+    //   add(log);
+    // }
   }
 
   public void placeThing(ITileThing thing) {

@@ -21,14 +21,33 @@ worker knows it can move on to another action.
 A Worker may also tell a job board, that it no longer
 wishes to do work, and the job will be released.
 
-# IMouseCaptureArea
-
-its just a name, but reframe current mouse shit to it.
-
-# Create class for x/y positioned things.
-
-can be STUPID SIMPLE TO START
-
 # Convert ITileThing to class
 
-getTile() needs to be a common method.
+Think about these words and what they mean
+
+Tile
+TileThing
+Entity
+Item
+
+# Mouse up / down bubbling
+
+the events should still go through all layers,
+and be allowed to be handled by any layer, if
+that layer syas its handled.
+
+problem: unknown operating order of right click
+opening / closing the build panel. and its state
+is controlled from 2 places.
+
+the build layer can cancel and cause the panel
+to close, but also the tab should be able to hook
+into global mouse events for re-opening the panel.
+
+opening has to be done from the build tab, because
+it is the thing that activates the build layer.
+
+consequence is that without proper care a single
+event could immediately open & close the panel in
+the same frame. so, the event should be able to
+be captured and cease propogation.

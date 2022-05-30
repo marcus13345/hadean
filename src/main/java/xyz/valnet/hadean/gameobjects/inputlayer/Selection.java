@@ -1,4 +1,4 @@
-package xyz.valnet.hadean.gameobjects;
+package xyz.valnet.hadean.gameobjects.inputlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
+import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
 import xyz.valnet.hadean.util.Assets;
@@ -170,14 +171,14 @@ public class Selection extends GameObject implements IMouseCaptureArea {
   }
 
   @Override
-  public boolean mouseDown(int button) {
-    if(!active) return false;
+  public void mouseDown(int button) {
+    if(!active) return;
+    
     if(button == 0) {
       if(initialCoords == null) {
         initialCoords = new Vector2f(App.mouseX, App.mouseY);
       }
     }
-    return false;
   }
 
   @Override

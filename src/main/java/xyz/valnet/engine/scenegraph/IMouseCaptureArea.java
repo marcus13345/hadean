@@ -5,7 +5,7 @@ import xyz.valnet.engine.math.Vector4f;
 public interface IMouseCaptureArea {
   public void mouseEnter();
   public void mouseLeave();
-  public boolean mouseDown(int button);
+  public void mouseDown(int button);
   public void mouseUp(int button);
 
   public Vector4f getBox();

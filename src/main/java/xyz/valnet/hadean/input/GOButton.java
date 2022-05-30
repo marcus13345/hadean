@@ -42,8 +42,8 @@ public class GOButton extends GameObject implements IMouseCaptureArea {
   }
 
   @Override
-  public boolean mouseDown(int button) {
-    return false;
+  public void mouseDown(int button) {
+    
   }
 
   @Override

@@ -108,5 +108,10 @@ public class Log extends WorldObject implements ITileThing, ISelectable, IHaulab
     this.x = x;
     this.y = y;
   }
+
+  @Override
+  public String getName() {
+    return "Haul Log";
+  }
   
 }

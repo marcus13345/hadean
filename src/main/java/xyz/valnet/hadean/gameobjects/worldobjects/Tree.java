@@ -3,6 +3,7 @@ package xyz.valnet.hadean.gameobjects.worldobjects;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
+import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.interfaces.IWorkable;
@@ -11,6 +12,9 @@ import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 
 public class Tree extends WorldObject implements ITileThing, ISelectable, IWorkable {
+
+  private static int counter = 0;
+  private String name = "Tree " + (++ counter);
 
   private boolean chopFlag = false;
   
@@ -56,6 +60,11 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   public void runAction(Action action) {
     if(action == ACTION_CHOP) {
       chopFlag = !chopFlag;
+      if(chopFlag) {
+        get(JobBoard.class).postJob(this);
+      } else {
+        get(JobBoard.class).rescindJob(this);
+      }
     }
   }
 
@@ -75,7 +84,7 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   }
 
   protected float choppage = 0;
-  protected int strength = 5000;
+  protected int strength = 300;
 
   private float getProgress() {
     return (choppage / (float) strength);
@@ -88,7 +97,8 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
 
   @Override
   public String details() {
-    return "Chop Flag | " + chopFlag + "\n" +
+    return "" + name + "\n" +
+           "Chop Flag | " + chopFlag + "\n" +
            "Progress  | " + (String.format("%.2f", getProgress() * 100)) + "%";
   }
 
@@ -124,5 +134,10 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   public void updatePosition(int x, int y) {
     this.x = x;
     this.y = y;
+  }
+
+  @Override
+  public String getName() {
+    return "Chop " + name;
   }
 }

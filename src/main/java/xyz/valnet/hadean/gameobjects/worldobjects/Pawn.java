@@ -7,15 +7,12 @@ import static org.lwjgl.opengl.GL11.glVertex3f;
 import static org.lwjgl.opengl.GL20.glVertexAttrib2f;
 import static xyz.valnet.engine.util.Math.lerp;
 
-import java.util.Comparator;
-import java.util.List;
-
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.shaders.SimpleShader;
-import xyz.valnet.hadean.gameobjects.Camera;
+import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.gameobjects.Terrain;
 import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.interfaces.IHaulable;
@@ -23,6 +20,7 @@ import xyz.valnet.hadean.interfaces.IJob;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.interfaces.IWorkable;
+import xyz.valnet.hadean.interfaces.IWorker;
 import xyz.valnet.hadean.pathfinding.AStarPathfinder;
 import xyz.valnet.hadean.pathfinding.IPathfinder;
 import xyz.valnet.hadean.pathfinding.Node;
@@ -30,7 +28,13 @@ import xyz.valnet.hadean.pathfinding.Path;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 
-public class Pawn extends WorldObject implements ISelectable {
+public class Pawn extends WorldObject implements ISelectable, IWorker {
+
+  private static int count = 0;
+  private String name = "Pawn " + (++ count);
+
+  private JobBoard jobboard;
+  private IPathfinder pathfinder;
 
   private IHaulable carrying = null;
 
@@ -40,19 +44,15 @@ public class Pawn extends WorldObject implements ISelectable {
 
   private final float invocationThreshold = 100 + (float)(Math.random() * 50);
 
-  private Camera camera;
-  private Terrain terrain;
-  private IPathfinder pathfinder;
-
   private boolean debug = false;
 
   @Override
   public void start() {
-    camera = get(Camera.class);
-    terrain = get(Terrain.class);
+    super.start();
+    jobboard = get(JobBoard.class);
     pathfinder = new AStarPathfinder(terrain);
-    x = 0.5f + (int)(Math.random() * Terrain.WORLD_SIZE);
-    y = 0.5f + (int)(Math.random() * Terrain.WORLD_SIZE);
+    x = 0.5f + (int) (Math.random() * Terrain.WORLD_SIZE);
+    y = 0.5f + (int) (Math.random() * Terrain.WORLD_SIZE);
   }
 
   @Override
@@ -118,6 +118,8 @@ public class Pawn extends WorldObject implements ISelectable {
   @Override
   public void update(float dTime) {
 
+    IJob currentJob = jobboard.getJob(this);
+
     // cleanup current job...
     if(currentJob != null && !currentJob.hasWork()) {
       currentJob = null;
@@ -128,6 +130,7 @@ public class Pawn extends WorldObject implements ISelectable {
       // and its a frame to try and get one...
       if(counter == 0) {
         tryStartWork();
+        currentJob = jobboard.getJob(this);
       }
       
       // if we still dont have a job, try path to wander.
@@ -175,37 +178,8 @@ public class Pawn extends WorldObject implements ISelectable {
     return new Vector2i((int)Math.floor(x), (int)Math.floor(y));
   }
 
-  private IJob currentJob;
-
   private void tryStartWork() {
-    List<IJob> workables = getAll(IJob.class)
-      .stream()
-      .filter(workable -> workable.hasWork())
-      .sorted(new Comparator<IJob>() {
-        @Override
-        public int compare(IJob a, IJob b) {
-          float distA = a.getLocation().distanceTo((int)x, (int)y);
-          float distB = b.getLocation().distanceTo((int)x, (int)y);
-          if(distA > distB) return -1;
-          if(distB > distA) return 1;
-          return 0;
-        }
-      })
-      .toList();
-
-    if(workables.size() > 0) {
-      for(IJob job : workables) {
-        if(!job.hasWork()) continue;
-        Vector2i[] workablePositions = job.getWorablePositions();
-        Path bestPathToJob = pathfinder.getBestPath(
-          new Vector2i((int)Math.floor(x), (int)Math.floor(y)),
-          workablePositions
-        );
-        if(bestPathToJob == null) continue;
-        this.path = bestPathToJob;
-        currentJob = job;
-      }
-    }
+    jobboard.requestJob(this);
   }
 
   private void newPath() {
@@ -304,7 +278,30 @@ public class Pawn extends WorldObject implements ISelectable {
 
   @Override
   public String details() {
-    return "Held | " + getCarriedName();
+    return "" + name + "\n" +
+           "Held | " + getCarriedName() + "\n" + 
+           "Job  | " + jobboard.getJob(this).getName() + "\n" +
+           "";
+  }
+
+  @Override
+  public Vector2f getLocation() {
+    return new Vector2f(x, y);
+  }
+
+  @Override
+  public IPathfinder getPathfinder() {
+    return pathfinder;
+  }
+
+  @Override
+  public void setPath(Path path) {
+    this.path = path;
+  }
+
+  @Override
+  public String getName() {
+    return name;
   }
   
 }

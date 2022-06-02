@@ -6,5 +6,5 @@ public interface IJob {
   public boolean hasWork();
   public Vector2i[] getWorablePositions();
   public Vector2i getLocation();
-  public String getName();
+  public String getJobName();
 }

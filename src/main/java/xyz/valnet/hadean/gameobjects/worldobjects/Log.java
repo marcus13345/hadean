@@ -134,7 +134,7 @@ public class Log extends WorldObject implements ITileThing, ISelectable, IHaulab
   }
 
   @Override
-  public String getName() {
+  public String getJobName() {
     return "Haul Log";
   }
   

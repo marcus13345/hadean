@@ -279,7 +279,7 @@ public class Pawn extends WorldObject implements ISelectable, IWorker {
   @Override
   public String details() {
     IJob currentJob = jobboard.getJob(this);
-    String jobString = currentJob == null ? "No Job" : currentJob.getName();
+    String jobString = currentJob == null ? "No Job" : currentJob.getJobName();
     return "" + name + "\n" +
            "Held | " + getCarriedName() + "\n" + 
            "Job  | " + jobString + "\n" +

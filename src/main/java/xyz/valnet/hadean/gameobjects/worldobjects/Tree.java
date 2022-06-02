@@ -137,7 +137,7 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   }
 
   @Override
-  public String getName() {
+  public String getJobName() {
     return "Chop " + name;
   }
 }

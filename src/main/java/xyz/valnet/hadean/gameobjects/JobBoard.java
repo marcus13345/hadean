@@ -124,11 +124,11 @@ public class JobBoard extends GameObject {
     String availableJobsString = "";
 
     for(Entry<IWorker, IJob> allocation : allocations.entrySet()) {
-      takenJobsString += "  " + allocation.getKey().getName() + ": " + allocation.getValue().getName() + "\n";
+      takenJobsString += "  " + allocation.getKey().getName() + ": " + allocation.getValue().getJobName() + "\n";
     }
     
     for(IJob job : availableJobs) {
-      availableJobsString += "  " + job.getName() + "\n";
+      availableJobsString += "  " + job.getJobName() + "\n";
     }
 
     return "Available Jobs: " + availableJobs.size() + "\n" + availableJobsString +

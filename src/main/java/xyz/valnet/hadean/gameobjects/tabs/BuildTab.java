@@ -10,10 +10,10 @@ import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.hadean.gameobjects.BottomBar;
 import xyz.valnet.hadean.gameobjects.Camera;
-import xyz.valnet.hadean.gameobjects.Stockpile;
 import xyz.valnet.hadean.gameobjects.Terrain;
 import xyz.valnet.hadean.gameobjects.inputlayer.BuildLayer;
 import xyz.valnet.hadean.gameobjects.inputlayer.Selection;
+import xyz.valnet.hadean.gameobjects.worldobjects.FarmPlot;
 import xyz.valnet.hadean.interfaces.IBuildLayerListener;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
@@ -71,8 +71,8 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
       public void select(float nx, float ny, float nw, float nh) {
         x = (int)Math.floor(nx);
         y = (int)Math.floor(ny);
-        ITileThing stockpile = new Stockpile(x, y);
-        terrain.getTile(x, y).placeThing(stockpile);
+        ITileThing thing = new FarmPlot(x, y);
+        terrain.getTile(x, y).placeThing(thing);
         opened.set(false);
       }
 

@@ -166,7 +166,7 @@ public class Selection extends GameObject implements IMouseCaptureArea {
   }
 
   @Override
-  public int getLayer() {
+  public float getLayer() {
     return 0;
   }
 

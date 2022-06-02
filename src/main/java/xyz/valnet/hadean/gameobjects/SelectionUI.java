@@ -198,7 +198,7 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
   }
 
   @Override
-  public int getLayer() {
+  public float getLayer() {
     return Layers.GENERAL_UI;
   }
 }

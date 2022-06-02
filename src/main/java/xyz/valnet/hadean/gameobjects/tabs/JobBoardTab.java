@@ -7,10 +7,7 @@ import java.util.List;
 
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.hadean.gameobjects.BottomBar;
-import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.JobBoard;
-import xyz.valnet.hadean.gameobjects.Terrain;
-import xyz.valnet.hadean.gameobjects.inputlayer.BuildLayer;
 import xyz.valnet.hadean.gameobjects.inputlayer.Selection;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
@@ -28,8 +25,6 @@ public class JobBoardTab extends Tab implements ISelectionChangeListener {
   private float width = 200;
 
   private int padding = 10;
-
-  private int x, y;
 
   @Override
   public void render() {

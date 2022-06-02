@@ -3,7 +3,9 @@ package xyz.valnet.hadean.gameobjects;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.graphics.Sprite;
 import xyz.valnet.engine.math.Vector2f;
+import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
+import xyz.valnet.hadean.interfaces.IWorldBoundsAdapter;
 
 public class Camera extends GameObject {
 
@@ -12,6 +14,16 @@ public class Camera extends GameObject {
   private int screenWidth = 1024, screenHeight = 576;
 
   private Vector2f focus = new Vector2f(0, 0);
+
+  private float minY, maxY;
+
+  @Override
+  public void start() {
+    IWorldBoundsAdapter worldBoundsAdapter = get(IWorldBoundsAdapter.class);
+    Vector4f bounds = worldBoundsAdapter.getWorldBounds();
+    minY = bounds.y;
+    maxY = bounds.w;
+  }
 
   public void focus(float x, float y) {
     this.focus.x = x;
@@ -26,13 +38,25 @@ public class Camera extends GameObject {
     return new Vector2f((x - screenWidth / 2 + focus.x * tileWidth) / tileWidth, (y - screenHeight / 2 + focus.y * tileWidth) / tileWidth);
   }
 
+  @Deprecated
   public void draw(Sprite sprite, float x, float y) {
     Vector2f screenPos = world2screen(x, y);
     Drawing.drawSprite(sprite, (int)(screenPos.x), (int)(screenPos.y), tileWidth, tileWidth);
   }
 
+  @Deprecated
   public void draw(Sprite sprite, float x, float y, float w, float h) {
     Vector2f screenPos = world2screen(x, y);
+    Drawing.drawSprite(sprite, (int)(screenPos.x), (int)(screenPos.y), (int)(tileWidth * w), (int)(tileWidth * h));
+  }
+
+  public void draw(float layer, Sprite sprite, float x, float y) {
+    draw(layer, sprite, x, y, 1, 1);
+  }
+
+  public void draw(float layer, Sprite sprite, float x, float y, float w, float h) {
+    Vector2f screenPos = world2screen(x, y);
+    Drawing.setLayer(layer + (((y + h) - minY) / (maxY - minY)));
     Drawing.drawSprite(sprite, (int)(screenPos.x), (int)(screenPos.y), (int)(tileWidth * w), (int)(tileWidth * h));
   }
   

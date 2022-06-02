@@ -95,7 +95,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea {
   }
 
   @Override
-  public int getLayer() {
+  public float getLayer() {
     return Layers.BUILD_INTERACTABLE;
   }
   

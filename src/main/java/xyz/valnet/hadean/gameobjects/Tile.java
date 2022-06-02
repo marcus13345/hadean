@@ -3,12 +3,10 @@ package xyz.valnet.hadean.gameobjects;
 import java.util.ArrayList;
 import java.util.List;
 
-import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.graphics.Sprite;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
-import xyz.valnet.hadean.gameobjects.worldobjects.Log;
 import xyz.valnet.hadean.gameobjects.worldobjects.Tree;
 import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.util.Assets;
@@ -37,7 +35,7 @@ public class Tile extends GameObject {
   public void start() {
     camera = get(Camera.class);
 
-    if(Math.random() > 0.97) {
+    if(Math.random() > 0.9) {
       Tree tree = new Tree(x, y);
       stuff.add(tree);
       add(tree);
@@ -77,9 +75,8 @@ public class Tile extends GameObject {
 
   @Override
   public void render() {
-    Drawing.setLayer(Layers.TILES);
     Assets.flat.pushColor(color);
-    camera.draw(sprite, x, y);
+    camera.draw(Layers.TILES, sprite, x, y);
     Assets.flat.popColor();
   }
 

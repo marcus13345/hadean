@@ -1,6 +1,5 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
-import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.JobBoard;
@@ -47,11 +46,9 @@ public class Log extends WorldObject implements ITileThing, ISelectable, IHaulab
 
   @Override
   public void render() {
-    Drawing.setLayer(Layers.GROUND);
-    camera.draw(Assets.log, x, y);
+    camera.draw(Layers.GROUND, Assets.log, x, y);
     if(haul.value()) {
-      Drawing.setLayer(Layers.MARKERS);
-      camera.draw(Assets.haulArrow, x, y);
+      camera.draw(Layers.MARKERS, Assets.haulArrow, x, y);
     }
   }
 

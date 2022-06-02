@@ -44,10 +44,9 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
     Assets.uiFrame.draw((int) left, padding, (int) width, 576 - padding * 2 - BottomBar.bottomBarHeight);
 
     if(opened.value()) {
-      Drawing.setLayer(Layers.BUILD_INTERACTABLE);
       // draw the currently selected build item
       Assets.flat.pushColor(new Vector4f(1f, 1f, 1f, 0.8f));
-      camera.draw(Assets.stockpile, x, y);
+      camera.draw(Layers.BUILD_INTERACTABLE, Assets.stockpile, x, y);
       Assets.flat.popColor();
     }
   }
@@ -145,7 +144,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
   }
 
   @Override
-  public int getLayer() {
+  public float getLayer() {
     return Layers.GENERAL_UI;
   }
 }

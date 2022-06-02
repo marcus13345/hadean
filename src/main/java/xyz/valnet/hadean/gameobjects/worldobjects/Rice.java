@@ -1,19 +1,12 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
-import xyz.valnet.engine.graphics.Drawing;
-import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.JobBoard;
-import xyz.valnet.hadean.gameobjects.Stockpile;
-import xyz.valnet.hadean.gameobjects.Tile;
-import xyz.valnet.hadean.interfaces.IHaulable;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
-import xyz.valnet.hadean.util.SmartBoolean;
-import xyz.valnet.hadean.util.SmartBoolean.IListener;
 
 public class Rice extends WorldObject implements ITileThing, ISelectable {
 
@@ -47,8 +40,7 @@ public class Rice extends WorldObject implements ITileThing, ISelectable {
 
   @Override
   public void render() {
-    Drawing.setLayer(Layers.AIR);
-    camera.draw(Assets.riceBag, x, y);
+    camera.draw(Layers.AIR, Assets.riceBag, x, y);
   }
 
   @Override

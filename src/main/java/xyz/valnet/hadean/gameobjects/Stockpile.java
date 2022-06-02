@@ -1,6 +1,5 @@
 package xyz.valnet.hadean.gameobjects;
 
-import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.worldobjects.WorldObject;
 import xyz.valnet.hadean.interfaces.ISelectable;
@@ -24,8 +23,7 @@ public class Stockpile extends WorldObject implements ITileThing, ISelectable {
 
   @Override
   public void render() {
-    Drawing.setLayer(Layers.GROUND);
-    camera.draw(Assets.stockpile, x, y);
+    camera.draw(Layers.GROUND, Assets.stockpile, x, y);
   }
 
   @Override

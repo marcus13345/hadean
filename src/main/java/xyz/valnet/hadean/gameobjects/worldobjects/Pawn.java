@@ -7,7 +7,6 @@ import static org.lwjgl.opengl.GL11.glVertex3f;
 import static org.lwjgl.opengl.GL20.glVertexAttrib2f;
 import static xyz.valnet.engine.util.Math.lerp;
 
-import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
@@ -27,6 +26,7 @@ import xyz.valnet.hadean.pathfinding.Node;
 import xyz.valnet.hadean.pathfinding.Path;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
+import xyz.valnet.hadean.util.Layers;
 
 public class Pawn extends WorldObject implements ISelectable, IWorker {
 
@@ -77,13 +77,11 @@ public class Pawn extends WorldObject implements ISelectable, IWorker {
 
   @Override
   public void render() {
-    
-    Drawing.setLayer(3f);
 
     if(path != null && !path.isComplete()) {
       Node next = path.peek();
       float t = counter / invocationThreshold;
-      camera.draw(Assets.pawn, lerp(x - 0.5f, next.x, t), lerp(y - 0.5f, next.y, t));
+      camera.draw(Layers.PAWNS, Assets.pawn, lerp(x - 0.5f, next.x, t), lerp(y - 0.5f, next.y, t));
       
       if(path != null && debug) {
         for(Node node : path) {
@@ -102,7 +100,7 @@ public class Pawn extends WorldObject implements ISelectable, IWorker {
         }
       }
     } else {
-      camera.draw(Assets.pawn, x - 0.5f, y - 0.5f);
+      camera.draw(Layers.PAWNS, Assets.pawn, x - 0.5f, y - 0.5f);
     }
     
     // Drawing.setLayer(0.1f);

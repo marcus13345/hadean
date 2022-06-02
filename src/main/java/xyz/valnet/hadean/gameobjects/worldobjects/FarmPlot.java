@@ -1,6 +1,5 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
-import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.JobBoard;
@@ -30,15 +29,13 @@ public class FarmPlot extends WorldObject implements IWorkable, ISelectable, ITi
 
   @Override
   public void render() {
-    Drawing.setLayer(Layers.GROUND);
-    camera.draw(Assets.farmPlot, x, y);
+    camera.draw(Layers.GROUND, Assets.farmPlot, x, y);
 
     if(planted) {
       if(stage > 1) {
-        Drawing.setLayer(Layers.AIR);
-        camera.draw(Assets.growingRice[stage], x, y - 1, 1, 2);
+        camera.draw(Layers.AIR, Assets.growingRice[stage], x, y - 1, 1, 2);
       } else {
-        camera.draw(Assets.growingRice[stage], x, y);
+        camera.draw(Layers.AIR, Assets.growingRice[stage], x, y);
       }
     }
   }

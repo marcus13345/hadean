@@ -1,6 +1,5 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
-import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.JobBoard;
@@ -28,12 +27,10 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   @Override
   public void render() {
     Assets.flat.pushColor(new Vector4f(1 - getProgress(), 1 - getProgress(), 1 - getProgress(), 1.0f));
-    Drawing.setLayer(Layers.AIR);
-    camera.draw(Assets.tree, x - 1, y - 2, 3, 3);
+    camera.draw(Layers.AIR, Assets.tree, x - 1, y - 2, 3, 3);
     Assets.flat.popColor();
     if(hasWork()) {
-      Drawing.setLayer(Layers.MARKERS);
-      camera.draw(Assets.lilAxe, x, y);
+      camera.draw(Layers.MARKERS, Assets.lilAxe, x, y);
     }
   }
 

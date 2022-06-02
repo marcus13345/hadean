@@ -26,9 +26,9 @@ public class Button extends GameObject implements IMouseCaptureArea {
   protected float activeVPad = 0.1f;
   protected float activeHPad = 0.0f;
 
-  protected int layer;
+  protected float layer;
 
-  public Button(Tile9 frame, String text, int x, int y, int w, int h, int l) {
+  public Button(Tile9 frame, String text, int x, int y, int w, int h, float l) {
     this.x = x;
     this.y = y;
     width = w;
@@ -188,7 +188,7 @@ public class Button extends GameObject implements IMouseCaptureArea {
   }
 
   @Override
-  public int getLayer() {
+  public float getLayer() {
     return layer;
   }
 }

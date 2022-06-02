@@ -67,8 +67,8 @@ public abstract class SceneGraph implements IScene {
     mouseListeners.sort(new Comparator<IMouseCaptureArea>() {
       @Override
       public int compare(IMouseCaptureArea a, IMouseCaptureArea b) {
-        int al = a.getLayer();
-        int bl = b.getLayer();
+        float al = a.getLayer();
+        float bl = b.getLayer();
         return al < bl ? 1 : bl < al ? -1 : 0;
       }
     });

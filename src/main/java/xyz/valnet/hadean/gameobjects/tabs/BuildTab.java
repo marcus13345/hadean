@@ -67,11 +67,17 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
       }
 
       @Override
-      public void select(float nx, float ny, float nw, float nh) {
-        x = (int)Math.floor(nx);
-        y = (int)Math.floor(ny);
-        ITileThing thing = new FarmPlot(x, y);
-        terrain.getTile(x, y).placeThing(thing);
+      public void select(float x1, float y1, float x2, float y2) {
+        int ix1 = (int)Math.floor(x1);
+        int iy1 = (int)Math.floor(y1);
+        int ix2 = (int)Math.floor(x2);
+        int iy2 = (int)Math.floor(y2);
+        for(int x = ix1; x <= ix2; x ++) {
+          for(int y = iy1; y <= iy2; y ++) {
+            ITileThing thing = new FarmPlot(x, y);
+            terrain.getTile(x, y).placeThing(thing);
+          }
+        }
         opened.set(false);
       }
 

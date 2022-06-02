@@ -136,6 +136,7 @@ public class App {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);
     glDepthMask(true);
+    glfwSwapInterval(1);
 
     game.start();
   }

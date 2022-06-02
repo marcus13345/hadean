@@ -7,6 +7,7 @@ import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.interfaces.IBuildLayerListener;
+import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 
 public class BuildLayer extends GameObject implements IMouseCaptureArea {
@@ -28,6 +29,14 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea {
   public void update(float dTime) {
     if(listener == null) return;
     broadcastWorldCoords();
+  }
+
+  @Override
+  public void render() {
+    if(mouseDown && active) {
+      Assets.selectionFrame.draw(screenX, screenY, App.mouseX - screenX, App.mouseY - screenY);
+      camera.screen2world(App.mouseX, App.mouseY);
+    }
   }
 
   public void activate(IBuildLayerListener listener) {
@@ -57,6 +66,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea {
   }
 
   private float x, y;
+  private int screenX, screenY;
   private boolean mouseDown = false;
 
   @Override
@@ -67,6 +77,8 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea {
     } else if(button == 0 && active && hovered) {
       Vector2f worldcoords = camera.screen2world(App.mouseX, App.mouseY);
       mouseDown = true;
+      screenX = App.mouseX;
+      screenY = App.mouseY;
       x = worldcoords.x;
       y = worldcoords.y;
     }

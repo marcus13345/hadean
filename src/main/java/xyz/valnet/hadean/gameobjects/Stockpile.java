@@ -11,9 +11,15 @@ import xyz.valnet.hadean.util.Layers;
 
 public class Stockpile extends WorldObject implements ITileThing, ISelectable {
 
+  private WorldObject thing;
+
   public Stockpile(int x, int y) {
     this.x = x;
     this.y = y;
+  }
+
+  public boolean isFree() {
+    return thing == null;
   }
 
   @Override

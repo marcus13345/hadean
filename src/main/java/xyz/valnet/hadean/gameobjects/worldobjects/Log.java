@@ -3,6 +3,7 @@ package xyz.valnet.hadean.gameobjects.worldobjects;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
+import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.gameobjects.Stockpile;
 import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.interfaces.IHaulable;
@@ -11,10 +12,33 @@ import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
+import xyz.valnet.hadean.util.SmartBoolean;
+import xyz.valnet.hadean.util.SmartBoolean.IListener;
 
 public class Log extends WorldObject implements ITileThing, ISelectable, IHaulable {
 
-  private boolean haul = false;
+  private SmartBoolean haul;
+
+  private JobBoard jobboard;
+
+  @Override
+  public void start() {
+    super.start();
+    jobboard = get(JobBoard.class);
+    Log that = this;
+
+    haul = new SmartBoolean(false, new IListener() {
+      @Override
+      public void rise() {
+        jobboard.postJob(that);
+      }
+
+      @Override
+      public void fall() {
+        jobboard.rescindJob(that);
+      }
+    });
+  }
 
   public Log(int x, int y) {
     this.x = x;
@@ -25,7 +49,7 @@ public class Log extends WorldObject implements ITileThing, ISelectable, IHaulab
   public void render() {
     Drawing.setLayer(Layers.GROUND);
     camera.draw(Assets.log, x, y);
-    if(haul) {
+    if(haul.value()) {
       Drawing.setLayer(Layers.MARKERS);
       camera.draw(Assets.haulArrow, x, y);
     }
@@ -61,7 +85,7 @@ public class Log extends WorldObject implements ITileThing, ISelectable, IHaulab
   @Override
   public void runAction(Action action) {
     if(action == ACTION_HAUL) {
-      haul = !haul;
+      haul.toggle();
     }
   }
 
@@ -72,7 +96,7 @@ public class Log extends WorldObject implements ITileThing, ISelectable, IHaulab
 
   @Override
   public boolean hasWork() {
-    return haul;
+    return haul.value();
   }
 
   @Override
@@ -92,7 +116,7 @@ public class Log extends WorldObject implements ITileThing, ISelectable, IHaulab
 
   @Override
   public Log take() {
-    haul = false;
+    haul.set(false);
     Tile tile = terrain.getTile((int)x, (int)y);
     tile.remove(this);
     return this;

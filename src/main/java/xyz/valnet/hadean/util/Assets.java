@@ -24,6 +24,7 @@ public class Assets {
   public static final Tile9 uiFrameDark;
   
   public static final Sprite[] defaultTerrain;
+  public static final Sprite[] growingRice;
   public static final Sprite pawn;
   public static final Sprite tree;
   public static final Sprite rocks;
@@ -31,6 +32,8 @@ public class Assets {
   public static final Sprite lilAxe;
   public static final Sprite haulArrow;
   public static final Sprite stockpile;
+  public static final Sprite riceBag;
+  public static final Sprite farmPlot;
 
   public static final SimpleShader flat;
 
@@ -46,6 +49,13 @@ public class Assets {
       new Sprite(atlas, new Vector4i(32, 64, 8, 8))
     };
 
+    growingRice = new Sprite[] {
+      new Sprite(atlas, new Vector4i(40, 80, 8, 8)),
+      new Sprite(atlas, new Vector4i(48, 80, 8, 8)),
+      new Sprite(atlas, new Vector4i(48, 64, 8, 16)),
+      new Sprite(atlas, new Vector4i(56, 64, 8, 16))
+    };
+
     pawn = new Sprite(atlas, 48, 88, 8, 8);
     tree = new Sprite(atlas, 64, 64, 24, 24);
     rocks = new Sprite(atlas, 64, 104, 8, 8);
@@ -53,6 +63,8 @@ public class Assets {
     lilAxe = new Sprite(atlas, 64, 88, 16, 16);
     haulArrow = new Sprite(atlas, 80, 88, 16, 16);
     stockpile = new Sprite(atlas, 40, 64, 4, 4);
+    riceBag = new Sprite(atlas, 48, 112, 16, 16);
+    farmPlot = new Sprite(atlas, 40, 72, 8, 8);
 
     Map<Character, Sprite> charset = new HashMap<Character, Sprite>();
 

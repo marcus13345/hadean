@@ -36,6 +36,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
   private int padding = 10;
 
   private int x, y;
+  private int w, h;
 
   @Override
   public void render() {
@@ -46,7 +47,9 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
     if(opened.value()) {
       // draw the currently selected build item
       Assets.flat.pushColor(new Vector4f(1f, 1f, 1f, 0.8f));
-      camera.draw(Layers.BUILD_INTERACTABLE, Assets.stockpile, x, y);
+      for(int i = 0; i < w; i ++) for(int j = 0; j < h; j ++) {{
+        camera.draw(Layers.BUILD_INTERACTABLE, Assets.stockpile, x + i, y + j);
+      }}
       Assets.flat.popColor();
     }
   }
@@ -61,17 +64,19 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
     
     IBuildLayerListener buildListener = new IBuildLayerListener() {
       @Override
-      public void update(float nx, float ny, float nw, float nh) {
-        x = (int)Math.floor(nx);
-        y = (int)Math.floor(ny);
+      public void update(int nx, int ny, int nw, int nh) {
+        x = nx;
+        y = ny;
+        w = nw;
+        h = nh;
       }
 
       @Override
-      public void select(float x1, float y1, float x2, float y2) {
-        int ix1 = (int)Math.floor(x1);
-        int iy1 = (int)Math.floor(y1);
-        int ix2 = (int)Math.floor(x2);
-        int iy2 = (int)Math.floor(y2);
+      public void select(int x1, int y1, int x2, int y2) {
+        int ix1 = x1;
+        int iy1 = y1;
+        int ix2 = x2;
+        int iy2 = y2;
         for(int x = ix1; x <= ix2; x ++) {
           for(int y = iy1; y <= iy2; y ++) {
             ITileThing thing = new FarmPlot(x, y);

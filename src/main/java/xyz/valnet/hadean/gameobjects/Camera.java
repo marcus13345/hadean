@@ -3,6 +3,7 @@ package xyz.valnet.hadean.gameobjects;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.graphics.Sprite;
 import xyz.valnet.engine.math.Vector2f;
+import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.interfaces.IWorldBoundsAdapter;
@@ -36,6 +37,10 @@ public class Camera extends GameObject {
 
   public Vector2f screen2world(float x, float y) {
     return new Vector2f((x - screenWidth / 2 + focus.x * tileWidth) / tileWidth, (y - screenHeight / 2 + focus.y * tileWidth) / tileWidth);
+  }
+
+  public Vector2i screen2worldI(float x, float y) {
+    return new Vector2i((int)Math.floor((x - screenWidth / 2 + focus.x * tileWidth) / tileWidth), (int)Math.floor((y - screenHeight / 2 + focus.y * tileWidth) / tileWidth));
   }
 
   @Deprecated

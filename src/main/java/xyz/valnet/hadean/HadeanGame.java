@@ -28,7 +28,7 @@ public class HadeanGame extends Game {
     Drawing.setLayer(0);
     super.render();
     Drawing.setLayer(99);
-    renderDebugInfo();
+    // renderDebugInfo();
   }
 
   private Runtime runtime = Runtime.getRuntime();

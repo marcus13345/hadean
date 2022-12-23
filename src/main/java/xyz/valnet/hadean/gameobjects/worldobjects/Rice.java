@@ -1,5 +1,6 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
+import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.interfaces.ISelectable;
@@ -41,6 +42,11 @@ public class Rice extends WorldObject implements ITileThing, ISelectable {
   @Override
   public void render() {
     camera.draw(Layers.AIR, Assets.riceBag, x, y);
+
+    Assets.flat.pushColor(Vector4f.black);
+    Vector2f screeCoords = camera.world2screen(x, y);
+    Assets.miniFont.drawString("123", (int)screeCoords.x, (int)screeCoords.y);
+    Assets.flat.popColor();
   }
 
   @Override

@@ -14,6 +14,7 @@ public class Assets {
 
   public static final Texture atlas;
   public static final Font font;
+  public static final Font miniFont;
   public static final Tile9 redFrame;
   public static final Tile9 frame;
   public static final Tile9 fireFrame;
@@ -164,6 +165,19 @@ public class Assets {
     charset.put('♥',  new Sprite(atlas, new Vector4i(216, 32, 8, 16)));
     charset.put('|',  new Sprite(atlas, new Vector4i(224, 32, 8, 16)));
     font = new Font(charset, 8, 16);
+
+    Map<Character, Sprite> miniCharset = new HashMap<Character, Sprite>();
+    miniCharset.put('1', new Sprite(atlas, new Vector4i(0,  112, 4, 5)));
+    miniCharset.put('2', new Sprite(atlas, new Vector4i(4,  112, 4, 5)));
+    miniCharset.put('3', new Sprite(atlas, new Vector4i(8,  112, 4, 5)));
+    miniCharset.put('4', new Sprite(atlas, new Vector4i(12, 112, 4, 5)));
+    miniCharset.put('5', new Sprite(atlas, new Vector4i(16, 112, 4, 5)));
+    miniCharset.put('6', new Sprite(atlas, new Vector4i(20, 112, 4, 5)));
+    miniCharset.put('7', new Sprite(atlas, new Vector4i(24, 112, 4, 5)));
+    miniCharset.put('8', new Sprite(atlas, new Vector4i(28, 112, 4, 5)));
+    miniCharset.put('9', new Sprite(atlas, new Vector4i(32, 112, 4, 5)));
+    miniCharset.put('0', new Sprite(atlas, new Vector4i(36, 112, 4, 5)));
+    miniFont = new Font(miniCharset, 4, 5);
 
     frame = new Tile9(
       new Sprite(atlas, new Vector4i(24,  88, 8, 8)),

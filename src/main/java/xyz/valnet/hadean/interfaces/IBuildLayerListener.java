@@ -1,7 +1,7 @@
 package xyz.valnet.hadean.interfaces;
 
 public interface IBuildLayerListener {
-  public void update(float x, float y, float w, float h);
-  public void select(float x, float y, float w, float h);
+  public void update(int x, int y, int w, int h);
+  public void select(int x, int y, int w, int h);
   public void cancel();
 }

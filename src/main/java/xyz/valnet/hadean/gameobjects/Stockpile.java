@@ -12,11 +12,6 @@ public class Stockpile extends WorldObject implements ITileThing, ISelectable {
 
   private WorldObject thing;
 
-  public Stockpile(int x, int y) {
-    this.x = x;
-    this.y = y;
-  }
-
   public boolean isFree() {
     return thing == null;
   }
@@ -58,12 +53,6 @@ public class Stockpile extends WorldObject implements ITileThing, ISelectable {
   @Override
   public String details() {
     return "";
-  }
-
-  @Override
-  public void updatePosition(int x, int y) {
-    this.x = x;
-    this.y = y;
   }
   
 }

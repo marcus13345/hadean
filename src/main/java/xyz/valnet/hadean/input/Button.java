@@ -41,6 +41,10 @@ public class Button extends GameObject implements IMouseCaptureArea {
     layer = l;
   }
 
+  public String getText() {
+    return text;
+  }
+
   public void setText(String text) {
     this.text = text;
     Vector4i measuredText = Assets.font.measure(text);

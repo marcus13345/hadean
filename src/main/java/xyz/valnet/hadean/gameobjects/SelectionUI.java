@@ -173,12 +173,10 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
 
   @Override
   public void mouseEnter() {
-    
   }
 
   @Override
   public void mouseLeave() {
-    
   }
 
   @Override

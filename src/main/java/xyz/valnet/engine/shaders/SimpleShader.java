@@ -27,6 +27,10 @@ public class SimpleShader extends Shader {
     popColor();
     pushColor(color);
   }
+
+  public void clearColorStack() {
+    colorStack.clear();
+  }
   
   public void popColor() {
     colorStack.pop();

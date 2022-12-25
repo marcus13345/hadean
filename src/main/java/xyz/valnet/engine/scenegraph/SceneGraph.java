@@ -43,10 +43,6 @@ public abstract class SceneGraph implements IScene {
         added.add(obj);
       }
       newObjects.clear();
-
-      for(GameObject obj : added) {
-        obj.start();
-      }
     }
 
     // REMOVE OBJECTS
@@ -110,6 +106,9 @@ public abstract class SceneGraph implements IScene {
     for(GameObject obj : objects) {
       obj.render();
     }
+    for(GameObject obj : objects) {
+      obj.renderAlpha();
+    }
   }
 
   protected abstract void construct();
@@ -123,6 +122,7 @@ public abstract class SceneGraph implements IScene {
   public void add(GameObject obj) {
     newObjects.add(obj);
     obj.link(this);
+    obj.start();
   }
 
   public void remove(GameObject obj) {
@@ -130,7 +130,12 @@ public abstract class SceneGraph implements IScene {
   }
 
   public boolean inScene(GameObject gameObject) {
-    return objects.contains(gameObject);
+    return objects.contains(gameObject) || newObjects.contains(gameObject);
+  }
+
+  public void dump() {
+    for(GameObject go : objects)
+      System.out.println(go);
   }
 
   @Override

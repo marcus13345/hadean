@@ -10,7 +10,11 @@ public class GameObject implements IRenderable, ITickable {
   }
 
   public boolean inScene() {
-    return scene.inScene(this);
+    return scene != null && scene.inScene(this);
+  }
+
+  protected void dumpScene() {
+    scene.dump();
   }
 
   protected <T> T get(Class<T> clazz) {
@@ -22,11 +26,18 @@ public class GameObject implements IRenderable, ITickable {
   }
 
   protected final void add(GameObject obj) {
+    if(obj.inScene()) {
+      System.out.println(obj + " is already in the scene. not adding twice...");
+      return;
+    }
     scene.add(obj);
   }
 
   @Override
   public void render() {}
+  
+  @Override
+  public void renderAlpha() {}
 
   @Override
   public void update(float dTime) {}

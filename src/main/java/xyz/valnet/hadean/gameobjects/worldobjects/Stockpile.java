@@ -12,16 +12,8 @@ import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 
-@BuildableMetadata(category = "Zones", name = "Farm Plot")
-public class FarmPlot extends WorldObject implements IWorkable, ISelectable, ITileThing, IBuildable {
-
-  private float progress = 0f;
-  private int stage = 0;
-  private boolean planted = false;
-  private boolean mature = false;
-
-  private static int STAGE_LENGTH = 1000;
-  private static int MAX_STAGES = 4;
+@BuildableMetadata(category = "Zones", name = "Stockpile")
+public class Stockpile extends WorldObject implements IWorkable, ISelectable, ITileThing, IBuildable {
 
   private JobBoard board;
 
@@ -29,21 +21,12 @@ public class FarmPlot extends WorldObject implements IWorkable, ISelectable, ITi
 
   @Override
   public void render() {
-    camera.draw(Layers.TILES, Assets.farmPlot, x, y);
-
-    if(planted) {
-      if(stage > 1) {
-        camera.draw(Layers.AIR, Assets.growingRice[stage], x, y - 1, 1, 2);
-      } else {
-        camera.draw(Layers.AIR, Assets.growingRice[stage], x, y);
-      }
-    }
   }
 
   @Override
   public void renderAlpha() {
     if(!visible) return;
-    Assets.flat.pushColor(new Vector4f(0.4f, 1f, 0.3f, 0.2f));
+    Assets.flat.pushColor(new Vector4f(1f, 0.2f, 0.1f, 0.3f));
     camera.draw(Layers.GROUND, Assets.whiteBox, x, y, w, h);
     Assets.flat.popColor();
   }
@@ -51,26 +34,6 @@ public class FarmPlot extends WorldObject implements IWorkable, ISelectable, ITi
   @Override
   public void update(float dTime) {
     super.update(dTime);
-
-    if(stage == MAX_STAGES - 1) {
-      return;
-    } if(planted) {
-      if(Math.random() > 0.95f) {
-        progress += 10;
-        if(progress >= STAGE_LENGTH) {
-          stage ++;
-          progress = 0;
-          if(stage == MAX_STAGES - 1) {
-            mature = true;
-            board.postJob(this);
-          }
-        }
-      }
-    } else if (progress >= STAGE_LENGTH) {
-      planted = true;
-      progress = 0;
-    }
-
 
   }
 
@@ -83,7 +46,7 @@ public class FarmPlot extends WorldObject implements IWorkable, ISelectable, ITi
 
   @Override
   public boolean hasWork() {
-    return !planted || mature;
+    return false;
   }
 
   @Override
@@ -103,7 +66,7 @@ public class FarmPlot extends WorldObject implements IWorkable, ISelectable, ITi
 
   @Override
   public String getJobName() {
-    return planted ? "Harvest Rice" : "Plant Rice";
+    return "No jobs here!";
   }
 
   @Override
@@ -130,22 +93,12 @@ public class FarmPlot extends WorldObject implements IWorkable, ISelectable, ITi
   @Override
   public String details() {
     
-    return "Planted  | " + planted + "\n" +
-           "Stage    | " + stage + "\n" +
-           "Progress | " + String.format("%.2f", (progress / STAGE_LENGTH) * 100) + "%";
+    return "";
   }
 
   @Override
   public void doWork() {
-    progress ++;
-    if(mature && progress >= STAGE_LENGTH) {
-      mature = false;
-      planted = false;
-      stage = 0;
-      if(Math.random() < 0.3) {
-        getTile().placeThing(new Rice((int)x, (int)y));
-      }
-    }
+    
   }
 
   @Override

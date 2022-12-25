@@ -83,7 +83,7 @@ public class JobBoard extends GameObject {
     if(workables.size() > 0) {
       for(IJob job : workables) {
         if(!job.hasWork()) continue;
-        Vector2i[] workablePositions = job.getWorablePositions();
+        Vector2i[] workablePositions = job.getWorkablePositions();
         Path bestPathToJob = pathfinder.getBestPath(
           new Vector2i((int)Math.floor(workerLocation.x), (int)Math.floor(workerLocation.y)),
           workablePositions

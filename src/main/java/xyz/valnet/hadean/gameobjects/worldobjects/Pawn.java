@@ -147,7 +147,7 @@ public class Pawn extends WorldObject implements ISelectable, IWorker {
 
     // try to do your work!
     if(currentJob != null && currentJob.hasWork()) {
-      if(getCurrentPos().isOneOf(currentJob.getWorablePositions())) {
+      if(getCurrentPos().isOneOf(currentJob.getWorkablePositions())) {
         if(currentJob instanceof IWorkable) {
           ((IWorkable)currentJob).doWork();
         } else if (currentJob instanceof IHaulable) {

@@ -113,13 +113,7 @@ public class Rice extends WorldObject implements ITileThing, ISelectable {
   // public Tile getDestination() {
   //   return get(Stockpile.class).getTile();
   // }
-
-  @Override
-  public void updatePosition(int x, int y) {
-    this.x = x;
-    this.y = y;
-  }
-
+  
   // @Override
   // public String getJobName() {
   //   return "Haul Log";

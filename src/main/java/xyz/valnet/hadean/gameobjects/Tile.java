@@ -35,7 +35,7 @@ public class Tile extends GameObject {
   public void start() {
     camera = get(Camera.class);
 
-    if(Math.random() > 0.9) {
+    if(Math.random() > 0.97) {
       Tree tree = new Tree(x, y);
       stuff.add(tree);
       add(tree);
@@ -49,7 +49,6 @@ public class Tile extends GameObject {
   }
 
   public void placeThing(ITileThing thing) {
-    thing.updatePosition(x, y);
     stuff.add(thing);
     if(thing instanceof GameObject) {
       add((GameObject)thing);

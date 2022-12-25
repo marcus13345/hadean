@@ -71,7 +71,7 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   }
 
   @Override
-  public Vector2i[] getWorablePositions() {
+  public Vector2i[] getWorkablePositions() {
     return new Vector2i[] {
       new Vector2i(x, y - 1),
       new Vector2i(x, y + 1),
@@ -125,12 +125,6 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   @Override
   public Vector2i getLocation() {
     return new Vector2i(x, y);
-  }
-
-  @Override
-  public void updatePosition(int x, int y) {
-    this.x = x;
-    this.y = y;
   }
 
   @Override

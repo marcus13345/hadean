@@ -97,7 +97,7 @@ public class Log extends WorldObject implements ITileThing, ISelectable, IHaulab
   }
 
   @Override
-  public Vector2i[] getWorablePositions() {
+  public Vector2i[] getWorkablePositions() {
     return new Vector2i[] {
       new Vector2i((int)x + 1, (int)y),
       new Vector2i((int)x - 1, (int)y),
@@ -122,12 +122,6 @@ public class Log extends WorldObject implements ITileThing, ISelectable, IHaulab
   @Override
   public Tile getDestination() {
     return get(Stockpile.class).getTile();
-  }
-
-  @Override
-  public void updatePosition(int x, int y) {
-    this.x = x;
-    this.y = y;
   }
 
   @Override

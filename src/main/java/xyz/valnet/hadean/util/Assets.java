@@ -35,6 +35,7 @@ public class Assets {
   public static final Sprite stockpile;
   public static final Sprite riceBag;
   public static final Sprite farmPlot;
+  public static final Sprite whiteBox;
 
   public static final SimpleShader flat;
 
@@ -42,6 +43,8 @@ public class Assets {
     flat = new SimpleShader("shaders/flat.vert", "shaders/flat.frag");
 
     atlas = new Texture("res/textures.png");
+
+    whiteBox = new Sprite(atlas, 0, 88, 8, 8);
 
     defaultTerrain = new Sprite[] {
       new Sprite(atlas, new Vector4i(24, 72, 8, 8)),
@@ -228,15 +231,15 @@ public class Assets {
     );
     
     selectedFrame = new Tile9(
-      new Sprite(atlas, new Vector4i( 8, 88, 5, 5)),
-      new Sprite(atlas, new Vector4i(13, 88, 6, 5)),
-      new Sprite(atlas, new Vector4i(19, 88, 5, 5)),
-      new Sprite(atlas, new Vector4i( 8, 93, 5, 6)),
-      new Sprite(atlas, new Vector4i(13, 93, 6, 6)),
-      new Sprite(atlas, new Vector4i(19, 93, 5, 6)),
-      new Sprite(atlas, new Vector4i( 8, 99, 5, 5)),
-      new Sprite(atlas, new Vector4i(13, 99, 6, 5)),
-      new Sprite(atlas, new Vector4i(19, 99, 5, 5))
+      new Sprite(atlas, new Vector4i( 8, 88, 7, 7)),
+      new Sprite(atlas, new Vector4i(15, 88, 2, 7)),
+      new Sprite(atlas, new Vector4i(17, 88, 7, 7)),
+      new Sprite(atlas, new Vector4i( 8, 95, 7, 2)),
+      new Sprite(atlas, new Vector4i(15, 95, 2, 2)),
+      new Sprite(atlas, new Vector4i(17, 95, 7, 2)),
+      new Sprite(atlas, new Vector4i( 8, 97, 7, 7)),
+      new Sprite(atlas, new Vector4i(15, 97, 2, 7)),
+      new Sprite(atlas, new Vector4i(17, 97, 7, 7))
     );
     
     uiFrame = new Tile9(

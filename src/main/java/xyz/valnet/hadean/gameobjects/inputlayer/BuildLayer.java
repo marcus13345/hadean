@@ -35,7 +35,6 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea {
   @Override
   public void render() {
     if(mouseDown && active) {
-      Assets.selectionFrame.draw(screenX, screenY, App.mouseX - screenX, App.mouseY - screenY);
       camera.screen2world(App.mouseX, App.mouseY);
     }
   }

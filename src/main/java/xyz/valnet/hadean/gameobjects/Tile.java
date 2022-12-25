@@ -7,12 +7,15 @@ import xyz.valnet.engine.graphics.Sprite;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
+import xyz.valnet.hadean.gameobjects.worldobjects.FarmPlot;
 import xyz.valnet.hadean.gameobjects.worldobjects.Tree;
+import xyz.valnet.hadean.gameobjects.worldobjects.WorldObject;
 import xyz.valnet.hadean.interfaces.ITileThing;
+import xyz.valnet.hadean.interfaces.IWorkable;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 
-public class Tile extends GameObject {
+public class Tile extends WorldObject implements IWorkable {
 
   private Camera camera;
 
@@ -53,6 +56,10 @@ public class Tile extends GameObject {
     if(thing instanceof GameObject) {
       add((GameObject)thing);
     }
+    if(thing instanceof FarmPlot) {
+      desiredTill = true;
+      get(JobBoard.class).postJob(this);
+    }
   }
 
   @Override
@@ -74,9 +81,16 @@ public class Tile extends GameObject {
 
   @Override
   public void render() {
-    Assets.flat.pushColor(color);
-    camera.draw(Layers.TILES, sprite, x, y);
-    Assets.flat.popColor();
+    if(tillLevel < 1f) {
+      Assets.flat.pushColor(color);
+      camera.draw(Layers.TILES, sprite, x, y);
+      Assets.flat.popColor();
+    }
+    if(tillLevel > 0f) {
+      Assets.flat.pushColor(Vector4f.opacity(tillLevel));
+      camera.draw(Layers.TILES, Assets.farmPlot, x, y);
+      Assets.flat.popColor();
+    }
   }
 
   public boolean isWalkable() {
@@ -84,5 +98,47 @@ public class Tile extends GameObject {
       if(!thing.isWalkable()) return false;
     }
     return true;
+  }
+
+  private boolean desiredTill = false;
+  private float tillLevel = 0;
+
+  public void setTill(boolean till) {
+    desiredTill = till;
+  }
+
+  @Override
+  public boolean hasWork() {
+    return desiredTill && tillLevel < 1f;
+  }
+
+  @Override
+  public Vector2i[] getWorkablePositions() {
+    return new Vector2i[] {
+      new Vector2i(x - 1, y - 1),
+      new Vector2i(x,     y - 1),
+      new Vector2i(x + 1, y - 1),
+      new Vector2i(x - 1, y + 0),
+      new Vector2i(x,     y + 0),
+      new Vector2i(x + 1, y + 0),
+      new Vector2i(x - 1, y + 1),
+      new Vector2i(x,     y + 1),
+      new Vector2i(x + 1, y + 1),
+    };
+  }
+
+  @Override
+  public Vector2i getLocation() {
+    return new Vector2i(x, y);
+  }
+
+  @Override
+  public String getJobName() {
+    return "Till Soil";
+  }
+
+  @Override
+  public void doWork() {
+    tillLevel += 0.005f;
   }
 }

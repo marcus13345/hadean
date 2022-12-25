@@ -22,6 +22,10 @@ public class Vector4f {
   public static Vector4f black = new Vector4f(0f, 0f, 0f, 1f);
   public static Vector4f zero = new Vector4f(0f, 0f, 0f, 0f);
 
+  public static Vector4f opacity(float w) {
+    return new Vector4f(1, 1, 1, w);
+  }
+
   public String toString() {
     return "(" + this.x + ", " + this.y + ", " + this.z + ", " + this.w + ")";
   }

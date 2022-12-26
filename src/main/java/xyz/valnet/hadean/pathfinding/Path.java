@@ -14,6 +14,10 @@ public class Path implements Iterable<Node> {
     this.dst = dst;
   }
 
+  public int getLength() {
+    return nodes.size();
+  }
+
   public Node peek() {
     return nodes.peek();
   }

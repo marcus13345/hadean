@@ -22,6 +22,7 @@ import xyz.valnet.hadean.pathfinding.Path;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
+import static xyz.valnet.engine.util.Math.lerp;
 
 public abstract class Agent extends WorldObject implements ISelectable {
   public abstract String getName();
@@ -33,6 +34,15 @@ public abstract class Agent extends WorldObject implements ISelectable {
 
   protected boolean isPathing() {
     return path != null && !path.isComplete();
+  }
+
+  protected Vector2f getCalculatedPosition() {
+    if(path == null || path.isComplete()) return getWorldPosition();
+    Vector2f nextPos = path.peek().getPosition().asFloat();
+    return new Vector2f(
+      lerp(x, nextPos.x, frameCounter / (float)speed),
+      lerp(y, nextPos.y, frameCounter / (float)speed)
+    );
   }
 
   @Override
@@ -108,6 +118,7 @@ public abstract class Agent extends WorldObject implements ISelectable {
     Drawing.setLayer(Layers.GENERAL_UI);
     Assets.flat.pushColor(Vector4f.opacity(0.4f));
     if(path != null) {
+      int count = 0;
       for(Node node : path) {
         glBegin(GL_LINES);
           Vector2f u, v;
@@ -116,11 +127,16 @@ public abstract class Agent extends WorldObject implements ISelectable {
           else u = camera.world2screen(node.from.x + 0.5f, node.from.y + 0.5f);
 
           v = camera.world2screen(node.x + 0.5f, node.y + 0.5f);
+
+          if(count == path.getLength() - 1) {
+            u = camera.world2screen(getCalculatedPosition().add(new Vector2f(0.5f, 0.5f)));
+          }
           glVertexAttrib2f(SimpleShader.TEX_COORD, 0, 88 / 256f);
           glVertex3f(u.x, u.y, 3f);
           glVertexAttrib2f(SimpleShader.TEX_COORD, 0, 88 / 255f);
           glVertex3f(v.x, v.y, 3f);
         glEnd();
+        count ++;
       }
       Assets.flat.swapColor(Vector4f.opacity(0.6f));
 

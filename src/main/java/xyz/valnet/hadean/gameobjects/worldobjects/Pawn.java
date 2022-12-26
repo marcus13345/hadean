@@ -28,7 +28,7 @@ public class Pawn extends Agent implements IWorker {
   @Override
   public void render() {
     super.render();
-    camera.draw(Layers.PAWNS, Assets.pawn, x, y);
+    camera.draw(Layers.PAWNS, Assets.pawn, getCalculatedPosition());
   }
 
   @Override

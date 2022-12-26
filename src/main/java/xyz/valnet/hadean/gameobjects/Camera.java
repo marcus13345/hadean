@@ -3,7 +3,6 @@ package xyz.valnet.hadean.gameobjects;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.graphics.Sprite;
 import xyz.valnet.engine.math.Vector2f;
-import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.interfaces.IWorldBoundsAdapter;
@@ -11,7 +10,7 @@ import xyz.valnet.hadean.interfaces.IWorldBoundsAdapter;
 public class Camera extends GameObject {
 
   private int tileWidth = 16;
-  // TODO link these in some way to the real resolution.
+  // TODO link these in some way to the real resolution. lot of work here.
   private int screenWidth = 1024, screenHeight = 576;
 
   private Vector2f focus = new Vector2f(0, 0);
@@ -39,8 +38,13 @@ public class Camera extends GameObject {
     return new Vector2f((x - screenWidth / 2 + focus.x * tileWidth) / tileWidth, (y - screenHeight / 2 + focus.y * tileWidth) / tileWidth);
   }
 
-  public Vector2i screen2worldI(float x, float y) {
-    return new Vector2i((int)Math.floor((x - screenWidth / 2 + focus.x * tileWidth) / tileWidth), (int)Math.floor((y - screenHeight / 2 + focus.y * tileWidth) / tileWidth));
+  public Vector4f world2Screen(Vector4f input) {
+    return new Vector4f(
+      input.x * tileWidth + screenWidth / 2 - focus.x * tileWidth,
+      input.y * tileWidth + screenHeight / 2 - focus.y * tileWidth,
+      input.z * tileWidth + screenWidth / 2 - focus.x * tileWidth,
+      input.w * tileWidth + screenHeight / 2 - focus.y * tileWidth
+    );
   }
 
   @Deprecated

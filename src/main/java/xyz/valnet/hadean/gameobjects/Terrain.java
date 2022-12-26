@@ -1,5 +1,6 @@
 package xyz.valnet.hadean.gameobjects;
 
+import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.interfaces.IWorldBoundsAdapter;
@@ -35,6 +36,10 @@ public class Terrain extends GameObject implements IPathable, IWorldBoundsAdapte
 
   public Tile getTile(int x, int y) {
     return tiles[x][y];
+  }
+
+  public Tile getTile(Vector2i pos) {
+    return getTile(pos.x, pos.y);
   }
 
   // TODO implement directionality. even the pathfinder doesnt give this info...

@@ -22,6 +22,10 @@ public class Path implements Iterable<Node> {
     return nodes.pop();
   }
 
+  public Node getDestination() {
+    return nodes.firstElement();
+  }
+
   public boolean isComplete() {
     return nodes.isEmpty();
   }

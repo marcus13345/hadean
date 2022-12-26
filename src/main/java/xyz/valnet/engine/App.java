@@ -1,6 +1,5 @@
 package xyz.valnet.engine;
 
-import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
@@ -29,7 +28,6 @@ public class App {
   private Game game;
 
   public void run() {
-    System.out.println("Hello LWJGL " + Version.getVersion() + "!");
 
     init();
     loop();
@@ -55,7 +53,7 @@ public class App {
     // Configure GLFW
     glfwDefaultWindowHints(); // optional, the current window hints are already the default
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // the window will be resizable
 
     // Create the window
     window = glfwCreateWindow(width, height, "Hello World!", NULL, NULL);
@@ -86,7 +84,6 @@ public class App {
           game.mouseUp(button);
         }
 
-        // TODO deprecate these.
         if(button >= 3) return;
         if(button == GLFW_MOUSE_BUTTON_LEFT) { mouseLeft = action == 1; return; }
         if(button == GLFW_MOUSE_BUTTON_RIGHT) { mouseRight = action == 1; return; }

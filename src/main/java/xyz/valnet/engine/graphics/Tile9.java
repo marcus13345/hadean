@@ -1,5 +1,7 @@
 package xyz.valnet.engine.graphics;
 
+import xyz.valnet.engine.math.Vector4f;
+
 public class Tile9 {
     
     private final Sprite topLeft;
@@ -32,6 +34,10 @@ public class Tile9 {
         this.bottomLeft = bottomLeft;
         this.bottom = bottom;
         this.bottomRight = bottomRight;
+    }
+
+    public void draw(Vector4f box) {
+      draw((int)box.x, (int)box.y, (int)box.z, (int)box.w);
     }
 
     public void draw(int x, int y, int w, int h) {

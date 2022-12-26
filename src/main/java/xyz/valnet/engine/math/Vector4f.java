@@ -34,4 +34,22 @@ public class Vector4f {
     return x >= this.x && x < this.x + this.z && y >= this.y && y < this.y + this.w;
   }
 
+  public Vector4f toAABB() {
+    return new Vector4f(
+      x,
+      y,
+      x + z,
+      y + w
+    );
+  }
+
+  public Vector4f toXYWH() {
+    return new Vector4f(
+      x,
+      y,
+      z - x,
+      w - y
+    );
+  }
+
 }

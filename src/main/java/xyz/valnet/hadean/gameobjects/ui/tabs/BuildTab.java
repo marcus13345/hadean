@@ -1,4 +1,4 @@
-package xyz.valnet.hadean.gameobjects.tabs;
+package xyz.valnet.hadean.gameobjects.ui.tabs;
 
 import static xyz.valnet.engine.util.Math.lerp;
 
@@ -21,7 +21,7 @@ import xyz.valnet.hadean.gameobjects.BottomBar;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.Terrain;
 import xyz.valnet.hadean.gameobjects.inputlayer.BuildLayer;
-import xyz.valnet.hadean.gameobjects.inputlayer.Selection;
+import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
 import xyz.valnet.hadean.gameobjects.worldobjects.FarmPlot;
 import xyz.valnet.hadean.input.Button;
 import xyz.valnet.hadean.input.IButtonListener;
@@ -39,7 +39,7 @@ import xyz.valnet.hadean.util.SmartBoolean;
 
 public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCaptureArea, IButtonListener {
   
-  private Selection selection;
+  private SelectionLayer selection;
   private BuildLayer buildLayer;
   private Camera camera;
   private Terrain terrain;
@@ -120,7 +120,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
   public void start() {
     super.start();
     buildLayer = get(BuildLayer.class);
-    selection = get(Selection.class);
+    selection = get(SelectionLayer.class);
     camera = get(Camera.class);
     terrain = get(Terrain.class);
 
@@ -158,15 +158,16 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
       }
 
       @Override
-      public void select(int x1, int y1, int x2, int y2) {
+      public void build(int x1, int y1, int x2, int y2) {
         int ix1 = x1;
         int iy1 = y1;
         int ix2 = x2;
         int iy2 = y2;
         try {
           IBuildable building = selectedBuildable.newInstance();
-          GameObject go = (GameObject) building;
-          add(go);
+          if(building instanceof GameObject) {
+            add((GameObject) building);
+          }
           building.buildAt(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
         } catch (Exception e) {
           System.out.println(e);

@@ -1,21 +1,16 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
-import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
-import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.interfaces.BuildableMetadata;
 import xyz.valnet.hadean.interfaces.IBuildable;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ITileThing;
-import xyz.valnet.hadean.interfaces.IWorkable;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 
 @BuildableMetadata(category = "Zones", name = "Stockpile")
-public class Stockpile extends WorldObject implements IWorkable, ISelectable, ITileThing, IBuildable {
-
-  private JobBoard board;
+public class Stockpile extends WorldObject implements ISelectable, ITileThing, IBuildable {
 
   private int w, h;
 
@@ -40,33 +35,6 @@ public class Stockpile extends WorldObject implements IWorkable, ISelectable, IT
   @Override
   public void start() {
     super.start();
-    board = get(JobBoard.class);
-    board.postJob(this);
-  }
-
-  @Override
-  public boolean hasWork() {
-    return false;
-  }
-
-  @Override
-  public Vector2i[] getWorkablePositions() {
-    return new Vector2i[] {
-      new Vector2i((int) x, (int) y + 1),
-      new Vector2i((int) x, (int) y - 1),
-      new Vector2i((int) x + 1, (int) y),
-      new Vector2i((int) x - 1, (int) y)
-    };
-  }
-
-  @Override
-  public Vector2i getLocation() {
-    return new Vector2i((int) x, (int) y);
-  }
-
-  @Override
-  public String getJobName() {
-    return "No jobs here!";
   }
 
   @Override
@@ -94,11 +62,6 @@ public class Stockpile extends WorldObject implements IWorkable, ISelectable, IT
   public String details() {
     
     return "";
-  }
-
-  @Override
-  public void doWork() {
-    
   }
 
   @Override
@@ -131,6 +94,12 @@ public class Stockpile extends WorldObject implements IWorkable, ISelectable, IT
         terrain.getTile(i, j).placeThing(this);
       }
     }
+  }
+
+  @Override
+  public String getName() {
+    // TODO Auto-generated method stub
+    return "Stockpile";
   }
 
 }

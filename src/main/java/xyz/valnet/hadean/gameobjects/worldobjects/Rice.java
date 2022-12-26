@@ -81,42 +81,9 @@ public class Rice extends WorldObject implements ITileThing, ISelectable {
     return "Bag of Rice";
   }
 
-  // @Override
-  // public boolean hasWork() {
-  //   return haul.value();
-  // }
-
-  // @Override
-  // public Vector2i[] getWorablePositions() {
-  //   return new Vector2i[] {
-  //     new Vector2i((int)x + 1, (int)y),
-  //     new Vector2i((int)x - 1, (int)y),
-  //     new Vector2i((int)x, (int)y + 1),
-  //     new Vector2i((int)x, (int)y - 1)
-  //   };
-  // }
-
-  // @Override
-  // public Vector2i getLocation() {
-  //   return new Vector2i((int)x, (int)y);
-  // }
-
-  // @Override
-  // public Log take() {
-  //   haul.set(false);
-  //   Tile tile = terrain.getTile((int)x, (int)y);
-  //   tile.remove(this);
-  //   return this;
-  // }
-
-  // @Override
-  // public Tile getDestination() {
-  //   return get(Stockpile.class).getTile();
-  // }
-  
-  // @Override
-  // public String getJobName() {
-  //   return "Haul Log";
-  // }
+  @Override
+  public String getName() {
+    return "Rice";
+  }
   
 }

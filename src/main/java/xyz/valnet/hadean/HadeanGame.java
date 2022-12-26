@@ -12,7 +12,7 @@ import xyz.valnet.engine.Game;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Matrix4f;
 import xyz.valnet.engine.math.Vector4f;
-
+import xyz.valnet.hadean.scenes.GameScene;
 import xyz.valnet.hadean.scenes.MenuScene;
 import xyz.valnet.hadean.util.Assets;
 
@@ -27,7 +27,7 @@ public class HadeanGame extends Game {
   @Override
   public void start() {
     Assets.flat.pushColor(Vector4f.one);
-    changeScene(new MenuScene());
+    changeScene(new GameScene());
   }
 
   @Override

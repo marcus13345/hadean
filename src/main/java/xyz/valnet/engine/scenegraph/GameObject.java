@@ -25,12 +25,13 @@ public class GameObject implements IRenderable, ITickable {
     return this.scene.getAll(clazz);
   }
 
-  protected final void add(GameObject obj) {
+  protected final <T extends GameObject> T add(T obj) {
     if(obj.inScene()) {
       System.out.println(obj + " is already in the scene. not adding twice...");
-      return;
+      return obj;
     }
     scene.add(obj);
+    return obj;
   }
 
   @Override

@@ -1,4 +1,4 @@
-package xyz.valnet.hadean.gameobjects.tabs;
+package xyz.valnet.hadean.gameobjects.ui.tabs;
 
 public class MenuTab extends Tab {
 

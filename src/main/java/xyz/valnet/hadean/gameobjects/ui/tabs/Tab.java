@@ -1,4 +1,4 @@
-package xyz.valnet.hadean.gameobjects.tabs;
+package xyz.valnet.hadean.gameobjects.ui.tabs;
 
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.gameobjects.BottomBar;

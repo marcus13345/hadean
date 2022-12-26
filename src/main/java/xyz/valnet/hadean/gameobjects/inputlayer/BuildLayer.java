@@ -1,14 +1,12 @@
 package xyz.valnet.hadean.gameobjects.inputlayer;
 
 import xyz.valnet.engine.App;
-import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.interfaces.IBuildLayerListener;
-import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 
 public class BuildLayer extends GameObject implements IMouseCaptureArea {
@@ -46,7 +44,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea {
   }
 
   private void broadcastWorldCoords() {
-    Vector2i worldcoords = camera.screen2worldI(App.mouseX, App.mouseY);
+    Vector2i worldcoords = camera.screen2world(App.mouseX, App.mouseY).asInt();
     if(mouseDown) {
       Vector2i[] ords = orderCoords(new Vector2i(x, y), worldcoords);
       listener.update(ords[0].x, ords[0].y, ords[2].x + 1, ords[2].y + 1);
@@ -80,7 +78,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea {
       listener.cancel();
       deactiveate();
     } else if(button == 0 && active && hovered) {
-      Vector2i worldcoords = camera.screen2worldI(App.mouseX, App.mouseY);
+      Vector2i worldcoords = camera.screen2world(App.mouseX, App.mouseY).asInt();
       mouseDown = true;
       screenX = App.mouseX;
       screenY = App.mouseY;
@@ -92,7 +90,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea {
   @Override
   public void mouseUp(int button) {
     if(button == 0 && active && mouseDown) {
-      Vector2i worldcoords = camera.screen2worldI(App.mouseX, App.mouseY);
+      Vector2i worldcoords = camera.screen2world(App.mouseX, App.mouseY).asInt();
       mouseDown = false;
       int x1 = x;
       int y1 = y;
@@ -102,7 +100,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea {
       int minY = Math.min(y1, y2);
       int maxX = Math.max(x1, x2);
       int maxY = Math.max(y1, y2);
-      listener.select(minX, minY, maxX, maxY);
+      listener.build(minX, minY, maxX, maxY);
     }
   }
 

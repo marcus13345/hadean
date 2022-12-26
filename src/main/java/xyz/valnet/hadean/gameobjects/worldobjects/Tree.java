@@ -2,6 +2,7 @@ package xyz.valnet.hadean.gameobjects.worldobjects;
 
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
+import xyz.valnet.hadean.gameobjects.Job;
 import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ITileThing;
@@ -15,7 +16,7 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   private static int counter = 0;
   private String name = "Tree " + (++ counter);
 
-  private boolean chopFlag = false;
+  private Job chopJob = null;
   
   private int x, y;
 
@@ -29,7 +30,7 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
     Assets.flat.pushColor(new Vector4f(1 - getProgress(), 1 - getProgress(), 1 - getProgress(), 1.0f));
     camera.draw(Layers.AIR, Assets.tree, x - 1, y - 2, 3, 3);
     Assets.flat.popColor();
-    if(hasWork()) {
+    if(chopJob != null) {
       camera.draw(Layers.MARKERS, Assets.lilAxe, x, y);
     }
   }
@@ -56,18 +57,13 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   @Override
   public void runAction(Action action) {
     if(action == ACTION_CHOP) {
-      chopFlag = !chopFlag;
-      if(chopFlag) {
-        get(JobBoard.class).postJob(this);
+      if(chopJob == null) {
+        chopJob = get(JobBoard.class).postSimpleWorkJob("Chop Tree", this);
       } else {
-        get(JobBoard.class).rescindJob(this);
+        get(JobBoard.class).rescindJob(chopJob);
+        chopJob = null;
       }
     }
-  }
-
-  @Override
-  public boolean hasWork() {
-    return chopFlag && choppage < strength;
   }
 
   @Override
@@ -88,14 +84,15 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   }
 
   @Override
-  public void doWork() {
+  public boolean doWork() {
     choppage ++;
+    return getProgress() >= 1;
   }
 
   @Override
   public String details() {
     return "" + name + "\n" +
-           "Chop Flag | " + chopFlag + "\n" +
+           "Chop Flag | " + (chopJob != null) + "\n" +
            "Progress  | " + (String.format("%.2f", getProgress() * 100)) + "%";
   }
 
@@ -123,12 +120,12 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   }
 
   @Override
-  public Vector2i getLocation() {
-    return new Vector2i(x, y);
+  public String getJobName() {
+    return "Chop " + name;
   }
 
   @Override
-  public String getJobName() {
-    return "Chop " + name;
+  public String getName() {
+    return "Tree";
   }
 }

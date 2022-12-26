@@ -17,13 +17,13 @@ import xyz.valnet.hadean.util.Layers;
 
 import static xyz.valnet.engine.util.Math.lerp;
 
-public class Selection extends GameObject implements IMouseCaptureArea {
+public class SelectionLayer extends GameObject implements IMouseCaptureArea {
 
   public Vector2f initialCoords;
   private Camera camera;
   private float animation = 0;
-  private float animationMax = 15;
-  private float animationAmplitude = 0.3f;
+  private float animationMax = 30;
+  private float animationAmplitude = 0.2f;
   private List<ISelectionChangeListener> listeners = new ArrayList<ISelectionChangeListener>();
 
   @Override

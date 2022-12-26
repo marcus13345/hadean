@@ -10,24 +10,29 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import xyz.valnet.engine.math.Vector2f;
-import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.scenegraph.GameObject;
-import xyz.valnet.hadean.interfaces.IJob;
+import xyz.valnet.hadean.interfaces.IWorkable;
 import xyz.valnet.hadean.interfaces.IWorker;
-import xyz.valnet.hadean.pathfinding.IPathfinder;
-import xyz.valnet.hadean.pathfinding.Path;
 import xyz.valnet.hadean.util.Pair;
 
 public class JobBoard extends GameObject {
 
-  private Set<IJob> availableJobs = new HashSet<IJob>();
-  private Map<IWorker, IJob> allocations = new HashMap<IWorker, IJob>();
+  private Set<Job> availableJobs = new HashSet<Job>();
+  private List<Job> toRemove = new ArrayList<Job>();
+  private Map<IWorker, Job> allocations = new HashMap<IWorker, Job>();
 
-  public void postJob(IJob job) {
+  public Job postSimpleWorkJob(String name, IWorkable subject) {
+    Job job = add(new Job(name));
+    job.addStep(job.new Work(subject));
+    postJob(job);
+    return job;
+  }
+
+  public void postJob(Job job) {
     availableJobs.add(job);
   }
 
-  public void rescindJob(IJob job) {
+  public void rescindJob(Job job) {
     if(allocations.values().contains(job)) {
       List<IWorker> toFire = new ArrayList<IWorker>();
 
@@ -49,27 +54,21 @@ public class JobBoard extends GameObject {
 
   public void requestJob(IWorker worker) {
     // TODO worker has capabilities?
-    Vector2f workerLocation = worker.getLocation();
-    IPathfinder pathfinder = worker.getPathfinder();
+    Vector2f workerLocation = worker.getWorldPosition();
 
-    List<IJob> workables = availableJobs
+    List<Job> workables = availableJobs
       .stream()
-      // filter available job by the ones that currently have work
-      // TODO seems like this should be removed at some point
-      // and jobs should post / rescind when they need to
-      .filter(workable -> workable.hasWork())
-      // calculate our workers distance to each
-      .map(workable -> new Pair<IJob, Float>(
-        workable,
-        workable.getLocation().distanceTo(
+      .map(job -> new Pair<Job, Float>(
+        job,
+        job.getLocation().distanceTo(
           (int) workerLocation.x,
           (int) workerLocation.y
         )
       ))
       // sort the jobs by their distance from the worker
-      .sorted(new Comparator<Pair<IJob, Float>>() {
+      .sorted(new Comparator<Pair<Job, Float>>() {
         @Override
-        public int compare(Pair<IJob, Float> a, Pair<IJob, Float> b) {
+        public int compare(Pair<Job, Float> a, Pair<Job, Float> b) {
           if(a.second() > b.second()) return 1;
           if(b.second() > a.second()) return -1;
           return 0;
@@ -81,38 +80,41 @@ public class JobBoard extends GameObject {
     
     
     if(workables.size() > 0) {
-      for(IJob job : workables) {
-        if(!job.hasWork()) continue;
-        Vector2i[] workablePositions = job.getWorkablePositions();
-        Path bestPathToJob = pathfinder.getBestPath(
-          new Vector2i((int)Math.floor(workerLocation.x), (int)Math.floor(workerLocation.y)),
-          workablePositions
-        );
-        if(bestPathToJob == null) continue;
-
-        // it is decided. job is good, and path is hype
-        worker.setPath(bestPathToJob);
-        availableJobs.remove(job);
-        allocations.put(worker, job);
-        return;
-      }
+      Job firstJob = workables.get(0);
+      availableJobs.remove(firstJob);
+      allocations.put(worker, firstJob);
+      return;
     }
+  }
+
+  public void completeJob(Job job) {
+    this.rescindJob(job);
+  }
+
+  public void completeJob(IWorker worker) {
+    if(!workerHasJob(worker)) return;
+    rescindJob(getJob(worker));
   }
 
   @Override
   public void update(float dTime) {
-    List<IJob> toRemove = new ArrayList<IJob>();
-    for(IJob job : allocations.values()) {
-      if(!job.hasWork()) {
-        toRemove.add(job);
+    for(Job job : toRemove) {
+      if(allocations.values().contains(job)) {
+        // I AM NOT SURE THIS WORKS
+        allocations.values().remove(job);
+      }
+      if(availableJobs.contains(job)) {
+        availableJobs.remove(job);
       }
     }
-    for(IJob job : toRemove) {
-      rescindJob(job);
-    }
+    toRemove.clear();
   }
 
-  public IJob getJob(IWorker worker) {
+  public boolean workerHasJob(IWorker worker) {
+    return allocations.containsKey(worker);
+  }
+  
+  public Job getJob(IWorker worker) {
     if(allocations.containsKey(worker)) {
       return allocations.get(worker);
     } else return null;
@@ -123,11 +125,11 @@ public class JobBoard extends GameObject {
     String takenJobsString = "";
     String availableJobsString = "";
 
-    for(Entry<IWorker, IJob> allocation : allocations.entrySet()) {
+    for(Entry<IWorker, Job> allocation : allocations.entrySet()) {
       takenJobsString += "  " + allocation.getKey().getName() + ": " + allocation.getValue().getJobName() + "\n";
     }
     
-    for(IJob job : availableJobs) {
+    for(Job job : availableJobs) {
       availableJobsString += "  " + job.getJobName() + "\n";
     }
 

@@ -14,4 +14,12 @@ public class Vector2f {
 		this.y = y;
 	}
 
+  public Vector2i asInt() {
+    return new Vector2i((int)x, (int)y);
+  }
+
+  public boolean equals(Vector2f v) {
+    return x == v.x && y == v.y;
+  }
+
 }

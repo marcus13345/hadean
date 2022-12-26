@@ -43,12 +43,7 @@ public class Tile extends WorldObject implements IWorkable {
       stuff.add(tree);
       add(tree);
     }
-
-    // if(Math.random() > 0.98) {
-    //   Log log = new Log(x, y);
-    //   stuff.add(log);
-    //   add(log);
-    // }
+    
   }
 
   public void placeThing(ITileThing thing) {
@@ -58,7 +53,8 @@ public class Tile extends WorldObject implements IWorkable {
     }
     if(thing instanceof FarmPlot) {
       desiredTill = true;
-      get(JobBoard.class).postJob(this);
+
+      get(JobBoard.class).postSimpleWorkJob("Till Soil", this);
     }
   }
 
@@ -108,11 +104,6 @@ public class Tile extends WorldObject implements IWorkable {
   }
 
   @Override
-  public boolean hasWork() {
-    return desiredTill && tillLevel < 1f;
-  }
-
-  @Override
   public Vector2i[] getWorkablePositions() {
     return new Vector2i[] {
       new Vector2i(x - 1, y - 1),
@@ -128,17 +119,28 @@ public class Tile extends WorldObject implements IWorkable {
   }
 
   @Override
-  public Vector2i getLocation() {
-    return new Vector2i(x, y);
-  }
-
-  @Override
   public String getJobName() {
     return "Till Soil";
   }
 
   @Override
-  public void doWork() {
+  public boolean doWork() {
     tillLevel += 0.005f;
+    tillLevel = Math.min(tillLevel, 1);
+    return tillLevel >= 1;
+  }
+
+  @Override
+  public String getName() {
+    if (tillLevel == 0) {
+      return "Ground";
+    } else if (tillLevel < 1) {
+      return "Tilled Soil (" + Math.floor(tillLevel * 100) + "%)";
+    } else return "Tilled Soil";
+  }
+
+  @Override
+  public Vector4f getWorldBox() {
+    return new Vector4f(x, y, x+1, y+1);
   }
 }

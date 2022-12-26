@@ -1,4 +1,4 @@
-package xyz.valnet.hadean.gameobjects.tabs;
+package xyz.valnet.hadean.gameobjects.ui.tabs;
 
 import static xyz.valnet.engine.util.Math.lerp;
 
@@ -8,7 +8,7 @@ import java.util.List;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.hadean.gameobjects.BottomBar;
 import xyz.valnet.hadean.gameobjects.JobBoard;
-import xyz.valnet.hadean.gameobjects.inputlayer.Selection;
+import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
 import xyz.valnet.hadean.util.Assets;
@@ -17,7 +17,7 @@ import xyz.valnet.hadean.util.SmartBoolean;
 
 public class JobBoardTab extends Tab implements ISelectionChangeListener {
   
-  private Selection selection;
+  private SelectionLayer selection;
   private JobBoard jobBoard;
 
   private SmartBoolean opened;
@@ -37,7 +37,7 @@ public class JobBoardTab extends Tab implements ISelectionChangeListener {
   @Override
   public void start() {
     super.start();
-    selection = get(Selection.class);
+    selection = get(SelectionLayer.class);
     jobBoard = get(JobBoard.class);
     
     opened = new SmartBoolean(false, new SmartBoolean.IListener() {

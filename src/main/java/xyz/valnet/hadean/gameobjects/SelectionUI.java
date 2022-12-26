@@ -7,7 +7,7 @@ import java.util.List;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
-import xyz.valnet.hadean.gameobjects.inputlayer.Selection;
+import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
 import xyz.valnet.hadean.input.Button;
 import xyz.valnet.hadean.input.IButtonListener;
 import xyz.valnet.hadean.input.SimpleButton;
@@ -30,7 +30,7 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
  
   private Button[] actionButtons = ACTIONS_BUTTONS_NULL;
 
-  private Selection selectionManager;
+  private SelectionLayer selectionManager;
   private final int width = 300, height = 200;
   private final int padding = 10;
   private final int actionButtonSize = 100;
@@ -44,7 +44,7 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
   private List<ISelectable> newSelection = null;;
 
   public void start() {
-    selectionManager = get(Selection.class);
+    selectionManager = get(SelectionLayer.class);
     selectionManager.subscribe(this);
   }
 

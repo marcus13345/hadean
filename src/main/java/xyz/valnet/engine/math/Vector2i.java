@@ -33,4 +33,8 @@ public class Vector2i {
     return (float) Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
   }
 
+  public Vector2f asFloat() {
+    return new Vector2f(x, y);
+  }
+
 }

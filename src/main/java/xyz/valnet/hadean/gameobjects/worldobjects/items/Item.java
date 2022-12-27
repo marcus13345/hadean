@@ -32,7 +32,7 @@ public abstract class Item extends WorldObject implements ISelectable, ITileThin
     return new Vector4f(x, y, x + 1, y + 1);
   }
 
-  private static final Action ACTION_HAUL = new Action("Haul");
+  public static final Action ACTION_HAUL = new Action("Haul");
 
   @Override
   public Action[] getActions() {

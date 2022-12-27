@@ -3,7 +3,7 @@ package xyz.valnet.hadean.designation;
 import xyz.valnet.hadean.gameobjects.worldobjects.Tree;
 import xyz.valnet.hadean.interfaces.BuildableMetadata;
 
-@BuildableMetadata(category = "Designations", name = "Chop Trees")
+@BuildableMetadata(category = "Jobs", name = "Chop Trees")
 public class CutTreesDesignation extends Designation<Tree> {
 
   @Override

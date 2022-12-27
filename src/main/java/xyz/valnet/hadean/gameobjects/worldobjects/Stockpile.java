@@ -104,7 +104,6 @@ public class Stockpile extends WorldObject implements ISelectable, ITileThing, I
 
   @Override
   public void buildAt(int x, int y, int w, int h) {
-    System.out.println("buildAt");
     this.x = x;
     this.y = y;
     this.w = w;

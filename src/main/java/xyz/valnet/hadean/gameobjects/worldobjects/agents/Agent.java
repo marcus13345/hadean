@@ -11,6 +11,7 @@ import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.shaders.SimpleShader;
+import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.Terrain;
 import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.gameobjects.worldobjects.WorldObject;
@@ -64,12 +65,21 @@ public abstract class Agent extends WorldObject implements ISelectable {
       Vector2i nextPos = path.pop().getPosition();
       this.x = nextPos.x;
       this.y = nextPos.y;
+      if(nextPath != null) {
+        path = nextPath;
+        nextPath = null;
+      }
       if(path.isComplete()) path = null;
       frameCounter = 0;
     }
   }
 
   private void correctPath() {
+    if(path != null && path.isComplete()) path = null;
+    if(path == null) return;
+    if(path.peek().getPosition().equals(this.getWorldPosition().asInt())) {
+      path.pop();
+    }
     if(path != null && path.isComplete()) path = null;
     if(path == null) return;
     Tile nextTile = terrain.getTile(path.peek().getPosition());
@@ -96,14 +106,26 @@ public abstract class Agent extends WorldObject implements ISelectable {
     return false;
   }
 
+  private Path nextPath = null;
+
   protected void goTo(int x, int y) {
-    path = pathfinder.getPath((int)this.x, (int)this.y, x, y);
-    frameCounter = 0;
+    Path newPath = pathfinder.getPath((int)this.x, (int)this.y, x, y);
+    if(path == null) {
+      path = newPath;
+      frameCounter = 0;
+    } else {
+      nextPath = newPath;
+    }
   }
 
   protected void goToClosest(Vector2i[] destinations) {
-    path = pathfinder.getBestPath(this.getWorldPosition().asInt(), destinations);
-    frameCounter = 0;
+    Path newPath = pathfinder.getBestPath(this.getWorldPosition().asInt(), destinations);
+    if(path == null) {
+      path = newPath;
+      frameCounter = 0;
+    } else {
+      nextPath = newPath;
+    }
   }
 
   protected void goTo(Vector2i location) {
@@ -118,6 +140,7 @@ public abstract class Agent extends WorldObject implements ISelectable {
 
   @Override
   public void renderAlpha() {
+    if(!HadeanGame.debugView) return;
     Drawing.setLayer(Layers.GENERAL_UI);
     Assets.flat.pushColor(Vector4f.opacity(0.4f));
     if(path != null) {

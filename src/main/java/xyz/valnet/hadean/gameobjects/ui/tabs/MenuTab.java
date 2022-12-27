@@ -1,33 +1,17 @@
 package xyz.valnet.hadean.gameobjects.ui.tabs;
 
+import xyz.valnet.hadean.HadeanGame;
+
 public class MenuTab extends Tab {
 
   @Override
   public void evoke() {
-    
+    HadeanGame.debugView = !HadeanGame.debugView;
   }
 
   @Override
   public String getTabName() {
-    return "Menu";
+    return "Toggle Debug";
   }
 
-  // @Override
-  // public void tick(float dTime) {
-  // }
-
-  // @Override
-  // public void render() {
-  // }
-
-  // @Override
-  // public void start() {
-  //   super.start();
-  //   add(new GOButton()
-  //     .setDimensions(200, 300, 100, 100, 50));
-  //   add(new GOButton()
-  //     .setDimensions(250, 350, 100, 100, 55));
-
-  // }
-  
 }

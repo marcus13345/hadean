@@ -10,6 +10,7 @@ import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.hadean.gameobjects.Camera;
+import xyz.valnet.hadean.gameobjects.ui.tabs.BuildTab;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
 import xyz.valnet.hadean.util.Assets;
@@ -26,9 +27,12 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea {
   private float animationAmplitude = 0.2f;
   private List<ISelectionChangeListener> listeners = new ArrayList<ISelectionChangeListener>();
 
+  private BuildTab buildTab;
+
   @Override
   public void start() {
     camera = get(Camera.class);
+    buildTab = get(BuildTab.class);
   }
 
   public void subscribe(ISelectionChangeListener listener) {
@@ -177,6 +181,13 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea {
     if(button == 0) {
       if(initialCoords == null) {
         initialCoords = new Vector2f(App.mouseX, App.mouseY);
+      }
+    } else if (button == 1) {
+      if(selected.size() == 0) {
+        buildTab.evoke();
+      } else {
+        selected.clear();
+        broadcastSelectionChanged();
       }
     }
   }

@@ -1,10 +1,6 @@
 package xyz.valnet.hadean;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 import xyz.valnet.engine.App;
@@ -13,12 +9,13 @@ import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Matrix4f;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.scenes.GameScene;
-import xyz.valnet.hadean.scenes.MenuScene;
 import xyz.valnet.hadean.util.Assets;
 
 
 public class HadeanGame extends Game {
   public static final HadeanGame Hadean = new HadeanGame();
+
+  public static boolean debugView = false;
 
   public static void main(String[] args) {
     new App(Hadean).run();
@@ -34,35 +31,36 @@ public class HadeanGame extends Game {
   public void render() {
     Drawing.setLayer(0);
     super.render();
+
+    if(!debugView) return;
     Drawing.setLayer(99);
-    // renderDebugInfo();
+    renderDebugInfo();
   }
 
-  private Runtime runtime = Runtime.getRuntime();
-  private static Vector4f fontColor = new Vector4f(0, 1, 1, 1);
+  private static Runtime runtime = Runtime.getRuntime();
+  private static Vector4f fontColor = new Vector4f(1, 0, 0, 1);
 
   private void renderDebugInfo() {
     
     long allocated = runtime.totalMemory();
     long max = runtime.maxMemory();
+    int left = 800;
+    int top = 10;
 
-    Assets.flat.pushColor(Vector4f.black);
-    Assets.font.drawString("FPS: " + Math.round(averageFPS) + "/" + measuredFPS + " | AVG/MEASURED", 1, 1);
-    Assets.font.drawString("Mouse: <" + App.mouseX + ", " + App.mouseY + ">", 1, 17);
-    Assets.font.drawString("MEMORY: " + (int)((allocated / (double)max) * 100) + "% (" + (allocated / (1024 * 1024)) + "/" + (max / (1024 * 1024)) + "MB)", 1, 33);
-    Assets.font.drawString("IPATHABLE", 1, 49);
-    Assets.font.drawString("", 1, 65);
-    Assets.font.drawString("", 1, 81);
+    List<String> strings = new ArrayList<String>();
+    strings.add("DEBUG");
+    strings.add("FPS: " + Math.round(averageFPS) + "/" + measuredFPS + " | AVG/MEASURED");
+    strings.add("Mouse: <" + App.mouseX + ", " + App.mouseY + ">");
+    strings.add("MEMORY: " + (int)((allocated / (double)max) * 100) + "% (" + (allocated / (1024 * 1024)) + "/" + (max / (1024 * 1024)) + "MB)");
 
-    Assets.flat.swapColor(fontColor);
-    Assets.font.drawString("FPS: " + Math.round(averageFPS) + "/" + measuredFPS + " | AVG/MEASURED", 0, 0);
-    Assets.font.drawString("Mouse: <" + App.mouseX + ", " + App.mouseY + ">", 0, 16);
-    Assets.font.drawString("MEMORY: " + (int)((allocated / (double)max) * 100) + "% (" + (allocated / (1024 * 1024)) + "/" + (max / (1024 * 1024)) + "MB)", 0, 32);
-    Assets.font.drawString("IPATHABLE", 0, 48);
-    Assets.font.drawString("", 0, 64);
-    Assets.font.drawString("", 0, 80);
-    
-    Assets.flat.popColor();
+    for(String str : strings) {
+      Assets.flat.pushColor(Vector4f.black);
+      Assets.font.drawString(str, left + 1, top + 1);
+      Assets.flat.swapColor(fontColor);
+      Assets.font.drawString(str, left, top);
+      Assets.flat.popColor();
+      top += 16;
+    }
   }
 
   // receive the updated matrix every frame for the actual window.

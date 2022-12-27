@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 import xyz.valnet.engine.graphics.Drawing;
+import xyz.valnet.engine.math.Vector2f;
+import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
@@ -63,6 +65,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
   private Map<String, List<Pair<String, Constructor<? extends IBuildable>>>> buildables = new HashMap<String, List<Pair<String, Constructor<? extends IBuildable>>>>();
 
   private int height = 0;
+  private String selectedBuildableName = "";
 
   private void calculateBuildables() {
     try {
@@ -91,8 +94,6 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
           buildables.put(category, new ArrayList<Pair<String, Constructor<? extends IBuildable>>>());
         buildables.get(category).add(new Pair<String, Constructor<? extends IBuildable>>(name, constructor));
 
-        selectedBuildable = constructor;
-
         System.out.println("Added " + category + " / " + name);
       }
 
@@ -109,8 +110,13 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
 
     if(opened.value()) {
       Assets.uiFrame.draw(padding, 576 - BottomBar.bottomBarHeight - padding - height, width, height);
+
+      if(selectedBuildable == null) return;
       // draw the currently selected build item
-      Assets.flat.pushColor(new Vector4f(1f, 1f, 1f, 0.5f));
+      Assets.flat.pushColor(new Vector4f(1f, 1f, 1f, 1.0f));
+      Vector2i topLeft = camera.world2screen(x, y).asInt();
+      Assets.font.drawString(selectedBuildableName, topLeft.x, topLeft.y - 20);
+      Assets.flat.swapColor(new Vector4f(1f, 1f, 1f, 0.5f));
       for(int i = 0; i < w; i ++) for(int j = 0; j < h; j ++) {{
         camera.draw(Layers.BUILD_INTERACTABLE, Assets.checkerBoard, x + i, y + j);
       }}
@@ -149,7 +155,17 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
 
   private List<Button> categoryButtons = new ArrayList<Button>();
 
-  private void activate() {
+  private void selectBuildable(String name, Constructor<? extends IBuildable> constructor) {
+    if(selectedBuildable != null && constructor == null) {
+      buildLayer.deactiveate();
+    } else if (selectedBuildable == null && constructor != null) {
+      activateBuildLayer();
+    }
+    selectedBuildable = constructor;
+    selectedBuildableName = name;
+  }
+
+  private void activateBuildLayer() {
     buildLayer.activate(new IBuildLayerListener() {
       @Override
       public void update(int nx, int ny, int nw, int nh) {
@@ -161,10 +177,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
 
       @Override
       public void build(int x1, int y1, int x2, int y2) {
-        int ix1 = x1;
-        int iy1 = y1;
-        int ix2 = x2;
-        int iy2 = y2;
+        if(selectedBuildable == null) return;
         try {
           IBuildable building = selectedBuildable.newInstance();
           if(building instanceof GameObject) {
@@ -173,17 +186,24 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
           building.buildAt(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
         } catch (Exception e) {
           System.out.println(e);
-
         }
 
-        opened.set(false);
+        // opened.set(false);
       }
 
       @Override
       public void cancel() {
-        opened.set(false);
+        if(selectedBuildable == null) {
+          opened.set(false);
+          buildLayer.deactiveate();
+        } else {
+          selectBuildable("", null);
+        }
       }
     });
+  }
+
+  private void activate() {
 
     int i = 0;
     categoryButtons.clear();
@@ -288,10 +308,11 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
   public void click(Button target) {
     if(categoryButtons.contains(target)) {
       selectedCategory = target.getText();
+      selectBuildable("", null);
       constructItemButtons();
     } else if(buildableButtons.containsKey(target)) {
       Constructor<? extends IBuildable> newConstructor = buildableButtons.get(target);
-      selectedBuildable = newConstructor;
+      selectBuildable(target.getText(), newConstructor);
     }
   }
 

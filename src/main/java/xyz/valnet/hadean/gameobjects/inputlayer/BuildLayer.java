@@ -76,7 +76,6 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea {
   public void mouseDown(int button) {
     if(button == 1 && active && hovered) {
       listener.cancel();
-      deactiveate();
     } else if(button == 0 && active && hovered) {
       Vector2i worldcoords = camera.screen2world(App.mouseX, App.mouseY).asInt();
       mouseDown = true;

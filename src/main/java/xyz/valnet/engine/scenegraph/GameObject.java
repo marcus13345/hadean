@@ -27,7 +27,6 @@ public class GameObject implements IRenderable, ITickable {
 
   protected final <T extends GameObject> T add(T obj) {
     if(obj.inScene()) {
-      System.out.println(obj + " is already in the scene. not adding twice...");
       return obj;
     }
     scene.add(obj);

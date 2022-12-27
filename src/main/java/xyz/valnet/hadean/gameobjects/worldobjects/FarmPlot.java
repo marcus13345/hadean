@@ -1,6 +1,7 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
 import xyz.valnet.engine.math.Vector4f;
+import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.interfaces.BuildableMetadata;
 import xyz.valnet.hadean.interfaces.IBuildable;
 import xyz.valnet.hadean.interfaces.ISelectable;
@@ -65,7 +66,6 @@ public class FarmPlot extends WorldObject implements ISelectable, ITileThing, IB
 
   @Override
   public void buildAt(int x, int y, int w, int h) {
-    System.out.println("buildAt");
     this.x = x;
     this.y = y;
     this.w = w;
@@ -82,5 +82,8 @@ public class FarmPlot extends WorldObject implements ISelectable, ITileThing, IB
   public String getName() {
     return "Farm Plot";
   }
+
+  @Override
+  public void onPlaced(Tile tile) {}
 
 }

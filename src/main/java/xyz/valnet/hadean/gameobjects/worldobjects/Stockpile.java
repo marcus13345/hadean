@@ -1,6 +1,8 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
+import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
+import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.interfaces.BuildableMetadata;
 import xyz.valnet.hadean.interfaces.IBuildable;
 import xyz.valnet.hadean.interfaces.ISelectable;
@@ -30,6 +32,27 @@ public class Stockpile extends WorldObject implements ISelectable, ITileThing, I
   public void update(float dTime) {
     super.update(dTime);
 
+  }
+
+  private Tile[] getTiles() {
+    Vector4f box = getWorldBox();
+    int count = 0;
+    Tile[] tiles = new Tile[(int)box.z * (int)box.w];
+    for(float x = box.x; x < box.z; x ++) {
+      for(float y = box.y; y < box.w; y ++) {
+        tiles[count] = terrain.getTile((int)x, (int)y);
+        count ++;
+      }
+    }
+    return tiles;
+  }
+
+  public Vector2i getFreeTile() {
+    Tile[] tiles = getTiles();
+    for(Tile tile : tiles) {
+      if(tile.isTileFree()) return tile.getCoords();
+    }
+    return null;
   }
 
   @Override
@@ -86,9 +109,7 @@ public class Stockpile extends WorldObject implements ISelectable, ITileThing, I
     this.y = y;
     this.w = w;
     this.h = h;
-    System.out.println("<" + x + ", " + y + ", " + w + ", " + h + ">");
-    System.out.println(inScene());
-    terrain.getTile(x, y).placeThing(this);
+    
     for(int i = x; i < x + w; i ++) {
       for(int j = y; j < y + h; j ++) {
         terrain.getTile(i, j).placeThing(this);
@@ -101,5 +122,8 @@ public class Stockpile extends WorldObject implements ISelectable, ITileThing, I
     // TODO Auto-generated method stub
     return "Stockpile";
   }
+
+  @Override
+  public void onPlaced(Tile tile) {}
 
 }

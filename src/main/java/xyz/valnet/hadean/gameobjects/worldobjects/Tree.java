@@ -4,6 +4,7 @@ import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.Job;
 import xyz.valnet.hadean.gameobjects.JobBoard;
+import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.interfaces.IWorkable;
@@ -17,8 +18,6 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   private String name = "Tree " + (++ counter);
 
   private Job chopJob = null;
-  
-  private int x, y;
 
   public Tree(int x, int y) {
     this.x = x;
@@ -69,10 +68,10 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   @Override
   public Vector2i[] getWorkablePositions() {
     return new Vector2i[] {
-      new Vector2i(x, y - 1),
-      new Vector2i(x, y + 1),
-      new Vector2i(x - 1, y),
-      new Vector2i(x + 1, y)
+      new Vector2i((int)x, (int)y - 1),
+      new Vector2i((int)x, (int)y + 1),
+      new Vector2i((int)x - 1, (int)y),
+      new Vector2i((int)x + 1, (int)y)
     };
   }
 
@@ -116,7 +115,8 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
 
   @Override
   public void onRemove() {
-    add(new Log(x, y));
+    Log log = new Log((int)x, (int)y);
+    getTile().placeThing(log);
   }
 
   @Override
@@ -127,5 +127,11 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   @Override
   public String getName() {
     return "Tree";
+  }
+
+  @Override
+  public void onPlaced(Tile tile) {
+    // TODO Auto-generated method stub
+    
   }
 }

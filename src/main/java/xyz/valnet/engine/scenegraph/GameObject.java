@@ -45,7 +45,7 @@ public class GameObject implements IRenderable, ITickable {
 
   public void start() {}
 
-  public void remove(GameObject obj) {
+  protected void remove(GameObject obj) {
     scene.remove(obj);
   }
 }

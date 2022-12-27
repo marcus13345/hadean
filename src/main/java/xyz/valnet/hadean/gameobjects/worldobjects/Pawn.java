@@ -1,5 +1,8 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
@@ -8,6 +11,8 @@ import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.gameobjects.Terrain;
 import xyz.valnet.hadean.gameobjects.Job.JobStep;
 import xyz.valnet.hadean.gameobjects.worldobjects.agents.Agent;
+import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
+import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.interfaces.IWorker;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
@@ -106,6 +111,8 @@ public class Pawn extends Agent implements IWorker {
     return false;
   }
 
+  private List<Item> inventory = new ArrayList<Item>();
+
   private boolean doJob() {
     if(!jobboard.workerHasJob(this)) return false;
     JobStep step = jobboard.getJob(this).getCurrentStep();
@@ -115,6 +122,25 @@ public class Pawn extends Agent implements IWorker {
     if(step instanceof Job.Work) {
       Job.Work workStep = (Job.Work)step;
       if(workStep.doWork()) step.next();
+      return true;
+    } else if(step instanceof Job.PickupItem) {
+      Job.PickupItem pickupStep = (Job.PickupItem) step;
+      Item item = getTile().removeThing(pickupStep.item);
+      remove(item);
+      inventory.add(item);
+      step.next();
+      return true;
+    } else if(step instanceof Job.DropoffAtStockpile) {
+      if(!getTile().isTileFree()) return false;
+      Job.DropoffAtStockpile dropoffStep = (Job.DropoffAtStockpile) step;
+      Item item = dropoffStep.item;
+      if(!inventory.contains(item)) {
+        return false;
+      }
+      inventory.remove(item);
+      add(item);
+      getTile().placeThing(item);
+      step.next();
       return true;
     }
 

@@ -3,13 +3,15 @@ package xyz.valnet.hadean.gameobjects.worldobjects;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.JobBoard;
+import xyz.valnet.hadean.gameobjects.Tile;
+import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 
-public class Rice extends WorldObject implements ITileThing, ISelectable {
+public class Rice extends Item implements ITileThing, ISelectable {
 
   // private SmartBoolean haul;
 

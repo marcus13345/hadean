@@ -8,8 +8,9 @@ import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.gameobjects.Camera;
-import xyz.valnet.hadean.gameobjects.Terrain;
+import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.gameobjects.worldobjects.WorldObject;
+import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.util.Assets;
 
 public class HoverQuery extends GameObject {
@@ -37,6 +38,10 @@ public class HoverQuery extends GameObject {
         position.y < box.w
       ) {
         thingStrings.add(obj.getName());
+
+        if(obj instanceof Tile) {
+          thingStrings.add(((Tile)obj).toThingsString());
+        }
       }
     }
   }
@@ -45,8 +50,10 @@ public class HoverQuery extends GameObject {
   public void render() {
     int i = 16;
     for(String thingString : thingStrings) {
-      Assets.font.drawString(thingString, 16, i);
-      i += 14;
+      for(String str : thingString.split("\n")) {
+        Assets.font.drawString(str, 16, i);
+        i += 14;
+      }
     }
   }
 }

@@ -32,7 +32,7 @@ public class Assets {
   public static final Sprite log;
   public static final Sprite lilAxe;
   public static final Sprite haulArrow;
-  public static final Sprite stockpile;
+  public static final Sprite checkerBoard;
   public static final Sprite riceBag;
   public static final Sprite farmPlot;
   public static final Sprite whiteBox;
@@ -66,7 +66,7 @@ public class Assets {
     log = new Sprite(atlas, 48, 96, 16, 16);
     lilAxe = new Sprite(atlas, 64, 88, 16, 16);
     haulArrow = new Sprite(atlas, 80, 88, 16, 16);
-    stockpile = new Sprite(atlas, 40, 64, 4, 4);
+    checkerBoard = new Sprite(atlas, 40, 64, 4, 4);
     riceBag = new Sprite(atlas, 48, 112, 16, 16);
     farmPlot = new Sprite(atlas, 40, 72, 8, 8);
 

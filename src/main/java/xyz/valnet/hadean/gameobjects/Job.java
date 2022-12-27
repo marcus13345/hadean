@@ -3,6 +3,7 @@ package xyz.valnet.hadean.gameobjects;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
@@ -15,6 +16,7 @@ import xyz.valnet.hadean.interfaces.IWorkable;
 public class Job extends GameObject {
 
   private Job that = this;
+  private List<Callback> closedListeners = new ArrayList<Callback>();
 
   public abstract class JobStep {
     public abstract Vector2i[] getLocations();
@@ -45,8 +47,10 @@ public class Job extends GameObject {
 
     public Vector2i[] getLocations() {
       Stockpile pile = that.get(Stockpile.class);
-      Vector4f box = pile.getWorldBox();
-      return new Vector2i[] { new Vector2f(box.x, box.y).asInt() };
+      // Vector4f box = pile.getWorldBox().toXYWH();
+      return new Vector2i[] {
+        pile.getFreeTile()
+      };
     }
   }
 
@@ -89,7 +93,13 @@ public class Job extends GameObject {
 
   public void nextStep() {
     step ++;
-    if(isCompleted()) get(JobBoard.class).completeJob(this);
+    if(isCompleted()) {
+      get(JobBoard.class).completeJob(this);
+      for(Callback callback : closedListeners) {
+        callback.apply();
+      }
+      remove(this);
+    }
   }
 
   public boolean isCompleted() {
@@ -103,5 +113,14 @@ public class Job extends GameObject {
 
   public String getJobName() {
     return name;
+  }
+
+  @FunctionalInterface
+  public interface Callback {
+    public void apply();
+  }
+
+  public void registerClosedListener(Callback callback) {
+    closedListeners.add(callback);
   }
 }

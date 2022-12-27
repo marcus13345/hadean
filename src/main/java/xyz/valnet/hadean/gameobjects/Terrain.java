@@ -1,5 +1,6 @@
 package xyz.valnet.hadean.gameobjects;
 
+import xyz.valnet.engine.math.FastNoiseLite;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
@@ -8,10 +9,16 @@ import xyz.valnet.hadean.pathfinding.IPathable;
  
 public class Terrain extends GameObject implements IPathable, IWorldBoundsAdapter {
 
-  public static final int WORLD_SIZE = 24;
+  public static final int WORLD_SIZE = 30;
   public static final int TILE_SIZE = 8;
-
   // public static int left, top;
+
+  public float getNoise(int seed, float x, float y) {
+    FastNoiseLite noise = new FastNoiseLite(seed);
+    float base =      ((noise.GetNoise(x * 10, y * 10) + 1) / 2)   * 1.0f;
+    float highnoise = ((noise.GetNoise(x * 100, y * 100) + 1) / 2) * 1.0f;
+    return (base + highnoise) / 2.0f;
+  }
 
   private Tile[][] tiles = new Tile[WORLD_SIZE][WORLD_SIZE];
 

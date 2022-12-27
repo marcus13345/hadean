@@ -112,7 +112,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
       // draw the currently selected build item
       Assets.flat.pushColor(new Vector4f(1f, 1f, 1f, 0.5f));
       for(int i = 0; i < w; i ++) for(int j = 0; j < h; j ++) {{
-        camera.draw(Layers.BUILD_INTERACTABLE, Assets.stockpile, x + i, y + j);
+        camera.draw(Layers.BUILD_INTERACTABLE, Assets.checkerBoard, x + i, y + j);
       }}
       Assets.flat.popColor();
     }

@@ -27,7 +27,7 @@ public class FarmPlot extends WorldObject implements ISelectable, ITileThing, IB
     return new Vector4f(x, y, x + w, y + h);
   }
 
-  private static Action TOGGLE_VISIBILITY = new Action("Hide / Show");
+  private static Action TOGGLE_VISIBILITY = new Action("Hide\n----\nShow");
 
   @Override
   public Action[] getActions() {

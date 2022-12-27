@@ -5,6 +5,7 @@ import static xyz.valnet.engine.util.Math.lerp;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,6 +72,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
         if(clazz.isAnonymousClass()) continue;
         if(!IBuildable.class.isAssignableFrom(clazz)) continue;
         if(clazz.isInterface()) continue;
+        if(Modifier.isAbstract(clazz.getModifiers())) continue;
 
         Constructor<? extends IBuildable> constructor = clazz.getConstructor();
         if(constructor.getParameterCount() != 0) {

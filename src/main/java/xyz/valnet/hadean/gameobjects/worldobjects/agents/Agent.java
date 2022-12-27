@@ -97,9 +97,13 @@ public abstract class Agent extends WorldObject implements ISelectable {
   }
 
   protected void goTo(int x, int y) {
-    if(x == (int) this.x && y == (int) this.y) return;
-    frameCounter = 0;
     path = pathfinder.getPath((int)this.x, (int)this.y, x, y);
+    frameCounter = 0;
+  }
+
+  protected void goToClosest(Vector2i[] destinations) {
+    path = pathfinder.getBestPath(this.getWorldPosition().asInt(), destinations);
+    frameCounter = 0;
   }
 
   protected void goTo(Vector2i location) {
@@ -107,7 +111,6 @@ public abstract class Agent extends WorldObject implements ISelectable {
   }
 
   protected void wander() {
-    System.out.println("WANDER!");
     int randomX = (int)Math.floor(Math.random() * Terrain.WORLD_SIZE);
     int randomY = (int)Math.floor(Math.random() * Terrain.WORLD_SIZE);
     path = pathfinder.getPath((int)x, (int)y, randomX, randomY);

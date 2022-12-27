@@ -1,6 +1,7 @@
 package xyz.valnet.hadean.gameobjects;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import xyz.valnet.engine.math.Vector2f;
@@ -13,11 +14,10 @@ import xyz.valnet.hadean.interfaces.IWorkable;
 
 public class Job extends GameObject {
 
-  private Terrain terrain;
   private Job that = this;
 
   public abstract class JobStep {
-    public abstract Vector2f getLocation();
+    public abstract Vector2i[] getLocations();
     public void next() {
       that.nextStep();
     }
@@ -32,8 +32,8 @@ public class Job extends GameObject {
     }
 
     @Override
-    public Vector2f getLocation() {
-      return item.getWorldPosition();
+    public Vector2i[] getLocations() {
+      return new Vector2i[] { item.getWorldPosition().asInt() };
     }
   }
 
@@ -43,10 +43,10 @@ public class Job extends GameObject {
       this.item = item;
     }
 
-    public Vector2f getLocation() {
+    public Vector2i[] getLocations() {
       Stockpile pile = that.get(Stockpile.class);
       Vector4f box = pile.getWorldBox();
-      return new Vector2f(box.x, box.y);
+      return new Vector2i[] { new Vector2f(box.x, box.y).asInt() };
     }
   }
 
@@ -56,8 +56,8 @@ public class Job extends GameObject {
       this.subject = subject;
     }
     @Override
-    public Vector2f getLocation() {
-      return subject.getWorkablePositions()[0].asFloat();
+    public Vector2i[] getLocations() {
+      return subject.getWorkablePositions();
     }
     public boolean doWork() {
       return subject.doWork();
@@ -72,11 +72,6 @@ public class Job extends GameObject {
     step = 0;
   }
 
-  @Override
-  public void start() {
-    this.terrain = get(Terrain.class);
-  }
-
   public Job(String name) {
     this.steps = new ArrayList<JobStep>();
     this.name = name;
@@ -86,10 +81,10 @@ public class Job extends GameObject {
     steps.add(step);
   }
 
-  public Vector2i getLocation() {
+  public Vector2i[] getLocations() {
     if(steps.size() == 0) throw new Error("Cannot get location of job with no steps");
     JobStep step = steps.get(0);
-    return step.getLocation().asInt();
+    return step.getLocations();
   }
 
   public void nextStep() {

@@ -1,12 +1,15 @@
 package xyz.valnet.hadean.gameobjects;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.BinaryOperator;
+import java.util.stream.Stream;
 import java.util.Set;
 
 import xyz.valnet.engine.math.Vector2f;
@@ -60,10 +63,9 @@ public class JobBoard extends GameObject {
       .stream()
       .map(job -> new Pair<Job, Float>(
         job,
-        job.getLocation().distanceTo(
-          (int) workerLocation.x,
-          (int) workerLocation.y
-        )
+        Stream.of(job.getLocations())
+          .map(v -> v.distanceTo((int) workerLocation.x, (int) workerLocation.y))
+          .reduce(Float.MAX_VALUE, (a, b) -> a < b ? a : b)
       ))
       // sort the jobs by their distance from the worker
       .sorted(new Comparator<Pair<Job, Float>>() {

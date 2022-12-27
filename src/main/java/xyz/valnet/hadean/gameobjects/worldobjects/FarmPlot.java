@@ -70,8 +70,6 @@ public class FarmPlot extends WorldObject implements ISelectable, ITileThing, IB
     this.y = y;
     this.w = w;
     this.h = h;
-    System.out.println("<" + x + ", " + y + ", " + w + ", " + h + ">");
-    System.out.println(inScene());
     
     for(int i = x; i < x + w; i ++) {
       for(int j = y; j < y + h; j ++) {

@@ -1,6 +1,7 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
 import xyz.valnet.engine.math.Vector2f;
+import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.Job;
 import xyz.valnet.hadean.gameobjects.JobBoard;
@@ -51,7 +52,8 @@ public class Pawn extends Agent implements IWorker {
 
   @Override
   public Vector4f getWorldBox() {
-    return new Vector4f(x, y, x + 1, y + 1);
+    Vector2f pos = getCalculatedPosition();
+    return new Vector4f(pos.x, pos.y, pos.x+1, pos.y+1);
   }
 
   private JobBoard jobboard;
@@ -73,26 +75,25 @@ public class Pawn extends Agent implements IWorker {
 
     // if we still dont have a job and we're not moving around
     if(!jobboard.workerHasJob(this) && !isPathing()) {
-      if(Math.random() > 0.001f) wander(); // have a chance of wandering!
+      if(Math.random() < 0.001f) wander(); // have a chance of wandering!
       return; // and dont think about anything else.
     }
   }
 
   private boolean isPathingToJobLocation() {
     if(!isPathing()) return false;
-    return getDestination().equals(jobboard.getJob(this).getCurrentStep().getLocation().asInt());
+    return getDestination().isOneOf(jobboard.getJob(this).getCurrentStep().getLocations());
   }
 
   private boolean isAtJobStepLocation() {
-    return jobboard.getJob(this).getCurrentStep().getLocation().equals(this.getWorldPosition());
+    return this.getWorldPosition().asInt().isOneOf(jobboard.getJob(this).getCurrentStep().getLocations());
   }
 
   private void goToJobStepLocation() {
-    goTo(jobboard
+    goToClosest(jobboard
       .getJob(this)
       .getCurrentStep()
-      .getLocation()
-      .asInt()
+      .getLocations()
     );
   }
 
@@ -108,7 +109,8 @@ public class Pawn extends Agent implements IWorker {
   private boolean doJob() {
     if(!jobboard.workerHasJob(this)) return false;
     JobStep step = jobboard.getJob(this).getCurrentStep();
-    if(!getWorldPosition().asInt().equals(step.getLocation().asInt())) return false;
+    // if we're not at the location of the job...
+    if(!isAtJobStepLocation()) return false;
 
     if(step instanceof Job.Work) {
       Job.Work workStep = (Job.Work)step;

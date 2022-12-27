@@ -147,6 +147,9 @@ public class AStarPathfinder implements IPathfinder {
 
   @Override
   public Path getBestPath(Vector2i src, Vector2i[] dsts) {
+
+    if(src.isOneOf(dsts)) return null;
+
     int cost = Integer.MAX_VALUE;
     Path bestPath = null;
     for(Vector2i dst : dsts) {

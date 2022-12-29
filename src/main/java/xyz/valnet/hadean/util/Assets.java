@@ -36,6 +36,8 @@ public class Assets {
   public static final Sprite riceBag;
   public static final Sprite farmPlot;
   public static final Sprite whiteBox;
+  public static final Sprite chicken;
+  public static final Sprite bed;
 
   public static final SimpleShader flat;
 
@@ -69,6 +71,8 @@ public class Assets {
     checkerBoard = new Sprite(atlas, 40, 64, 4, 4);
     riceBag = new Sprite(atlas, 48, 112, 16, 16);
     farmPlot = new Sprite(atlas, 40, 72, 8, 8);
+    chicken = new Sprite(atlas, 0, 104, 8, 8);
+    bed = new Sprite(atlas, 0, 120, 8, 16);
 
     Map<Character, Sprite> charset = new HashMap<Character, Sprite>();
 

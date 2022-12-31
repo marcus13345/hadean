@@ -27,6 +27,7 @@ public class Tile extends WorldObject implements IWorkable {
   // private final int x, y;
   private Vector4f color;
   private final Sprite sprite = Assets.defaultTerrain[(int)Math.floor(Math.random() * Assets.defaultTerrain.length)];
+  private final Sprite farmSprite = Assets.farmPlot[(int)Math.floor(Math.random() * Assets.farmPlot.length)];
 
   private List<ITileThing> stuff = new ArrayList<ITileThing>();
   // TODO remove remove queue, cause like, we dont iterate over
@@ -116,7 +117,7 @@ public class Tile extends WorldObject implements IWorkable {
     }
     if(tillLevel > 0f) {
       Assets.flat.pushColor(Vector4f.opacity(tillLevel));
-      camera.draw(Layers.TILES, Assets.farmPlot, x, y);
+      camera.draw(Layers.TILES, farmSprite, x, y);
       Assets.flat.popColor();
     }
   }

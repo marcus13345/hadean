@@ -101,13 +101,17 @@ public class App {
       glfwGetWindowSize(window, pWidth, pHeight);
 
       // Get the resolution of the primary monitor
-      GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+      long primaryMonitor = glfwGetPrimaryMonitor();
+      GLFWVidMode vidmode = glfwGetVideoMode(primaryMonitor);
+      IntBuffer monitorX = stack.mallocInt(1); // int*
+      IntBuffer monitorY = stack.mallocInt(1); // int*
+      glfwGetMonitorPos(primaryMonitor, monitorX, monitorY);
 
       // Center the window
       glfwSetWindowPos(
         window,
-        (vidmode.width() - pWidth.get(0)) / 2,
-        (vidmode.height() - pHeight.get(0)) / 2
+        monitorX.get(0) + (vidmode.width() - pWidth.get(0)) / 2,
+        monitorY.get(0) + (vidmode.height() - pHeight.get(0)) / 2
       );
     } // the stack frame is popped automatically
 
@@ -127,7 +131,8 @@ public class App {
     GL.createCapabilities();
 
         
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    float clearBrightness = 0.09f;
+    glClearColor(clearBrightness, clearBrightness, clearBrightness, 1.0f);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);

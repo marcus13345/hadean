@@ -26,6 +26,7 @@ public class Assets {
   
   public static final Sprite[] defaultTerrain;
   public static final Sprite[] growingRice;
+  public static final Sprite[] farmPlot;
   public static final Sprite pawn;
   public static final Sprite tree;
   public static final Sprite rocks;
@@ -34,7 +35,6 @@ public class Assets {
   public static final Sprite haulArrow;
   public static final Sprite checkerBoard;
   public static final Sprite riceBag;
-  public static final Sprite farmPlot;
   public static final Sprite whiteBox;
   public static final Sprite chicken;
   public static final Sprite bed;
@@ -66,6 +66,13 @@ public class Assets {
       new Sprite(atlas, new Vector4i(56, 64, 8, 16))
     };
 
+    farmPlot = new Sprite[] {
+      new Sprite(atlas, 24, 120, 8, 8),
+      new Sprite(atlas, 32, 120, 8, 8),
+      new Sprite(atlas, 24, 128, 8, 8),
+      new Sprite(atlas, 32, 128, 8, 8)
+    };
+
     pawn = new Sprite(atlas, 48, 88, 8, 8);
     tree = new Sprite(atlas, 64, 64, 24, 24);
     rocks = new Sprite(atlas, 64, 104, 8, 8);
@@ -74,12 +81,11 @@ public class Assets {
     haulArrow = new Sprite(atlas, 80, 88, 16, 16);
     checkerBoard = new Sprite(atlas, 40, 64, 4, 4);
     riceBag = new Sprite(atlas, 48, 112, 16, 16);
-    farmPlot = new Sprite(atlas, 40, 72, 8, 8);
     chicken = new Sprite(atlas, 0, 104, 8, 8);
     bed = new Sprite(atlas, 0, 120, 8, 16);
     egg = new Sprite(atlas, 8, 104, 8, 8);
     bigRock = new Sprite(atlas, 16, 104, 8, 8);
-    lilPickaxe = new Sprite(atlas, 8, 120, 16, 16)
+    lilPickaxe = new Sprite(atlas, 8, 120, 16, 16);
 
     Map<Character, Sprite> charset = new HashMap<Character, Sprite>();
 

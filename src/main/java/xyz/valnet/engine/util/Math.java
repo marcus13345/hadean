@@ -13,4 +13,15 @@ public class Math {
     float scale = (t - minT) / (maxT - minT);
     return outMin + (scale * (outMax - outMin));
   }
+
+  public static class WeightedAverage {
+    private float value = 0, weight = 0;
+    public void add(float value, float weight) {
+      this.value += value * weight;
+      this.weight += weight;
+    }
+    public float calculate() {
+      return value / weight;
+    }
+  }
 }

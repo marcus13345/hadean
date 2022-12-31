@@ -11,6 +11,9 @@ import xyz.valnet.hadean.interfaces.IWorkable;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
+import xyz.valnet.hadean.util.detail.BooleanDetail;
+import xyz.valnet.hadean.util.detail.Detail;
+import xyz.valnet.hadean.util.detail.PercentDetail;
 
 public class Tree extends WorldObject implements ITileThing, ISelectable, IWorkable {
 
@@ -89,10 +92,11 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   }
 
   @Override
-  public String details() {
-    return "" + name + "\n" +
-           "Chop Flag | " + (chopJob != null) + "\n" +
-           "Progress  | " + (String.format("%.2f", getProgress() * 100)) + "%";
+  public Detail[] getDetails() {
+    return new Detail[] {
+      new BooleanDetail("Chop Flag", chopJob != null),
+      new PercentDetail("Progress", getProgress())
+    };
   }
 
   @Override

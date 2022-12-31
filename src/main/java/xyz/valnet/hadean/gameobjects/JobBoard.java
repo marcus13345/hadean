@@ -1,28 +1,26 @@
 package xyz.valnet.hadean.gameobjects;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.BinaryOperator;
-import java.util.stream.Stream;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.scenegraph.GameObject;
+import xyz.valnet.hadean.gameobjects.worldobjects.pawn.Pawn;
 import xyz.valnet.hadean.interfaces.IWorkable;
-import xyz.valnet.hadean.interfaces.IWorker;
 import xyz.valnet.hadean.util.Pair;
 
 public class JobBoard extends GameObject {
 
   private Set<Job> availableJobs = new HashSet<Job>();
   private List<Job> toRemove = new ArrayList<Job>();
-  private Map<IWorker, Job> allocations = new HashMap<IWorker, Job>();
+  private Map<Pawn, Job> allocations = new HashMap<Pawn, Job>();
 
   public Job postSimpleWorkJob(String name, IWorkable subject) {
     Job job = add(new Job(name));
@@ -37,15 +35,15 @@ public class JobBoard extends GameObject {
 
   public void rescindJob(Job job) {
     if(allocations.values().contains(job)) {
-      List<IWorker> toFire = new ArrayList<IWorker>();
+      List<Pawn> toFire = new ArrayList<Pawn>();
 
-      for(IWorker worker : allocations.keySet()) {
+      for(Pawn worker : allocations.keySet()) {
         if(allocations.get(worker) == job) {
           toFire.add(worker);
         }
       }
 
-      for(IWorker worker : toFire) {
+      for(Pawn worker : toFire) {
         allocations.remove(worker);
       }
     }
@@ -53,14 +51,20 @@ public class JobBoard extends GameObject {
     if(availableJobs.contains(job)) {
       availableJobs.remove(job);
     }
+
+    job.close();
   }
 
-  public void requestJob(IWorker worker) {
-    // TODO worker has capabilities?
+  public boolean jobsAvailableForWorker(Pawn worker) {
+    return availableJobs.size() != 0;
+  }
+
+  public Job requestJob(Pawn worker) {
     Vector2f workerLocation = worker.getWorldPosition();
 
     List<Job> workables = availableJobs
       .stream()
+      .filter(job -> job.isValid())
       .map(job -> new Pair<Job, Float>(
         job,
         Stream.of(job.getLocations())
@@ -85,17 +89,21 @@ public class JobBoard extends GameObject {
       Job firstJob = workables.get(0);
       availableJobs.remove(firstJob);
       allocations.put(worker, firstJob);
-      return;
+      return firstJob;
     }
+    return null;
   }
 
   public void completeJob(Job job) {
     this.rescindJob(job);
   }
 
-  public void completeJob(IWorker worker) {
-    if(!workerHasJob(worker)) return;
-    rescindJob(getJob(worker));
+  public void quitJob(Pawn worker, Job job) {
+    if(!allocations.containsKey(worker)) return;
+    Job foundJob = allocations.get(worker);
+    if(foundJob != job) return;
+    availableJobs.add(job);
+    allocations.remove(worker);
   }
 
   @Override
@@ -112,22 +120,22 @@ public class JobBoard extends GameObject {
     toRemove.clear();
   }
 
-  public boolean workerHasJob(IWorker worker) {
+  public boolean workerHasJob(Pawn worker) {
     return allocations.containsKey(worker);
   }
   
-  public Job getJob(IWorker worker) {
-    if(allocations.containsKey(worker)) {
-      return allocations.get(worker);
-    } else return null;
-  }
+  // public Job getJob(Pawn worker) {
+  //   if(allocations.containsKey(worker)) {
+  //     return allocations.get(worker);
+  //   } else return null;
+  // }
 
   public String details() {
     
     String takenJobsString = "";
     String availableJobsString = "";
 
-    for(Entry<IWorker, Job> allocation : allocations.entrySet()) {
+    for(Entry<Pawn, Job> allocation : allocations.entrySet()) {
       takenJobsString += "  " + allocation.getKey().getName() + ": " + allocation.getValue().getJobName() + "\n";
     }
     

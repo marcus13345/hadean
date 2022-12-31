@@ -16,6 +16,7 @@ import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
+import xyz.valnet.hadean.util.detail.Detail;
 
 public class SelectionUI extends GameObject implements ISelectionChangeListener, IButtonListener, IMouseCaptureArea {
 
@@ -53,19 +54,12 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
 
     Assets.uiFrame.draw(10, 576 - BottomBar.bottomBarHeight - height - padding, width, height);
 
-    // int i = 0;
-    // for(String name : selectedTypes.keySet()) {
-    //   int n = selectedTypes.get(name);
-    //   Assets.font.drawString("" + n + "x " + name, 26, 376 + 16 * i);
-    //   i ++;
-    // }
-
-
     if(selectedTypes.size() == 1) {
       Assets.font.drawString("" + count + "x " + name, 26, 576 - BottomBar.bottomBarHeight - height);
 
       if(count == 1) {
-        String details = selected.get(0).details();
+
+        String details = Detail.renderDetails(selected.get(0).getDetails());
         Assets.font.drawString(details, 26, 576 - BottomBar.bottomBarHeight - height + 32);
       }
 

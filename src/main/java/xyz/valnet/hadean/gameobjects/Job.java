@@ -23,6 +23,7 @@ public class Job extends GameObject {
     public void next() {
       that.nextStep();
     }
+    public abstract boolean isValid();
   }
 
   public class PickupItem extends JobStep {
@@ -36,6 +37,11 @@ public class Job extends GameObject {
     @Override
     public Vector2i[] getLocations() {
       return new Vector2i[] { item.getWorldPosition().asInt() };
+    }
+
+    @Override
+    public boolean isValid() {
+      return true;
     }
   }
 
@@ -52,6 +58,11 @@ public class Job extends GameObject {
         pile.getFreeTile()
       };
     }
+
+    @Override
+    public boolean isValid() {
+      return that.get(Stockpile.class) != null;
+    }
   }
 
   public class Work extends JobStep {
@@ -65,6 +76,11 @@ public class Job extends GameObject {
     }
     public boolean doWork() {
       return subject.doWork();
+    }
+
+    @Override
+    public boolean isValid() {
+      return true;
     }
   }
 
@@ -120,7 +136,24 @@ public class Job extends GameObject {
     public void apply();
   }
 
+  public void close() {
+    for(Callback callback : closedListeners) {
+      callback.apply();
+    }
+  }
+
   public void registerClosedListener(Callback callback) {
     closedListeners.add(callback);
+  }
+
+  public void unregisterClosedListener(Callback callback) {
+    closedListeners.remove(callback);
+  }
+
+  public boolean isValid() {
+    for(JobStep step : steps) {
+      if(!step.isValid()) return false;
+    }
+    return true;
   }
 }

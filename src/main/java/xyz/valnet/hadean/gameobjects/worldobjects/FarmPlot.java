@@ -9,6 +9,7 @@ import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
+import xyz.valnet.hadean.util.detail.Detail;
 
 @BuildableMetadata(category = "Zones", name = "Farm Plot")
 public class FarmPlot extends WorldObject implements ISelectable, ITileThing, IBuildable {
@@ -45,8 +46,8 @@ public class FarmPlot extends WorldObject implements ISelectable, ITileThing, IB
   }
 
   @Override
-  public String details() {
-    return "";
+  public Detail[] getDetails() {
+    return new Detail[] {};
   }
 
   @Override

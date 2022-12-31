@@ -33,11 +33,13 @@ public abstract class Agent extends WorldObject implements ISelectable {
   private IPathfinder pathfinder;
   private Path path = null;
 
-  protected boolean isPathing() {
+  private boolean stopPathingFlag = false;
+
+  public boolean isPathing() {
     return path != null && !path.isComplete();
   }
 
-  protected Vector2f getCalculatedPosition() {
+  public Vector2f getCalculatedPosition() {
     if(path == null || path.isComplete()) return getWorldPosition();
     Vector2f nextPos = path.peek().getPosition().asFloat();
     return new Vector2f(
@@ -57,7 +59,10 @@ public abstract class Agent extends WorldObject implements ISelectable {
   public void update(float dTime) {
     think();
     act();
+    postAct();
   }
+
+  protected abstract void postAct();
 
   private void move() {
     frameCounter++;
@@ -71,7 +76,17 @@ public abstract class Agent extends WorldObject implements ISelectable {
       }
       if(path.isComplete()) path = null;
       frameCounter = 0;
+      if(stopPathingFlag) {
+        path = null;
+        nextPath = null;
+        stopPathingFlag = false;
+      }
     }
+  }
+
+  protected void stopPathing() {
+    stopPathingFlag = true;
+    nextPath = null;
   }
 
   private void correctPath() {
@@ -108,7 +123,7 @@ public abstract class Agent extends WorldObject implements ISelectable {
 
   private Path nextPath = null;
 
-  protected void goTo(int x, int y) {
+  public void goTo(int x, int y) {
     Path newPath = pathfinder.getPath((int)this.x, (int)this.y, x, y);
     if(path == null) {
       path = newPath;
@@ -118,7 +133,7 @@ public abstract class Agent extends WorldObject implements ISelectable {
     }
   }
 
-  protected void goToClosest(Vector2i[] destinations) {
+  public void goToClosest(Vector2i[] destinations) {
     Path newPath = pathfinder.getBestPath(this.getWorldPosition().asInt(), destinations);
     if(path == null) {
       path = newPath;
@@ -128,11 +143,11 @@ public abstract class Agent extends WorldObject implements ISelectable {
     }
   }
 
-  protected void goTo(Vector2i location) {
+  public void goTo(Vector2i location) {
     goTo(location.x, location.y);
   }
 
-  protected void wander() {
+  public void wander() {
     int randomX = (int)Math.floor(Math.random() * Terrain.WORLD_SIZE);
     int randomY = (int)Math.floor(Math.random() * Terrain.WORLD_SIZE);
     path = pathfinder.getPath((int)x, (int)y, randomX, randomY);
@@ -184,7 +199,8 @@ public abstract class Agent extends WorldObject implements ISelectable {
     return new Action[0];
   }
 
-  protected Vector2i getDestination() {
+  public Vector2i getDestination() {
+    if(nextPath != null) return nextPath.getDestination().getPosition();
     if(path == null) return null;
     return path.getDestination().getPosition();
   }

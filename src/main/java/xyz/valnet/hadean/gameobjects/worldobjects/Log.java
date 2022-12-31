@@ -3,9 +3,9 @@ package xyz.valnet.hadean.gameobjects.worldobjects;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
+import xyz.valnet.hadean.util.detail.Detail;
 
 public class Log extends Item {
-  
 
   @Override
   public void start() {
@@ -36,8 +36,8 @@ public class Log extends Item {
   public void onRemove() {}
 
   @Override
-  public String details() {
-    return "A fat log";
+  public Detail[] getDetails() {
+    return new Detail[] {};
   }
 
   @Override

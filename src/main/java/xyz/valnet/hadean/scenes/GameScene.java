@@ -3,6 +3,7 @@ package xyz.valnet.hadean.scenes;
 import xyz.valnet.engine.scenegraph.SceneGraph;
 import xyz.valnet.hadean.gameobjects.BottomBar;
 import xyz.valnet.hadean.gameobjects.Camera;
+import xyz.valnet.hadean.gameobjects.Clock;
 import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.gameobjects.SelectionUI;
 import xyz.valnet.hadean.gameobjects.Terrain;
@@ -12,7 +13,7 @@ import xyz.valnet.hadean.gameobjects.ui.HoverQuery;
 import xyz.valnet.hadean.gameobjects.ui.tabs.BuildTab;
 import xyz.valnet.hadean.gameobjects.ui.tabs.JobBoardTab;
 import xyz.valnet.hadean.gameobjects.ui.tabs.MenuTab;
-import xyz.valnet.hadean.gameobjects.worldobjects.Pawn;
+import xyz.valnet.hadean.gameobjects.worldobjects.pawn.Pawn;
 
 // TODO BIG IDEAS
 // have caches of types that ill need (Like IMouseListener)
@@ -31,8 +32,9 @@ public class GameScene extends SceneGraph {
     objects.add(new Terrain());
     objects.add(new Camera());
     objects.add(new JobBoard());
+    objects.add(new Clock());
 
-    for(int i = 0; i < 5; i ++) {
+    for(int i = 0; i < 1; i ++) {
       objects.add(new Pawn());
     }
     

@@ -79,7 +79,7 @@ public class Assets {
     bed = new Sprite(atlas, 0, 120, 8, 16);
     egg = new Sprite(atlas, 8, 104, 8, 8);
     bigRock = new Sprite(atlas, 16, 104, 8, 8);
-    lilPickaxe = new Sprite(atlas, 8, 120, 16, 16)
+    lilPickaxe = new Sprite(atlas, 8, 120, 16, 16);
 
     Map<Character, Sprite> charset = new HashMap<Character, Sprite>();
 

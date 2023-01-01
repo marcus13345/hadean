@@ -1,16 +1,10 @@
-package xyz.valnet.hadean.gameobjects.worldobjects;
+package xyz.valnet.hadean.gameobjects.worldobjects.items;
 
-import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.detail.Detail;
 
 public class Log extends Item {
-
-  @Override
-  public void start() {
-    super.start();
-  }
 
   public Log(int x, int y) {
     this.x = x;

@@ -34,7 +34,7 @@ public class GameScene extends SceneGraph {
     objects.add(new JobBoard());
     objects.add(new Clock());
 
-    for(int i = 0; i < 1; i ++) {
+    for(int i = 0; i < 5; i ++) {
       objects.add(new Pawn());
     }
     

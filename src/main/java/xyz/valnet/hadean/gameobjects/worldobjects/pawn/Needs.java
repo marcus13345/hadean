@@ -5,11 +5,11 @@ import xyz.valnet.hadean.util.detail.PercentDetail;
 
 public class Needs {
 
-  private float energy = 0.5f + (float)Math.random() * 0.5f;
+  private float energy = 0.7f + (float)Math.random() * 0.3f;
   private float recreation = 0.5f + (float)Math.random() * 0.5f;
 
-  private float restRatio = 6;
-  private float decay = 0.00001f;
+  private float restRatio = 3;
+  private float decay = 0.000004f;
 
   public void update(float dTime) {
     energy = Math.max(energy - decay, 0);

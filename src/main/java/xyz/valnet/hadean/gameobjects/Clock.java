@@ -1,17 +1,14 @@
 package xyz.valnet.hadean.gameobjects;
 
-import xyz.valnet.engine.Game;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
-import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
-import xyz.valnet.hadean.util.detail.PercentDetail;
 
 public class Clock extends GameObject {
 
-  private float time = 7;
+  private float time = 12;
 
   @Override
   public void start() {
@@ -27,9 +24,12 @@ public class Clock extends GameObject {
   public String toString() {
     int hour = (int) Math.floor(time);
     int minutes = (int) Math.floor((time % 1) * 60);
-    String hs = hour < 10 ? " " + hour : "" + hour;
+
+    String hs = "";
+    if(hour % 12 == 0) hs = "12";
+    else hs = (hour % 12) < 10 ? " " + (hour % 12) : "" + (hour % 12);
     String ms = minutes < 10 ? "0" + minutes : "" + minutes;
-    return "" + hs + ":" + ms;
+    return "" + hs + ":" + ms + (hour < 12 ? " AM" : " PM");
   }
 
   @Override
@@ -52,8 +52,8 @@ public class Clock extends GameObject {
   }
 
   public float getSunlight() {
-    float k = 2;
-    float w = 1;
+    float k = 1;
+    float w = 0;
     float u = (k * (float) Math.sin((Math.PI*(time - 7))/(12))) + w;
     double kp = Math.atan(k);
     float m0 = (float)((Math.atan(k + w)) / kp);

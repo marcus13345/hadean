@@ -20,6 +20,14 @@ public abstract class Item extends WorldObject implements ISelectable, ITileThin
   @Override
   public void start() {
     super.start();
+    if(jobboard == null) {
+      jobboard = get(JobBoard.class);
+      markForHaul();
+    }
+  }
+
+  protected boolean haulOnCreate() {
+    return true;
   }
 
   @Override
@@ -44,7 +52,7 @@ public abstract class Item extends WorldObject implements ISelectable, ITileThin
   @Override
   public void renderAlpha() {
     if(haulJob != null) {
-      Assets.flat.pushColor(Vector4f.opacity(0.6f));
+      Assets.flat.pushColor(Vector4f.opacity(0.4f));
       camera.draw(Layers.GENERAL_UI, Assets.haulArrow, getWorldPosition());
       Assets.flat.popColor();
     }
@@ -53,14 +61,33 @@ public abstract class Item extends WorldObject implements ISelectable, ITileThin
   @Override
   public void runAction(Action action) {
     if (action == ACTION_HAUL) {
-      haulJob = add(new Job("Haul " + this.getName()));
-      haulJob.addStep(haulJob.new PickupItem(this, new Vector2f[] { this.getWorldPosition() }));
-      haulJob.addStep(haulJob.new DropoffAtStockpile(this));
-      haulJob.registerClosedListener(() -> {
-        haulJob = null;
-      });
-      get(JobBoard.class).postJob(haulJob);
+      toggleHaul();
     }
+  }
+
+  private void toggleHaul() {
+    if(haulJob == null) {
+      markForHaul();
+    } else {
+      cancelHaul();
+    }
+  }
+
+  private void cancelHaul() {
+    if(haulJob == null) return;
+    jobboard.rescindJob(haulJob);
+    haulJob = null;
+  }
+
+  private void markForHaul() {
+    if(haulJob != null) return;
+    haulJob = add(new Job("Haul " + this.getName()));
+    haulJob.addStep(haulJob.new PickupItem(this, new Vector2f[] { this.getWorldPosition() }));
+    haulJob.addStep(haulJob.new DropoffAtStockpile(this));
+    haulJob.registerClosedListener(() -> {
+      haulJob = null;
+    });
+    jobboard.postJob(haulJob);
   }
 
   @Override

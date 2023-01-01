@@ -30,20 +30,20 @@ public class SleepActivity extends Activity {
 
   @Override
   public float getBenefit() {
-    float minSleepRechargePerCycle = 0.2f;
     // subtract because sleeping for only 5 minutes when
     // you're not that tired to hit 100% is undesireable.
     // as it will induce oversleep
     WeightedAverage average = new WeightedAverage();
-    average.add(needs.getSleepNeed() - minSleepRechargePerCycle, 1);
+    average.add(needs.getSleepNeed(), 1);
     // System.out.println(1 - 2 * clock.getSunlight());
     average.add(1 - 2 * clock.getSunlight(), circadianStrength);
     return average.calculate();
   }
 
+  // isValid vs canBeStarted? idk, maybe thats not important.
   @Override
   public boolean isValid() {
-    return true;
+    return needs.getSleepNeed() > 0.2f;
   }
 
   @Override

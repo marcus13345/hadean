@@ -29,14 +29,19 @@ public abstract class Game {
     scene.render();
   }
 
-  public void update() {
-    scene.update(0);
+  private static final float ns240 = 1_000_000_000f / 240f;
+  protected float dTime = 0;
 
+  public void update() {
     long nanoTime = System.nanoTime();
+    float elapsed = nanoTime - lastFrame;
+    dTime = elapsed / ns240;
+    lastFrame = nanoTime;
+
+    scene.update(dTime);
 
     // average framerate
-    averageFPS = lerp(averageFPS, 1_000_000_000f / (nanoTime - lastFrame), (nanoTime - lastFrame) / 1_000_000_000f);
-    lastFrame = nanoTime;
+    averageFPS = lerp(averageFPS, 1_000_000_000f / (elapsed), (elapsed) / 1_000_000_000f);
 
     framesSinceKeyframe ++;
     if(nanoTime > lastKeyframe + 1_000_000_000) {

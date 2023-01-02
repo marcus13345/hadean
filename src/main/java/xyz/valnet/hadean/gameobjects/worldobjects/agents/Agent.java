@@ -51,7 +51,7 @@ public abstract class Agent extends WorldObject implements ISelectable {
   @Override
   public void start() {
     super.start();
-    frameCounter = speed;
+    frameCounter = 0;
     pathfinder = new AStarPathfinder(terrain);
   }
 

@@ -112,7 +112,7 @@ public abstract class SceneGraph implements IScene {
     }
 
     for(GameObject obj : objects) {
-      obj.start();
+      obj.addedToScene();
     }
   }
 
@@ -136,7 +136,7 @@ public abstract class SceneGraph implements IScene {
   public void add(GameObject obj) {
     newObjects.add(obj);
     obj.link(this);
-    obj.start();
+    obj.addedToScene();
   }
 
   public void remove(GameObject obj) {
@@ -207,7 +207,7 @@ public abstract class SceneGraph implements IScene {
       objects.addAll(newObjects);
 
       for(GameObject obj : objects) obj.link(this);
-      for(GameObject obj : objects) obj.start();
+      for(GameObject obj : objects) obj.addedToScene();
     } catch (Exception e) {
       e.printStackTrace();
     }

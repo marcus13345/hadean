@@ -6,6 +6,8 @@ import java.util.List;
 public class GameObject implements IRenderable, ITickable, Serializable {
   private transient SceneGraph scene;
 
+  private boolean created = false;
+
   public void link(SceneGraph scene) {
     this.scene = scene;
   }
@@ -43,7 +45,21 @@ public class GameObject implements IRenderable, ITickable, Serializable {
   @Override
   public void update(float dTime) {}
 
-  public void start() {}
+  // connect is solely for ensuring links to other objects. get() and getAll()
+  protected void connect() {}
+  // create is guaranteed to only run once for an object, even after save/load
+  protected void create() {} 
+  // start is called any time the object is added to a scene
+  protected void start() {}
+
+  public final void addedToScene() {
+    connect();
+    if(!created) {
+      create();
+      created = true;
+    }
+    start();
+  }
 
   protected void remove(GameObject obj) {
     scene.remove(obj);

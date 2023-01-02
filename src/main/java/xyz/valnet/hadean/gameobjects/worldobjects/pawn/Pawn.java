@@ -28,6 +28,8 @@ public class Pawn extends Agent {
   private String name = "Pawn " + (++ pawnCount);
   private Needs needs = new Needs();
 
+  // private int meaningless = 0;
+
   // private float workEthic = (float) Math.random();
   // private float selfWorth = (float) Math.random();
 

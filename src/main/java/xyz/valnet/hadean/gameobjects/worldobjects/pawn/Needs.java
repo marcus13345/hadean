@@ -1,9 +1,11 @@
 package xyz.valnet.hadean.gameobjects.worldobjects.pawn;
 
+import java.io.Serializable;
+
 import xyz.valnet.hadean.util.detail.Detail;
 import xyz.valnet.hadean.util.detail.PercentDetail;
 
-public class Needs {
+public class Needs implements Serializable {
 
   private float energy = 0.7f + (float)Math.random() * 0.3f;
   private float recreation = 0.5f + (float)Math.random() * 0.5f;

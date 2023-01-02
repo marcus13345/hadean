@@ -1,13 +1,11 @@
 package xyz.valnet.hadean.gameobjects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.gameobjects.worldobjects.Stockpile;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
@@ -18,7 +16,7 @@ public class Job extends GameObject {
   private Job that = this;
   private List<Callback> closedListeners = new ArrayList<Callback>();
 
-  public abstract class JobStep {
+  public abstract class JobStep implements Serializable {
     public abstract Vector2i[] getLocations();
     public void next() {
       that.nextStep();
@@ -132,7 +130,7 @@ public class Job extends GameObject {
   }
 
   @FunctionalInterface
-  public interface Callback {
+  public interface Callback extends Serializable {
     public void apply();
   }
 

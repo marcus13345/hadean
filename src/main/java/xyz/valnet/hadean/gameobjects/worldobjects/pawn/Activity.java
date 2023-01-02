@@ -1,11 +1,13 @@
 package xyz.valnet.hadean.gameobjects.worldobjects.pawn;
 
+import java.io.Serializable;
+
 import xyz.valnet.engine.math.Vector2i;
 
-public abstract class Activity {
+public abstract class Activity implements Serializable {
 
   @FunctionalInterface
-  public interface ActivityCancellationCallback {
+  public interface ActivityCancellationCallback extends Serializable {
     public void apply(Activity activity);
   }
 

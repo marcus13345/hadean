@@ -1,6 +1,8 @@
 package xyz.valnet.engine.math;
 
-public class Vector4f {
+import java.io.Serializable;
+
+public class Vector4f implements Serializable {
 
 	public float x, y, z, w;
 

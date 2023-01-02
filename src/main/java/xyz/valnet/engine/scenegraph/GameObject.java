@@ -1,9 +1,10 @@
 package xyz.valnet.engine.scenegraph;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class GameObject implements IRenderable, ITickable {
-  private SceneGraph scene;
+public class GameObject implements IRenderable, ITickable, Serializable {
+  private transient SceneGraph scene;
 
   public void link(SceneGraph scene) {
     this.scene = scene;
@@ -46,5 +47,13 @@ public class GameObject implements IRenderable, ITickable {
 
   protected void remove(GameObject obj) {
     scene.remove(obj);
+  }
+
+  protected void save() {
+    scene.queueSave();
+  }
+
+  protected void load() {
+    scene.queueLoad();
   }
 }

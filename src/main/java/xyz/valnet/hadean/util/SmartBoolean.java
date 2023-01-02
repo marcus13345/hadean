@@ -1,9 +1,11 @@
 package xyz.valnet.hadean.util;
 
-public class SmartBoolean {
+import java.io.Serializable;
+
+public class SmartBoolean implements Serializable {
   private boolean value;
 
-  public interface IListener {
+  public interface IListener extends Serializable {
     public default void rise() {}
     public default void fall() {}
     public default void changed() {}

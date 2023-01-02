@@ -9,6 +9,7 @@ import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
+import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.ui.tabs.BuildTab;
 import xyz.valnet.hadean.interfaces.ISelectable;
@@ -18,7 +19,7 @@ import xyz.valnet.hadean.util.Layers;
 
 import static xyz.valnet.engine.util.Math.lerp;
 
-public class SelectionLayer extends GameObject implements IMouseCaptureArea {
+public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITransient {
 
   public Vector2f initialCoords;
   private Camera camera;

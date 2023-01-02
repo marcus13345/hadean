@@ -12,7 +12,9 @@ import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
 import xyz.valnet.hadean.gameobjects.ui.HoverQuery;
 import xyz.valnet.hadean.gameobjects.ui.tabs.BuildTab;
 import xyz.valnet.hadean.gameobjects.ui.tabs.JobBoardTab;
+import xyz.valnet.hadean.gameobjects.ui.tabs.LoadTab;
 import xyz.valnet.hadean.gameobjects.ui.tabs.MenuTab;
+import xyz.valnet.hadean.gameobjects.ui.tabs.SaveTab;
 import xyz.valnet.hadean.gameobjects.worldobjects.pawn.Pawn;
 
 // TODO BIG IDEAS
@@ -43,11 +45,15 @@ public class GameScene extends SceneGraph {
 
     objects.add(new BuildLayer());
 
+
+    objects.add(new HoverQuery());
+
     objects.add(new BottomBar());
     objects.add(new BuildTab());
     objects.add(new JobBoardTab());
     objects.add(new MenuTab());
-    objects.add(new HoverQuery());
+    objects.add(new SaveTab());
+    objects.add(new LoadTab());
     
   }
 }

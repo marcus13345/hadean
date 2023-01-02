@@ -1,5 +1,6 @@
 package xyz.valnet.hadean.pathfinding;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.Stack;
 
 import xyz.valnet.engine.math.Vector2i;
 
-public class AStarPathfinder implements IPathfinder {
+public class AStarPathfinder implements IPathfinder, Serializable {
 
   private IPathable pathable;
 

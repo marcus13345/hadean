@@ -1,21 +1,17 @@
 package xyz.valnet.hadean.gameobjects.ui.tabs;
 
-import static xyz.valnet.engine.util.Math.lerp;
-
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import xyz.valnet.engine.graphics.Drawing;
-import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
@@ -25,7 +21,6 @@ import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.Terrain;
 import xyz.valnet.hadean.gameobjects.inputlayer.BuildLayer;
 import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
-import xyz.valnet.hadean.gameobjects.worldobjects.FarmPlot;
 import xyz.valnet.hadean.input.Button;
 import xyz.valnet.hadean.input.IButtonListener;
 import xyz.valnet.hadean.input.SimpleButton;
@@ -34,7 +29,6 @@ import xyz.valnet.hadean.interfaces.IBuildLayerListener;
 import xyz.valnet.hadean.interfaces.IBuildable;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
-import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.Pair;
@@ -55,14 +49,12 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
   private int x, y;
   private int w, h;
 
-  // private List<String> categories = new ArrayList<String>();
+  private String selectedCategory = "";
 
-  private String selectedCategory = "Zones";
+  private transient Constructor<? extends IBuildable> selectedBuildable = null;
+  private transient Map<String, List<Pair<String, Constructor<? extends IBuildable>>>> buildables = null;
+  private transient Map<Button, Constructor<? extends IBuildable>> buildableButtons = null;
 
-  private List<Class<ITileThing>> things = new ArrayList<Class<ITileThing>>();
-  private Constructor<? extends IBuildable> selectedBuildable = null;
-
-  private Map<String, List<Pair<String, Constructor<? extends IBuildable>>>> buildables = new HashMap<String, List<Pair<String, Constructor<? extends IBuildable>>>>();
 
   private int height = 0;
   private String selectedBuildableName = "";
@@ -149,6 +141,9 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
     if(selection != null) {
       selection.subscribe(this);
     }
+
+    buildables = new HashMap<String, List<Pair<String, Constructor<? extends IBuildable>>>>();
+    buildableButtons = new HashMap<Button, Constructor<? extends IBuildable>>();
 
     calculateBuildables();
   }
@@ -274,8 +269,6 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
     return Layers.GENERAL_UI;
   }
 
-  private Map<Button, Constructor<? extends IBuildable>> buildableButtons = new HashMap<Button, Constructor<? extends IBuildable>>();
-
   private void constructItemButtons() {
     for(Button btn : buildableButtons.keySet()) {
       remove(btn);
@@ -286,6 +279,8 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
     if(!opened.value()) return;
 
     List<Pair<String, Constructor<? extends IBuildable>>> categoryBuildables = buildables.get(selectedCategory);
+    if(categoryBuildables == null) return;
+
     int left = width + padding * 2;
     int buttonHeight = 24;
     int buttonWidth = 100;

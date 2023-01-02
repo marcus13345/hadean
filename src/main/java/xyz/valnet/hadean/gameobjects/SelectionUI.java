@@ -7,6 +7,7 @@ import java.util.List;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
+import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
 import xyz.valnet.hadean.input.Button;
 import xyz.valnet.hadean.input.IButtonListener;
@@ -18,7 +19,7 @@ import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.detail.Detail;
 
-public class SelectionUI extends GameObject implements ISelectionChangeListener, IButtonListener, IMouseCaptureArea {
+public class SelectionUI extends GameObject implements ISelectionChangeListener, IButtonListener, IMouseCaptureArea, ITransient {
 
   private String name = "";
   private int count = 0;

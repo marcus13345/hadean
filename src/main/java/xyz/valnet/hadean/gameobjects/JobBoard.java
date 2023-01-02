@@ -56,10 +56,10 @@ public class JobBoard extends GameObject {
   }
 
   public boolean jobsAvailableForWorker(Pawn worker) {
-    return availableJobs.size() != 0;
+    return getJobsForWorker(worker).size() != 0;
   }
 
-  public Job requestJob(Pawn worker) {
+  private List<Job> getJobsForWorker(Pawn worker) {
     Vector2f workerLocation = worker.getWorldPosition();
 
     List<Job> workables = availableJobs
@@ -72,18 +72,22 @@ public class JobBoard extends GameObject {
           .reduce(Float.MAX_VALUE, (a, b) -> a < b ? a : b)
       ))
       // sort the jobs by their distance from the worker
-      .sorted(new Comparator<Pair<Job, Float>>() {
-        @Override
-        public int compare(Pair<Job, Float> a, Pair<Job, Float> b) {
-          if(a.second() > b.second()) return 1;
-          if(b.second() > a.second()) return -1;
-          return 0;
-        }
+      .sorted((Pair<Job, Float> a, Pair<Job, Float> b) -> {
+        if(a.second() > b.second()) return 1;
+        if(b.second() > a.second()) return -1;
+        return 0;
       })
       // then convert the stream back to just the jobs
       .map(workerDistanceTuple -> workerDistanceTuple.first())
       .toList();
+
+    return workables;
+  }
+
+  public Job requestJob(Pawn worker) {
+
     
+    List<Job> workables = getJobsForWorker(worker);
     
     if(workables.size() > 0) {
       Job firstJob = workables.get(0);

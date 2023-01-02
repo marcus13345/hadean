@@ -1,9 +1,10 @@
 package xyz.valnet.hadean.pathfinding;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Stack;
 
-public class Path implements Iterable<Node> {
+public class Path implements Iterable<Node>, Serializable {
   private Stack<Node> nodes;
   public final int cost;
   public final Node dst;

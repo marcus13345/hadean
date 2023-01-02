@@ -1,6 +1,8 @@
 package xyz.valnet.hadean.util;
 
-public class Pair<T, U> {
+import java.io.Serializable;
+
+public class Pair<T, U> implements Serializable {
   private final T t;
   private final U u;
   public Pair(T t, U u) {

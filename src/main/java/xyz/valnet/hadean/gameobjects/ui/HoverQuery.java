@@ -7,13 +7,14 @@ import xyz.valnet.engine.App;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
+import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.gameobjects.worldobjects.WorldObject;
 import xyz.valnet.hadean.util.Assets;
 
-public class HoverQuery extends GameObject {
+public class HoverQuery extends GameObject implements ITransient {
 
   private Camera camera;
 

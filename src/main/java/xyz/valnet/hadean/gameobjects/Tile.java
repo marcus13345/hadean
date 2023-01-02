@@ -26,8 +26,7 @@ public class Tile extends WorldObject implements IWorkable {
 
   // private final int x, y;
   private Vector4f color;
-  private final Sprite sprite = Assets.defaultTerrain[(int)Math.floor(Math.random() * Assets.defaultTerrain.length)];
-  private final Sprite farmSprite = Assets.farmPlot[(int)Math.floor(Math.random() * Assets.farmPlot.length)];
+  private final int tileSelector = (int)Math.floor(Math.random() * 4);
 
   private List<ITileThing> stuff = new ArrayList<ITileThing>();
   // TODO remove remove queue, cause like, we dont iterate over
@@ -46,11 +45,11 @@ public class Tile extends WorldObject implements IWorkable {
 
   public void start() {
     super.start();
-    if(Math.random() > 0.97) {
-      Tree tree = new Tree((int)x, (int)y);
-      stuff.add(tree);
-      add(tree);
-    }
+    // if(Math.random() > 0.97) {
+    //   Tree tree = new Tree((int)x, (int)y);
+    //   stuff.add(tree);
+    //   add(tree);
+    // }
 
     float scale = 1;
 
@@ -58,7 +57,7 @@ public class Tile extends WorldObject implements IWorkable {
     float green = (float) terrain.getNoise(greenSeed, x * scale, y * scale);
     float blue =  (float) terrain.getNoise(blueSeed,  x * scale, y * scale);
 
-    color = new Vector4f(red * 0.1f, 0.4f + green * 0.15f, blue * 0.05f, 1f);
+    if(color == null) color = new Vector4f(red * 0.1f, 0.4f + green * 0.15f, blue * 0.05f, 1f);
     // color = new Vector4f(red, green, blue, 1.0f);
   }
 
@@ -112,12 +111,12 @@ public class Tile extends WorldObject implements IWorkable {
   public void render() {
     if(tillLevel < 1f) {
       Assets.flat.pushColor(color);
-      camera.draw(Layers.TILES, sprite, x, y);
+      camera.draw(Layers.TILES, Assets.defaultTerrain[tileSelector], x, y);
       Assets.flat.popColor();
     }
     if(tillLevel > 0f) {
       Assets.flat.pushColor(Vector4f.opacity(tillLevel));
-      camera.draw(Layers.TILES, farmSprite, x, y);
+      camera.draw(Layers.TILES, Assets.farmPlot[tileSelector], x, y);
       Assets.flat.popColor();
     }
   }

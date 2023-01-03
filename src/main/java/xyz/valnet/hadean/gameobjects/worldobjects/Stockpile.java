@@ -25,7 +25,7 @@ public class Stockpile extends WorldObject implements ISelectable, ITileThing, I
   public void renderAlpha() {
     if(!visible) return;
     Assets.flat.pushColor(new Vector4f(1f, 0.2f, 0.1f, 0.3f));
-    camera.draw(Layers.GROUND, Assets.whiteBox, x, y, w, h);
+    camera.draw(Layers.TILES, Assets.whiteBox, x, y, w, h);
     Assets.flat.popColor();
   }
 

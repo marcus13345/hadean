@@ -42,13 +42,15 @@ public abstract class Item extends WorldObject implements ISelectable, ITileThin
     return new Vector4f(x, y, x + 1, y + 1);
   }
 
-  public static final Action ACTION_HAUL = new Action("Haul");
+  public static final Action HAUL = new Action("Haul");
+  public static final Action CANCEL_HAUL = new Action("Cancel\n Haul");
 
   @Override
   public Action[] getActions() {
-    return new Action[] {
-      ACTION_HAUL
-    };
+    Action[] actions = new Action[1];
+    if(haulJob == null) actions[0] = HAUL;
+    else actions[0] = CANCEL_HAUL;
+    return actions;
   }
 
   @Override
@@ -62,15 +64,9 @@ public abstract class Item extends WorldObject implements ISelectable, ITileThin
 
   @Override
   public void runAction(Action action) {
-    if (action == ACTION_HAUL) {
-      toggleHaul();
-    }
-  }
-
-  private void toggleHaul() {
-    if(haulJob == null) {
+    if (action == HAUL) {
       markForHaul();
-    } else {
+    } else if (action == CANCEL_HAUL) {
       cancelHaul();
     }
   }

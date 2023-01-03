@@ -12,6 +12,6 @@ public class HaulItemDesignation extends Designation<Item> {
 
   @Override
   protected void designate(Item thing) {
-    thing.runAction(Item.ACTION_HAUL);
+    thing.runAction(Item.HAUL);
   }
 }

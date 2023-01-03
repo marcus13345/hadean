@@ -206,8 +206,9 @@ public abstract class SceneGraph implements IScene {
 
       objects.addAll(newObjects);
 
-      for(GameObject obj : objects) obj.link(this);
-      for(GameObject obj : objects) obj.addedToScene();
+      for(GameObject obj : newObjects) obj.link(this);
+      for(GameObject obj : newObjects) obj.addedToScene();
+
     } catch (Exception e) {
       e.printStackTrace();
     }

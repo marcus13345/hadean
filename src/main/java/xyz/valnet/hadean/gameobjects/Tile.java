@@ -45,11 +45,6 @@ public class Tile extends WorldObject implements IWorkable {
 
   public void start() {
     super.start();
-    // if(Math.random() > 0.97) {
-    //   Tree tree = new Tree((int)x, (int)y);
-    //   stuff.add(tree);
-    //   add(tree);
-    // }
 
     float scale = 1;
 
@@ -58,7 +53,15 @@ public class Tile extends WorldObject implements IWorkable {
     float blue =  (float) terrain.getNoise(blueSeed,  x * scale, y * scale);
 
     if(color == null) color = new Vector4f(red * 0.1f, 0.4f + green * 0.15f, blue * 0.05f, 1f);
-    // color = new Vector4f(red, green, blue, 1.0f);
+  }
+
+  @Override
+  protected void create() {
+    if(Math.random() > 0.97) {
+      Tree tree = new Tree((int)x, (int)y);
+      stuff.add(tree);
+      add(tree);
+    }
   }
 
   public boolean isTileFree() {

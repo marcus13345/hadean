@@ -13,14 +13,13 @@ import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
-import xyz.valnet.hadean.util.SmartBoolean;
 
 public class JobBoardTab extends Tab implements ISelectionChangeListener {
   
   private SelectionLayer selection;
   private JobBoard jobBoard;
 
-  private SmartBoolean opened;
+  private boolean opened;
   private float progress = 0f;
   private float width = 200;
 
@@ -35,35 +34,36 @@ public class JobBoardTab extends Tab implements ISelectionChangeListener {
   }
 
   @Override
-  public void start() {
-    super.start();
+  protected void connect() {
+    super.connect();
     selection = get(SelectionLayer.class);
     jobBoard = get(JobBoard.class);
-    
-    opened = new SmartBoolean(false, new SmartBoolean.IListener() {
-    });
+  }
 
-    if(selection != null) {
-      selection.subscribe(this);
-    }
+  @Override
+  public void start() {
+    super.start();
+    opened = false;
+    if(selection != null) selection.subscribe(this);
+
   }
 
   @Override
   public void update(float dTime) {
-    progress = lerp(progress, opened.value() ? 1 : 0, 0.05f);
+    progress = lerp(progress, opened ? 1 : 0, 0.05f);
   }
 
   @Override
   public void selectionChanged(List<ISelectable> selected) {
     if(selected.isEmpty()) return;
-    opened.set(false);
+    opened = false;
   }
 
   @Override
   public void evoke() {
-    opened.toggle();
+    opened = !opened;
 
-    if(opened.value()) {
+    if(opened) {
       selection.updateSelection(new ArrayList<ISelectable>());
     }
   }

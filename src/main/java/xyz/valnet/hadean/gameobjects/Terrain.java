@@ -24,20 +24,23 @@ public class Terrain extends GameObject implements IPathable, IWorldBoundsAdapte
 
   private Camera camera;
 
-  public void start() {
+  @Override
+  protected void create() {
     for (int i = 0; i < WORLD_SIZE; i++) {
       for (int j = 0; j < WORLD_SIZE; j++) {
         tiles[i][j] = new Tile(i, j);
         add(tiles[i][j]);
       }
     }
+  }
 
-    // Tile randomTile = getRandomTile();
-    // Vector2i coords = randomTile.getCoords();
-    // Stockpile stockpile = new Stockpile(coords.x, coords.y);
-    // randomTile.placeThing(stockpile);
-
+  @Override
+  protected void connect() {
     camera = get(Camera.class);
+  }
+
+  @Override
+  protected void start() {
     camera.focus(WORLD_SIZE / 2, WORLD_SIZE / 2);
   }
 

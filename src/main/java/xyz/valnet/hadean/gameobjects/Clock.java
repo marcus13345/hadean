@@ -11,11 +11,6 @@ public class Clock extends GameObject {
   private float time = 12;
 
   @Override
-  public void start() {
-
-  }
-
-  @Override
   public void update(float dTime) {
     time += 0.0004f;
     while (time >= 24) time -= 24;

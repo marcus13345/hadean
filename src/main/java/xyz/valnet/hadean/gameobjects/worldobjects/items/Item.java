@@ -18,12 +18,14 @@ public abstract class Item extends WorldObject implements ISelectable, ITileThin
   private Job haulJob = null;
 
   @Override
-  public void start() {
-    super.start();
-    if(jobboard == null) {
-      jobboard = get(JobBoard.class);
-      markForHaul();
-    }
+  protected void connect() {
+    super.connect();
+    jobboard = get(JobBoard.class);
+  }
+  
+  protected void create() {
+    super.create();
+    if(haulOnCreate()) markForHaul();
   }
 
   protected boolean haulOnCreate() {

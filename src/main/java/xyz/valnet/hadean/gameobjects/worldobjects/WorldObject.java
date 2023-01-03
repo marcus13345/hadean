@@ -16,7 +16,7 @@ public abstract class WorldObject extends GameObject {
   protected Terrain terrain;
 
   @Override
-  public void start() {
+  protected void connect() {
     camera = get(Camera.class);
     terrain = get(Terrain.class);
   }

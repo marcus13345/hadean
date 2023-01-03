@@ -19,8 +19,8 @@ public class HoverQuery extends GameObject implements ITransient {
   private Camera camera;
 
   @Override
-  public void start() {
-    super.start();
+  protected void connect() {
+    super.connect();
     camera = get(Camera.class);
   }
 

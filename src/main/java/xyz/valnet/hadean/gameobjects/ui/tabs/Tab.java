@@ -10,8 +10,12 @@ public abstract class Tab extends GameObject implements IBottomBarItem, ITransie
   private BottomBar bottombar;
 
   @Override
-  public void start() {
+  protected void connect() {
     bottombar = get(BottomBar.class);
+  }
+  
+  @Override
+  protected void start() {
     bottombar.registerButton(this);
   }
 }

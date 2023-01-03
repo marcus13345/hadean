@@ -33,7 +33,7 @@ public class Pawn extends Agent {
   // private float workEthic = (float) Math.random();
   // private float selfWorth = (float) Math.random();
 
-  private List<Activity> activities = new ArrayList<Activity>();
+  private transient List<Activity> activities = new ArrayList<Activity>();
   private Activity currentActivity = null;
 
   public void pickupItem(Item i) {
@@ -53,14 +53,22 @@ public class Pawn extends Agent {
   }
 
   @Override
+  protected void ready() {
+    super.ready();
+    activities = new ArrayList<Activity>();
+  }
+
+  @Override
   public void start() {
     super.start();
-    x = (int) (Math.random() * Terrain.WORLD_SIZE);
-    y = (int) (Math.random() * Terrain.WORLD_SIZE);
 
     activities.add(new JobActivity(this, get(JobBoard.class)));
     activities.add(new SleepActivity(this, needs, get(Clock.class)));
-    // activities.add(new WanderActivity());
+  }
+
+  protected void create() {
+    x = (int) (Math.random() * Terrain.WORLD_SIZE);
+    y = (int) (Math.random() * Terrain.WORLD_SIZE);
   }
 
   @Override

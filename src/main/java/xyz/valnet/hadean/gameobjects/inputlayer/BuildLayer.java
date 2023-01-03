@@ -21,7 +21,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
   private IBuildLayerListener listener = null;
 
   @Override
-  public void start() {
+  protected void connect() {
     camera = get(Camera.class);
   }
 

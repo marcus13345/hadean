@@ -10,6 +10,7 @@ public class GameObject implements IRenderable, ITickable, Serializable {
 
   public void link(SceneGraph scene) {
     this.scene = scene;
+    this.ready();
   }
 
   public boolean inScene() {
@@ -45,6 +46,10 @@ public class GameObject implements IRenderable, ITickable, Serializable {
   @Override
   public void update(float dTime) {}
 
+  // call order goes from top to bottom \/\/\/
+  // ready is called before scene linkage, and serves to initialize
+  // values that may be needed before incoming requests.
+  protected void ready() {}
   // connect is solely for ensuring links to other objects. get() and getAll()
   protected void connect() {}
   // create is guaranteed to only run once for an object, even after save/load

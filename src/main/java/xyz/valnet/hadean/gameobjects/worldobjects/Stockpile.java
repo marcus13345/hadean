@@ -57,11 +57,6 @@ public class Stockpile extends WorldObject implements ISelectable, ITileThing, I
   }
 
   @Override
-  public void start() {
-    super.start();
-  }
-
-  @Override
   public Vector4f getWorldBox() {
     return new Vector4f(x, y, x + w, y + h);
   }

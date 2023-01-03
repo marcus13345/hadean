@@ -49,7 +49,7 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
 
   @Override
   public void update(float dTime) {
-    if(animation < animationMax) animation ++;
+    if(animation < animationMax) animation += dTime;
     if(animation > animationMax) animation = animationMax;
 
     // if(!active) return;

@@ -177,11 +177,11 @@ public class Pawn extends Agent {
   // TODO at some point rewrite this to use an actor component array
   // where we loop through until something _does_ sometihng.
   @Override
-  protected boolean act() {
-    if(super.act()) return true;
+  protected boolean act(float dTime) {
+    if(super.act(dTime)) return true;
     // if(doJob()) return true;
     if(currentActivity != null) {
-      currentActivity.act();
+      currentActivity.act(dTime);
       return true;
     }
     return false;

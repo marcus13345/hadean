@@ -14,12 +14,12 @@ public class Needs implements Serializable {
   private float decay = 0.000004f;
 
   public void update(float dTime) {
-    energy = Math.max(energy - decay, 0);
-    recreation = Math.max(recreation - decay, 0);
+    energy = Math.max(energy - decay * dTime, 0);
+    recreation = Math.max(recreation - decay * dTime, 0);
   }
 
-  public void sleep() {
-    energy = Math.min(energy + decay * restRatio, 1);
+  public void sleep(float dTime) {
+    energy = Math.min(energy + decay * dTime * restRatio, 1);
   }
 
   public float getSleepNeed() {

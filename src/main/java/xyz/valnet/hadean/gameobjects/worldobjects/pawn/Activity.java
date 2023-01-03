@@ -14,7 +14,7 @@ public abstract class Activity implements Serializable {
   public abstract boolean isUrgent();
   public abstract float getBenefit();
   public abstract boolean isValid();
-  public abstract void act();
+  public abstract void act(float dTime);
   public abstract void begin(ActivityCancellationCallback callback);
   public abstract void end();
   public abstract String toString();

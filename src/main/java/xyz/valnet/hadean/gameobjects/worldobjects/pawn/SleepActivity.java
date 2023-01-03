@@ -47,8 +47,8 @@ public class SleepActivity extends Activity {
   }
 
   @Override
-  public void act() {
-    needs.sleep();
+  public void act(float dTime) {
+    needs.sleep(dTime);
     if(needs.getSleepNeed() == 0) {
       callback.apply(this);
     }

@@ -87,8 +87,8 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   }
 
   @Override
-  public boolean doWork() {
-    choppage ++;
+  public boolean doWork(float dTime) {
+    choppage += dTime;
     return getProgress() >= 1;
   }
 

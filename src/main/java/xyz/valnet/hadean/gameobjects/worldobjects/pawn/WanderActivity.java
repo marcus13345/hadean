@@ -29,7 +29,7 @@ public class WanderActivity extends Activity {
   }
 
   @Override
-  public void act() {
+  public void act(float dTime) {
     // since wandering is literally just pathing.
   }
 

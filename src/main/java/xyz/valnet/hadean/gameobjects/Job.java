@@ -72,8 +72,8 @@ public class Job extends GameObject {
     public Vector2i[] getLocations() {
       return subject.getWorkablePositions();
     }
-    public boolean doWork() {
-      return subject.doWork();
+    public boolean doWork(float dTime) {
+      return subject.doWork(dTime);
     }
 
     @Override

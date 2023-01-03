@@ -2,7 +2,9 @@ package xyz.valnet.hadean.gameobjects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
@@ -129,19 +131,35 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
       }
     }
     if(selectedTypes.size() == 1) {
-      // TODO this should only pull common actions to all elements, but rn just pulls the first things actions
-      Action[] actions = selected.get(0).getActions();
-      Button[] actionButtons = new Button[actions.length];
-      for(int i = 0; i < actions.length; i ++) {
-        actionButtons[i] = new SimpleButton(actions[i].name, width + padding * 2 + i * (actionButtonSize + padding), 576 - padding - actionButtonSize - BottomBar.bottomBarHeight, actionButtonSize, actionButtonSize, Layers.GENERAL_UI_INTERACTABLE);
-        actionButtons[i].registerClickListener(this);
-        buttonActionMap.put(actionButtons[i], actions[i]);
-      }
-      setActionButtons(actionButtons);
+      createActionButtons();
     }
     if(selectedTypes.size() <= 1) {
       clearNarrowButtons();
     }
+  }
+
+  private void createActionButtons() {
+
+    buttonActionMap.clear();
+    setActionButtons(ACTIONS_BUTTONS_NULL);
+
+    Set<Action> actionSet = new HashSet<Action>();
+    for(ISelectable selectable : selected) {
+      for(Action action : selectable.getActions()) {
+        actionSet.add(action);
+      }
+    }
+
+    Action[] actions = new Action[actionSet.size()];
+    actionSet.toArray(actions);
+
+    Button[] actionButtons = new Button[actions.length];
+    for(int i = 0; i < actions.length; i ++) {
+      actionButtons[i] = new SimpleButton(actions[i].name, width + padding * 2 + i * (actionButtonSize + padding), 576 - padding - actionButtonSize - BottomBar.bottomBarHeight, actionButtonSize, actionButtonSize, Layers.GENERAL_UI_INTERACTABLE);
+      actionButtons[i].registerClickListener(this);
+      buttonActionMap.put(actionButtons[i], actions[i]);
+    }
+    setActionButtons(actionButtons);
   }
 
   private void setActionButtons(Button[] buttons) {
@@ -163,6 +181,7 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
       for(ISelectable selectable : selected) {
         selectable.runAction(action);
       }
+      createActionButtons();
     }
   }
 

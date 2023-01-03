@@ -13,6 +13,7 @@ public class CustomObjectDeserializer extends ObjectInputStream {
         super(in);
     }
  
+    @SuppressWarnings("rawtypes")
     protected ObjectStreamClass readClassDescriptor() throws IOException, ClassNotFoundException {
         ObjectStreamClass resultClassDescriptor = super.readClassDescriptor(); // initially streams descriptor
         Class localClass; // the class in the local JVM that this descriptor represents.

@@ -13,6 +13,7 @@ import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.gameobjects.Terrain;
 import xyz.valnet.hadean.gameobjects.worldobjects.agents.Agent;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
+import xyz.valnet.hadean.interfaces.IItemReceiver;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
@@ -52,6 +53,15 @@ public class Pawn extends Agent {
     getTile().placeThing(item);
   }
 
+  public void dropoffItem(Item item, IItemReceiver receiver) {
+    if(!inventory.contains(item)) {
+      return;
+    }
+    inventory.remove(item);
+    add(item);
+    receiver.receive(item);
+  }
+
   @Override
   protected void ready() {
     super.ready();
@@ -63,7 +73,7 @@ public class Pawn extends Agent {
     super.start();
 
     activities.add(new JobActivity(this, get(JobBoard.class)));
-    activities.add(new SleepActivity(this, needs, get(Clock.class)));
+    activities.add(new SleepActivity(needs, get(Clock.class)));
   }
 
   protected void create() {
@@ -162,10 +172,6 @@ public class Pawn extends Agent {
     currentActivity.begin(a -> endActivity(a));
   }
 
-  private void endActivity() {
-    endActivity(currentActivity);
-  }
-
   private void endActivity(Activity activity) {
     activity.end();
     stopPathing();
@@ -177,11 +183,11 @@ public class Pawn extends Agent {
   // TODO at some point rewrite this to use an actor component array
   // where we loop through until something _does_ sometihng.
   @Override
-  protected boolean act() {
-    if(super.act()) return true;
+  protected boolean act(float dTime) {
+    if(super.act(dTime)) return true;
     // if(doJob()) return true;
     if(currentActivity != null) {
-      currentActivity.act();
+      currentActivity.act(dTime);
       return true;
     }
     return false;

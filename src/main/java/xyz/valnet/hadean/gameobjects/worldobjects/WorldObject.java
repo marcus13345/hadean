@@ -11,6 +11,8 @@ public abstract class WorldObject extends GameObject {
   
   protected float x;
   protected float y;
+  protected float w;
+  protected float h;
 
   protected Camera camera;
   protected Terrain terrain;

@@ -27,7 +27,7 @@ import static xyz.valnet.engine.util.Math.lerp;
 
 public abstract class Agent extends WorldObject implements ISelectable {
   public abstract String getName();
-  private int frameCounter = 0;
+  private float frameCounter = 0;
   private int speed = 100 + (int)(Math.random() * 50);
 
   private IPathfinder pathfinder;
@@ -58,14 +58,14 @@ public abstract class Agent extends WorldObject implements ISelectable {
   @Override
   public void update(float dTime) {
     think();
-    act();
+    act(dTime);
     postAct();
   }
 
   protected abstract void postAct();
 
-  private void move() {
-    frameCounter++;
+  private void move(float dTime) {
+    frameCounter += dTime;
     if(frameCounter >= speed) {
       Vector2i nextPos = path.pop().getPosition();
       this.x = nextPos.x;
@@ -75,7 +75,7 @@ public abstract class Agent extends WorldObject implements ISelectable {
         nextPath = null;
       }
       if(path.isComplete()) path = null;
-      frameCounter = 0;
+      frameCounter -= speed;
       if(stopPathingFlag) {
         path = null;
         nextPath = null;
@@ -112,9 +112,9 @@ public abstract class Agent extends WorldObject implements ISelectable {
     correctPath();
   }
 
-  protected boolean act() {
+  protected boolean act(float dTime) {
     if(path != null) {
-      move();
+      move(dTime);
       return true;
     }
 
@@ -127,7 +127,7 @@ public abstract class Agent extends WorldObject implements ISelectable {
     Path newPath = pathfinder.getPath((int)this.x, (int)this.y, x, y);
     if(path == null) {
       path = newPath;
-      frameCounter = 0;
+      frameCounter -= 0;
     } else {
       nextPath = newPath;
     }

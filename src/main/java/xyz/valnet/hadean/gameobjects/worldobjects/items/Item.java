@@ -1,6 +1,5 @@
 package xyz.valnet.hadean.gameobjects.worldobjects.items;
 
-import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.Job;
 import xyz.valnet.hadean.gameobjects.JobBoard;
@@ -80,7 +79,7 @@ public abstract class Item extends WorldObject implements ISelectable, ITileThin
   private void markForHaul() {
     if(haulJob != null) return;
     haulJob = add(new Job("Haul " + this.getName()));
-    haulJob.addStep(haulJob.new PickupItem(this, new Vector2f[] { this.getWorldPosition() }));
+    haulJob.addStep(haulJob.new PickupItem(this));
     haulJob.addStep(haulJob.new DropoffAtStockpile(this));
     haulJob.registerClosedListener(() -> {
       haulJob = null;

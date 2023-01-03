@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.gameobjects.worldobjects.Stockpile;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
+import xyz.valnet.hadean.interfaces.IItemReceiver;
 import xyz.valnet.hadean.interfaces.IWorkable;
 
 public class Job extends GameObject {
@@ -26,9 +26,8 @@ public class Job extends GameObject {
 
   public class PickupItem extends JobStep {
     public Item item;
-    public Vector2f[] locations;
     
-    public PickupItem(Item item, Vector2f[] possibleLocations) {
+    public PickupItem(Item item) {
       this.item = item;
     }
 
@@ -43,6 +42,28 @@ public class Job extends GameObject {
     }
   }
 
+  public class DropoffAtItemReceiver extends JobStep {
+
+    public IItemReceiver receiver;
+    public Item item;
+
+    public DropoffAtItemReceiver(IItemReceiver receiver, Item item) {
+      this.receiver = receiver;
+      this.item = item;
+    }
+
+    @Override
+    public Vector2i[] getLocations() {
+      return receiver.getItemDropoffLocations();
+    }
+
+    @Override
+    public boolean isValid() {
+      return true;
+    }
+  }
+
+  // TODO find the _best_ place to dropoff, instead of just the top left place.
   public class DropoffAtStockpile extends JobStep {
     public Item item;
     public DropoffAtStockpile(Item item) {
@@ -72,8 +93,8 @@ public class Job extends GameObject {
     public Vector2i[] getLocations() {
       return subject.getWorkablePositions();
     }
-    public boolean doWork() {
-      return subject.doWork();
+    public boolean doWork(float dTime) {
+      return subject.doWork(dTime);
     }
 
     @Override

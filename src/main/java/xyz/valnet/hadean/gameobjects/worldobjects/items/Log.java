@@ -4,6 +4,11 @@ import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.detail.Detail;
 
+// TODO haul on placed in non stockpile. we could have a situation
+// where the job gets cancelled, because a pawn has the item
+// while it wants to be hauled. thats fine, but what if the pawn then drops
+// the item? it should still be hauled. ergo, we should autohaul
+// when placed in a non stockpile, not just on create.
 public class Log extends Item {
 
   public Log(int x, int y) {

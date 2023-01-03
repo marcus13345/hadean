@@ -32,8 +32,8 @@ public class JobActivity extends Activity {
   }
 
   @Override
-  public void act() {
-    if (doJob()) return;
+  public void act(float dTime) {
+    if (doJob(dTime)) return;
   }
 
 
@@ -83,7 +83,7 @@ public class JobActivity extends Activity {
     job = null;
   }
 
-  private boolean doJob() {
+  private boolean doJob(float dTime) {
     if(!jobboard.workerHasJob(worker)) return false;
     JobStep step = job.getCurrentStep();
     // if we're not at the location of the job...
@@ -91,7 +91,7 @@ public class JobActivity extends Activity {
 
     if(step instanceof Job.Work) {
       Job.Work workStep = (Job.Work)step;
-      if(workStep.doWork()) step.next();
+      if(workStep.doWork(dTime)) step.next();
       return true;
     } else if(step instanceof Job.PickupItem) {
       Job.PickupItem pickupStep = (Job.PickupItem) step;
@@ -104,6 +104,10 @@ public class JobActivity extends Activity {
       worker.dropoffItem(dropoffStep.item);
       step.next();
       return true;
+    } else if(step instanceof Job.DropoffAtItemReceiver) {
+      Job.DropoffAtItemReceiver dropoffStep = (Job.DropoffAtItemReceiver) step;
+      worker.dropoffItem(dropoffStep.item, dropoffStep.receiver);
+      step.next();
     }
 
     return false;

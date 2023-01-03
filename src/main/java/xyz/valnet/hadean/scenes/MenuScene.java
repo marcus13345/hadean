@@ -1,6 +1,5 @@
 package xyz.valnet.hadean.scenes;
 
-import xyz.valnet.engine.App;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.IScene;
 import xyz.valnet.hadean.input.Button;
@@ -10,6 +9,7 @@ import xyz.valnet.hadean.util.Layers;
 
 import static xyz.valnet.hadean.HadeanGame.Hadean;
 
+// TODO convert this to a scenegraph
 public class MenuScene implements IScene, IButtonListener {
 
   private Button btnNewGame = new Button(Assets.frame, "New Game", 50, 200, 128, 32, Layers.GENERAL_UI);
@@ -44,10 +44,10 @@ public class MenuScene implements IScene, IButtonListener {
 
   @Override
   public void update(float dTime) {
-    btnNewGame.setMouseCoords(App.mouseX, App.mouseY);
-    btnLoadGame.setMouseCoords(App.mouseX, App.mouseY);
-    btnOptions.setMouseCoords(App.mouseX, App.mouseY);
-    btnQuit.setMouseCoords(App.mouseX, App.mouseY);
+    // btnNewGame.setMouseCoords(App.mouseX, App.mouseY);
+    // btnLoadGame.setMouseCoords(App.mouseX, App.mouseY);
+    // btnOptions.setMouseCoords(App.mouseX, App.mouseY);
+    // btnQuit.setMouseCoords(App.mouseX, App.mouseY);
     btnNewGame.update();
     btnLoadGame.update();
     btnOptions.update();

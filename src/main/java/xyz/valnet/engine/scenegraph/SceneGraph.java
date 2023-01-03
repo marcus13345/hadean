@@ -153,14 +153,14 @@ public abstract class SceneGraph implements IScene {
   }
 
   private void dump(List<GameObject> objects) {
-    Map<Class, Integer> count = new HashMap<Class, Integer>();
+    Map<Class<? extends GameObject>, Integer> count = new HashMap<Class<? extends GameObject>, Integer>();
     for(GameObject go : objects) {
-      Class clazz = go.getClass();
+      Class<? extends GameObject> clazz = go.getClass();
       if(!count.containsKey(clazz))
         count.put(clazz, 0);
       count.put(clazz, count.get(clazz) + 1);
     }
-    for(Entry<Class, Integer> entry : count.entrySet()) {
+    for(Entry<Class<? extends GameObject>, Integer> entry : count.entrySet()) {
       System.out.println("" + entry.getValue() + "x " + entry.getKey().getSimpleName());
     }
   }
@@ -190,6 +190,7 @@ public abstract class SceneGraph implements IScene {
     saveFlag = false;
   }
 
+  @SuppressWarnings("unchecked")
   private void load() {
     try {
       FileInputStream file = new FileInputStream("SAVE_DATA.TXT");

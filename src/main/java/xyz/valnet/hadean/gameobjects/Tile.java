@@ -2,9 +2,7 @@ package xyz.valnet.hadean.gameobjects;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
-import xyz.valnet.engine.graphics.Sprite;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
@@ -12,6 +10,7 @@ import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.gameobjects.worldobjects.FarmPlot;
 import xyz.valnet.hadean.gameobjects.worldobjects.Tree;
 import xyz.valnet.hadean.gameobjects.worldobjects.WorldObject;
+import xyz.valnet.hadean.gameobjects.worldobjects.items.Boulder;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
 import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.interfaces.IWorkable;
@@ -27,6 +26,7 @@ public class Tile extends WorldObject implements IWorkable {
   // private final int x, y;
   private Vector4f color;
   private final int tileSelector = (int)Math.floor(Math.random() * 4);
+  private boolean rocks = false;
 
   private List<ITileThing> stuff = new ArrayList<ITileThing>();
   // TODO remove remove queue, cause like, we dont iterate over
@@ -57,8 +57,16 @@ public class Tile extends WorldObject implements IWorkable {
 
   @Override
   protected void create() {
+    if(Math.random() > 0.95) {
+      rocks = true;
+    }
     if(Math.random() > 0.97) {
       Tree tree = new Tree((int)x, (int)y);
+      stuff.add(tree);
+      add(tree);
+    } else if(Math.random() > 0.98) {
+      rocks = false;
+      Boulder tree = new Boulder((int)x, (int)y);
       stuff.add(tree);
       add(tree);
     }
@@ -116,6 +124,7 @@ public class Tile extends WorldObject implements IWorkable {
       Assets.flat.pushColor(color);
       camera.draw(Layers.TILES, Assets.defaultTerrain[tileSelector], x, y);
       Assets.flat.popColor();
+      if(rocks) camera.draw(Layers.TILES, Assets.rocks, x, y);
     }
     if(tillLevel > 0f) {
       Assets.flat.pushColor(Vector4f.opacity(tillLevel));

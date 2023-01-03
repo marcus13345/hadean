@@ -104,6 +104,10 @@ public class JobActivity extends Activity {
       worker.dropoffItem(dropoffStep.item);
       step.next();
       return true;
+    } else if(step instanceof Job.DropoffAtItemReceiver) {
+      Job.DropoffAtItemReceiver dropoffStep = (Job.DropoffAtItemReceiver) step;
+      worker.dropoffItem(dropoffStep.item, dropoffStep.receiver);
+      step.next();
     }
 
     return false;

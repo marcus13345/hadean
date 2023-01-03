@@ -13,6 +13,7 @@ import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.gameobjects.Terrain;
 import xyz.valnet.hadean.gameobjects.worldobjects.agents.Agent;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
+import xyz.valnet.hadean.interfaces.IItemReceiver;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
@@ -50,6 +51,15 @@ public class Pawn extends Agent {
     inventory.remove(item);
     add(item);
     getTile().placeThing(item);
+  }
+
+  public void dropoffItem(Item item, IItemReceiver receiver) {
+    if(!inventory.contains(item)) {
+      return;
+    }
+    inventory.remove(item);
+    add(item);
+    receiver.receive(item);
   }
 
   @Override

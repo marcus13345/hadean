@@ -9,6 +9,7 @@ import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.gameobjects.worldobjects.Stockpile;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
+import xyz.valnet.hadean.interfaces.IItemReceiver;
 import xyz.valnet.hadean.interfaces.IWorkable;
 
 public class Job extends GameObject {
@@ -34,6 +35,27 @@ public class Job extends GameObject {
     @Override
     public Vector2i[] getLocations() {
       return new Vector2i[] { item.getWorldPosition().asInt() };
+    }
+
+    @Override
+    public boolean isValid() {
+      return true;
+    }
+  }
+
+  public class DropoffAtItemReceiver extends JobStep {
+
+    public IItemReceiver receiver;
+    public Item item;
+
+    public DropoffAtItemReceiver(IItemReceiver receiver, Item item) {
+      this.receiver = receiver;
+      this.item = item;
+    }
+
+    @Override
+    public Vector2i[] getLocations() {
+      return receiver.getItemDropoffLocations();
     }
 
     @Override

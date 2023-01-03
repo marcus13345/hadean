@@ -44,12 +44,12 @@ public class HadeanGame extends Game {
     
     long allocated = runtime.totalMemory();
     long max = runtime.maxMemory();
-    int left = 780;
+    int left = 770;
     int top = 10;
 
     List<String> strings = new ArrayList<String>();
-    strings.add("=== [ DEBUG ] ===");
-    strings.add("FPS:     " + Math.round(averageFPS) + "/" + measuredFPS + " | AVG/MEASURED");
+    strings.add("     === [ DEBUG ] ===");
+    strings.add("FPS:    " + Math.round(averageFPS) + "/" + measuredFPS + " | AVG/MEASURED");
     strings.add("Mouse:  <" + App.mouseX + ", " + App.mouseY + ">");
     strings.add("MEMORY: " + (int)((allocated / (double)max) * 100) + "% (" + (allocated / (1024 * 1024)) + "/" + (max / (1024 * 1024)) + "MB)");
     strings.add("dTime:  " + dTime);

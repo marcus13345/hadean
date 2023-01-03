@@ -1,6 +1,5 @@
 package xyz.valnet.hadean.gameobjects.worldobjects.items;
 
-import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.Job;
 import xyz.valnet.hadean.gameobjects.JobBoard;

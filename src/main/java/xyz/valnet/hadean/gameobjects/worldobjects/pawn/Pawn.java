@@ -73,7 +73,7 @@ public class Pawn extends Agent {
     super.start();
 
     activities.add(new JobActivity(this, get(JobBoard.class)));
-    activities.add(new SleepActivity(this, needs, get(Clock.class)));
+    activities.add(new SleepActivity(needs, get(Clock.class)));
   }
 
   protected void create() {
@@ -170,10 +170,6 @@ public class Pawn extends Agent {
     currentActivity = activity;
     stopPathing();
     currentActivity.begin(a -> endActivity(a));
-  }
-
-  private void endActivity() {
-    endActivity(currentActivity);
   }
 
   private void endActivity(Activity activity) {

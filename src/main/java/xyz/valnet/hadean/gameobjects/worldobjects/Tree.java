@@ -135,8 +135,5 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   }
 
   @Override
-  public void onPlaced(Tile tile) {
-    // TODO Auto-generated method stub
-    
-  }
+  public void onPlaced(Tile tile) {}
 }

@@ -70,7 +70,6 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
   }
 
   private int x, y;
-  private int screenX, screenY;
   private boolean mouseDown = false;
 
   @Override
@@ -80,8 +79,6 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
     } else if(button == 0 && active && hovered) {
       Vector2i worldcoords = camera.screen2world(App.mouseX, App.mouseY).asInt();
       mouseDown = true;
-      screenX = App.mouseX;
-      screenY = App.mouseY;
       x = worldcoords.x;
       y = worldcoords.y;
     }

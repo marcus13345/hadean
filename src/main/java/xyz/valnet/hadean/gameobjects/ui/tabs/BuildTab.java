@@ -62,17 +62,18 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
 
   }
 
+  @SuppressWarnings("unchecked")
   private void calculateBuildables() {
     try {
-      Class<? extends IBuildable>[] maybeBuildables = getClasses("xyz.valnet.hadean");
+      Class<?>[] maybeBuildables = getClasses("xyz.valnet.hadean");
 
-      for(Class<? extends IBuildable> clazz : maybeBuildables) {
+      for(Class<?> clazz : maybeBuildables) {
         if(clazz.isAnonymousClass()) continue;
         if(!IBuildable.class.isAssignableFrom(clazz)) continue;
         if(clazz.isInterface()) continue;
         if(Modifier.isAbstract(clazz.getModifiers())) continue;
 
-        Constructor<? extends IBuildable> constructor = clazz.getConstructor();
+        Constructor<? extends IBuildable> constructor = (Constructor<? extends IBuildable>) clazz.getConstructor();
         if(constructor.getParameterCount() != 0) {
           System.out.println(clazz + " has no default constructor (no params)");
           continue;
@@ -315,7 +316,8 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
     }
   }
 
-  private static Class[] getClasses(String packageName) throws ClassNotFoundException, IOException {
+  @SuppressWarnings("rawtypes")
+  private static Class<?>[] getClasses(String packageName) throws ClassNotFoundException, IOException {
       ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
       assert classLoader != null;
       String path = packageName.replace('.', '/');
@@ -329,9 +331,10 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
       for (File directory : dirs) {
           classes.addAll(findClasses(directory, packageName));
       }
-      return classes.toArray(new Class[classes.size()]);
+      return (Class<?>[]) classes.toArray(new Class[classes.size()]);
   }
   
+  @SuppressWarnings("rawtypes")
   private static List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException {
     List<Class> classes = new ArrayList<Class>();
     if (!directory.exists()) {

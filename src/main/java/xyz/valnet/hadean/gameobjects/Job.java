@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.gameobjects.worldobjects.Stockpile;
@@ -64,6 +63,7 @@ public class Job extends GameObject {
     }
   }
 
+  // TODO find the _best_ place to dropoff, instead of just the top left place.
   public class DropoffAtStockpile extends JobStep {
     public Item item;
     public DropoffAtStockpile(Item item) {

@@ -113,7 +113,6 @@ public class Stockpile extends WorldObject implements ISelectable, ITileThing, I
 
   @Override
   public String getName() {
-    // TODO Auto-generated method stub
     return "Stockpile";
   }
 

@@ -87,8 +87,6 @@ public class Tile extends WorldObject implements IWorkable {
     }
     thing.onPlaced(this);
     if(thing instanceof FarmPlot) {
-      desiredTill = true;
-
       get(JobBoard.class).postSimpleWorkJob("Till Soil", this);
     }
   }
@@ -140,12 +138,7 @@ public class Tile extends WorldObject implements IWorkable {
     return true;
   }
 
-  private boolean desiredTill = false;
   private float tillLevel = 0;
-
-  public void setTill(boolean till) {
-    desiredTill = till;
-  }
 
   @Override
   public Vector2i[] getWorkablePositions() {

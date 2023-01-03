@@ -3,23 +3,17 @@ package xyz.valnet.hadean.gameobjects.worldobjects.pawn;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.util.Math.WeightedAverage;
 import xyz.valnet.hadean.gameobjects.Clock;
-import xyz.valnet.hadean.gameobjects.worldobjects.agents.Agent;
-
-import static xyz.valnet.engine.util.Math.lerp;
 
 public class SleepActivity extends Activity {
   
-  private Agent agent;
   private Needs needs;
   private Clock clock;
 
   private float circadianStrength = (float)Math.random() * 5f;
 
-  private int stage;
 
-  public SleepActivity(Agent agent, Needs needs, Clock clock) {
+  public SleepActivity(Needs needs, Clock clock) {
     this.needs = needs;
-    this.agent = agent;
     this.clock = clock;
   }
 

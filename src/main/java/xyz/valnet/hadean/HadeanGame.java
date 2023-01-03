@@ -11,7 +11,6 @@ import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.scenes.GameScene;
 import xyz.valnet.hadean.util.Assets;
 
-
 public class HadeanGame extends Game {
   public static final HadeanGame Hadean = new HadeanGame();
 

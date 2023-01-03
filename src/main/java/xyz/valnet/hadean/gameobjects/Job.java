@@ -26,9 +26,8 @@ public class Job extends GameObject {
 
   public class PickupItem extends JobStep {
     public Item item;
-    public Vector2f[] locations;
     
-    public PickupItem(Item item, Vector2f[] possibleLocations) {
+    public PickupItem(Item item) {
       this.item = item;
     }
 

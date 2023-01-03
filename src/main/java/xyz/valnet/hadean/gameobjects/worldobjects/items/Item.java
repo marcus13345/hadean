@@ -80,7 +80,7 @@ public abstract class Item extends WorldObject implements ISelectable, ITileThin
   private void markForHaul() {
     if(haulJob != null) return;
     haulJob = add(new Job("Haul " + this.getName()));
-    haulJob.addStep(haulJob.new PickupItem(this, new Vector2f[] { this.getWorldPosition() }));
+    haulJob.addStep(haulJob.new PickupItem(this));
     haulJob.addStep(haulJob.new DropoffAtStockpile(this));
     haulJob.registerClosedListener(() -> {
       haulJob = null;

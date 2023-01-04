@@ -22,6 +22,8 @@ public class Assets {
   public static final Tile9 uiFrame;
   public static final Tile9 uiFrameLight;
   public static final Tile9 uiFrameDark;
+  public static final Tile9 fillColor;
+  
   
   public static final Sprite[] defaultTerrain;
   public static final Sprite[] growingRice;
@@ -246,6 +248,18 @@ public class Assets {
       new Sprite(atlas,  8, 97, 7, 7),
       new Sprite(atlas, 15, 97, 2, 7),
       new Sprite(atlas, 17, 97, 7, 7)
+    );
+
+    fillColor = new Tile9(
+      new Sprite(atlas, 44, 64, 1, 1),
+      new Sprite(atlas, 44, 64, 1, 1),
+      new Sprite(atlas, 44, 64, 1, 1),
+      new Sprite(atlas, 44, 64, 1, 1),
+      new Sprite(atlas, 44, 64, 1, 1),
+      new Sprite(atlas, 44, 64, 1, 1),
+      new Sprite(atlas, 44, 64, 1, 1),
+      new Sprite(atlas, 44, 64, 1, 1),
+      new Sprite(atlas, 44, 64, 1, 1)
     );
     
     uiFrame = new Tile9(

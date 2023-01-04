@@ -1,11 +1,16 @@
 package xyz.valnet.hadean.gameobjects;
 
+import static xyz.valnet.engine.util.Math.lerp;
+
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.graphics.Sprite;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector4f;
+import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.interfaces.IWorldBoundsAdapter;
+import xyz.valnet.hadean.util.Assets;
+import xyz.valnet.hadean.util.Layers;
 
 public class Camera extends GameObject {
 
@@ -75,6 +80,17 @@ public class Camera extends GameObject {
     Vector2f screenPos = world2screen(x, y);
     Drawing.setLayer(layer + (((y + h) - minY) / (maxY - minY)));
     Drawing.drawSprite(sprite, (int)(screenPos.x), (int)(screenPos.y), (int)(tileWidth * w), (int)(tileWidth * h));
+  }
+
+  public void drawProgressBar(float progress, Vector4f worldBox) {
+    int h = 6;
+    Vector4i box = world2Screen(worldBox).toXYWH().asInt();
+    Drawing.setLayer(Layers.GENERAL_UI);
+    Assets.flat.pushColor(new Vector4f(0, 0, 0, 1));
+    Assets.uiFrame.draw(box.x - h, box.y + box.w / 2 - h / 2, box.z + h * 2, h);
+    Assets.flat.swapColor(new Vector4f(1, 1, 0, 1));
+    Assets.fillColor.draw(box.x + 1 - h, box.y + 1 + box.w / 2 - h / 2, (int)Math.round(lerp(0, box.z - 3 + h * 2, progress)) + 1, h - 2);
+    Assets.flat.popColor();
   }
   
 }

@@ -54,4 +54,8 @@ public class Vector4f implements Serializable {
     );
   }
 
+  public Vector4i asInt() {
+    return new Vector4i((int)x, (int)y, (int)z, (int)w);
+  }
+
 }

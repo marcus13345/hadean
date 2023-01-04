@@ -30,10 +30,13 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
 
   @Override
   public void render() {
-    Assets.flat.pushColor(new Vector4f(1 - getProgress(), 1 - getProgress(), 1 - getProgress(), 1.0f));
+    // Assets.flat.pushColor(new Vector4f(1 - getProgress(), 1 - getProgress(), 1 - getProgress(), 1.0f));
     camera.draw(Layers.AIR, Assets.tree, x - 1, y - 2, 3, 3);
-    Assets.flat.popColor();
+    // Assets.flat.popColor();
     if(chopJob != null) {
+      if(getProgress() > 0) {
+        camera.drawProgressBar(getProgress(), new Vector4f(x - 1, y - 2, x + 2, y + 1));
+      }
       camera.draw(Layers.MARKERS, Assets.lilAxe, x, y);
     }
   }

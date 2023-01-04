@@ -56,9 +56,9 @@ public abstract class Item extends WorldObject implements ISelectable, ITileThin
   @Override
   public void renderAlpha() {
     if(haulJob != null) {
-      Assets.flat.pushColor(Vector4f.opacity(0.4f));
-      camera.draw(Layers.GENERAL_UI, Assets.haulArrow, getWorldPosition());
-      Assets.flat.popColor();
+      // Assets.flat.pushColor(Vector4f.opacity(1f));
+      camera.draw(Layers.MARKERS, Assets.haulArrow, getWorldPosition());
+      // Assets.flat.popColor();
     }
   }
 

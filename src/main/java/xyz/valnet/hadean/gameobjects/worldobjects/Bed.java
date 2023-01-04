@@ -1,7 +1,5 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
-import static xyz.valnet.engine.util.Math.lerp;
-
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.Job;
@@ -44,12 +42,22 @@ public class Bed extends WorldObject implements IBuildable, IItemReceiver, IWork
   @Override
   public void render() {
     super.render();
+
     if(isBuilt()) {
       camera.draw(Layers.GROUND, Assets.bed, (int)x, (int)y, 1, 2);
     } else {
-      Assets.flat.pushColor(Vector4f.opacity(lerp(0.5f, 1.0f, work / maxWork)));
+      float p = work / maxWork;
+      float b = 4;
+
+      Assets.flat.pushColor(new Vector4f(b, b, b, 0.5f));
       camera.draw(Layers.GROUND, Assets.bed, (int)x, (int)y, 1, 2);
       Assets.flat.popColor();
+
+      if(logs > 0) {
+        camera.drawProgressBar(p, getWorldBox());
+      }
+      // Assets.uiFrame.draw(box.x -3, box.y - 6, (int)Math.round(lerp(0, box.z + 6, p)), 4);
+
     }
   }
 
@@ -133,7 +141,7 @@ public class Bed extends WorldObject implements IBuildable, IItemReceiver, IWork
   public Detail[] getDetails() {
     return new Detail[] {
       new BooleanDetail("Built", isBuilt()),
-      new PercentDetail("Work", work / maxWork),
+      new PercentDetail("Work", work / maxWork, 1),
       new ObjectDetail<Integer>("Logs", logs),
     };
   }

@@ -5,6 +5,7 @@ import xyz.valnet.hadean.gameobjects.Job;
 import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.gameobjects.worldobjects.WorldObject;
+import xyz.valnet.hadean.interfaces.IItemPredicate;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.util.Action;
@@ -91,5 +92,9 @@ public abstract class Item extends WorldObject implements ISelectable, ITileThin
   public void onPlaced(Tile tile) {
     this.x = tile.getCoords().x;
     this.y = tile.getCoords().y;
+  }
+
+  public boolean matches(IItemPredicate itemPredicate) {
+    return itemPredicate.matches(this);
   }
 }

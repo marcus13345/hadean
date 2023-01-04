@@ -82,7 +82,8 @@ public class JobActivity extends Activity {
     jobboard.quitJob(worker, job);
     job = null;
   }
-
+  // TODO pawns should keep tabs of what job step an item is picked up from
+  // so dropoff steps can reference the pickup step.
   private boolean doJob(float dTime) {
     if(!jobboard.workerHasJob(worker)) return false;
     JobStep step = job.getCurrentStep();
@@ -108,6 +109,17 @@ public class JobActivity extends Activity {
       Job.DropoffAtItemReceiver dropoffStep = (Job.DropoffAtItemReceiver) step;
       worker.dropoffItem(dropoffStep.item, dropoffStep.receiver);
       step.next();
+      return true;
+    } else if(step instanceof Job.DropoffPredicateAtItemReceiver) {
+      Job.DropoffPredicateAtItemReceiver dropoffStep = (Job.DropoffPredicateAtItemReceiver) step;
+      worker.dropoffPredicate(dropoffStep.predicate, dropoffStep.receiver);
+      step.next();
+      return true;
+    } else if(step instanceof Job.PickupItemByPredicate) {
+      Job.PickupItemByPredicate pickupStep = (Job.PickupItemByPredicate) step;
+      worker.pickupItemByPredicate(pickupStep.predicate);
+      step.next();
+      return true;
     }
 
     return false;

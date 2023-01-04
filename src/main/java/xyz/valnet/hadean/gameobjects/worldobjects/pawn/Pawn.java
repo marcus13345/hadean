@@ -13,6 +13,7 @@ import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.gameobjects.Terrain;
 import xyz.valnet.hadean.gameobjects.worldobjects.agents.Agent;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
+import xyz.valnet.hadean.interfaces.IItemPredicate;
 import xyz.valnet.hadean.interfaces.IItemReceiver;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
@@ -37,6 +38,15 @@ public class Pawn extends Agent {
   private transient List<Activity> activities = new ArrayList<Activity>();
   private Activity currentActivity = null;
 
+  private Item heldItem = null;
+
+  public void pickupItemByPredicate(IItemPredicate itemPredicate) {
+    Item item = getTile().pickupByItemPredicate(itemPredicate);
+    if(item == null) return;
+    remove(item);
+    inventory.add(item);
+  }
+
   public void pickupItem(Item i) {
     Item item = getTile().removeThing(i);
     if(item == null) return;
@@ -60,6 +70,22 @@ public class Pawn extends Agent {
     inventory.remove(item);
     add(item);
     receiver.receive(item);
+  }
+
+  private Item getInventoryItemByPredicate(IItemPredicate predicate) {
+    for(Item item : inventory) {
+      if(!item.matches(predicate)) continue;
+      return item;
+    }
+    return null;
+  }
+
+  public void dropoffPredicate(IItemPredicate predicate, IItemReceiver receiver) {
+    Item item = getInventoryItemByPredicate(predicate);
+    if(!inventory.contains(item)) {
+      return;
+    }
+    dropoffItem(item, receiver);
   }
 
   @Override
@@ -102,7 +128,8 @@ public class Pawn extends Agent {
     return mergeDetails(needs.getDetails(), new Detail[] {
       new ObjectDetail<Activity>("Activity", currentActivity),
       new PercentDetail("Sleep Value", activities.get(1).getBenefit(), 2),
-      new BooleanDetail("Pathing", isPathing())
+      new BooleanDetail("Pathing", isPathing()),
+      new ObjectDetail<Integer>("Inventory", inventory.size())
     });
   }
 

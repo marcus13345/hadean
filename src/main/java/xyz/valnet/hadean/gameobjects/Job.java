@@ -2,12 +2,15 @@ package xyz.valnet.hadean.gameobjects;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.gameobjects.worldobjects.Stockpile;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
+import xyz.valnet.hadean.interfaces.IItemPredicate;
 import xyz.valnet.hadean.interfaces.IItemReceiver;
 import xyz.valnet.hadean.interfaces.IWorkable;
 
@@ -39,6 +42,52 @@ public class Job extends GameObject {
     @Override
     public boolean isValid() {
       return true;
+    }
+  }
+
+  public class DropoffPredicateAtItemReceiver extends JobStep {
+
+    public IItemReceiver receiver;
+    public IItemPredicate predicate;
+
+    public DropoffPredicateAtItemReceiver(IItemReceiver receiver, IItemPredicate predicate) {
+      this.receiver = receiver;
+      this.predicate = predicate;
+    }
+
+    @Override
+    public Vector2i[] getLocations() {
+      return receiver.getItemDropoffLocations();
+    }
+
+    @Override
+    public boolean isValid() {
+      return true;
+    }
+  }
+
+  public class PickupItemByPredicate extends JobStep {
+    public IItemPredicate predicate;
+    
+    public PickupItemByPredicate(IItemPredicate predicate) {
+      this.predicate = predicate;
+    }
+
+    @Override
+    public Vector2i[] getLocations() {
+      Set<Vector2i> positionSet = new HashSet<Vector2i>();
+      for(Item item : that.getAll(Item.class)) {
+        if(!item.matches(predicate)) continue;
+        positionSet.add(item.getWorldPosition().asInt());
+      }
+      Vector2i[] positions = new Vector2i[positionSet.size()];
+      positionSet.toArray(positions);
+      return positions;
+    }
+
+    @Override
+    public boolean isValid() {
+      return getLocations().length > 0;
     }
   }
 

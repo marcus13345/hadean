@@ -12,6 +12,7 @@ import xyz.valnet.hadean.gameobjects.worldobjects.Tree;
 import xyz.valnet.hadean.gameobjects.worldobjects.WorldObject;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Boulder;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
+import xyz.valnet.hadean.interfaces.IItemPredicate;
 import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.interfaces.IWorkable;
 import xyz.valnet.hadean.util.Assets;
@@ -23,7 +24,6 @@ public class Tile extends WorldObject implements IWorkable {
   private static int greenSeed = (int)(Math.random() * 10000);
   private static int blueSeed = (int)(Math.random() * 10000);
 
-  // private final int x, y;
   private Vector4f color;
   private final int tileSelector = (int)Math.floor(Math.random() * 4);
   private boolean rocks = false;
@@ -78,6 +78,18 @@ public class Tile extends WorldObject implements IWorkable {
       if(thing instanceof Item) return false;
     }
     return true;
+  }
+
+  public Item pickupByItemPredicate(IItemPredicate itemPredicate) {
+    for(ITileThing thing : stuff) {
+      if(thing instanceof Item) {
+        Item item = (Item) thing;
+        if(item.matches(itemPredicate)) {
+          return removeThing(item);
+        }
+      }
+    }
+    return null;
   }
 
   public void placeThing(ITileThing thing) {

@@ -1,5 +1,6 @@
 package xyz.valnet.hadean.gameobjects.worldobjects.items;
 
+import xyz.valnet.hadean.interfaces.IItemPredicate;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.detail.Detail;
@@ -10,6 +11,8 @@ import xyz.valnet.hadean.util.detail.Detail;
 // the item? it should still be hauled. ergo, we should autohaul
 // when placed in a non stockpile, not just on create.
 public class Log extends Item {
+
+  public static IItemPredicate LOG_PREDICATE = (item) -> (item instanceof Log);
 
   public Log(int x, int y) {
     this.x = x;

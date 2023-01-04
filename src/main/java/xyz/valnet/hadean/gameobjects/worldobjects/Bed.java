@@ -33,13 +33,10 @@ public class Bed extends WorldObject implements IBuildable, IItemReceiver, IWork
   @Override
   protected void create() {
     super.create();
-    // TODO eventually we're going to need a serializable ItemPredicate to select valid items.
-    // it will be useful for stockpile filters, pickup items, etc. basically a placeholder
-    // for "any item that matches X" as a data type.
     job = add(new Job("Build Bed"));
     Log log = get(Log.class);
-    job.addStep(job.new PickupItem(log));
-    job.addStep(job.new DropoffAtItemReceiver(this, log));
+    job.addStep(job.new PickupItemByPredicate(Log.LOG_PREDICATE));
+    job.addStep(job.new DropoffPredicateAtItemReceiver(this, Log.LOG_PREDICATE));
     job.addStep(job.new Work(this));
     get(JobBoard.class).postJob(job);
   }
@@ -76,6 +73,8 @@ public class Bed extends WorldObject implements IBuildable, IItemReceiver, IWork
 
   @Override
   public boolean receive(Item item) {
+    if(item == null) return false;
+    if(!item.matches(Log.LOG_PREDICATE)) return false;
     remove(item);
     logs ++;
     return true;

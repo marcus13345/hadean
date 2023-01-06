@@ -36,7 +36,7 @@ public class Job extends GameObject {
 
     @Override
     public Vector2i[] getLocations() {
-      return new Vector2i[] { item.getWorldPosition().asInt() };
+      return new Vector2i[] { item.getWorldPosition().xy() };
     }
 
     @Override
@@ -78,7 +78,7 @@ public class Job extends GameObject {
       Set<Vector2i> positionSet = new HashSet<Vector2i>();
       for(Item item : that.getAll(Item.class)) {
         if(!item.matches(predicate)) continue;
-        positionSet.add(item.getWorldPosition().asInt());
+        positionSet.add(item.getWorldPosition().xy());
       }
       Vector2i[] positions = new Vector2i[positionSet.size()];
       positionSet.toArray(positions);

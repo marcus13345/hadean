@@ -24,31 +24,26 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   private Job chopJob = null;
 
   public Tree(int x, int y) {
-    this.x = x;
-    this.y = y;
+    setPosition(x, y);
   }
 
   @Override
   public void render() {
+    Vector2i pos = getWorldPosition().xy();
     // Assets.flat.pushColor(new Vector4f(1 - getProgress(), 1 - getProgress(), 1 - getProgress(), 1.0f));
-    camera.draw(Layers.AIR, Assets.tree, x - 1, y - 2, 3, 3);
+    camera.draw(Layers.AIR, Assets.tree, pos.x - 1, pos.y - 2, 3, 3);
     // Assets.flat.popColor();
     if(chopJob != null) {
       if(getProgress() > 0) {
-        camera.drawProgressBar(getProgress(), new Vector4f(x - 1, y - 2, x + 2, y + 1));
+        camera.drawProgressBar(getProgress(), new Vector4f(pos.x - 1, pos.y - 2, pos.x + 2, pos.y + 1));
       }
-      camera.draw(Layers.MARKERS, Assets.lilAxe, x, y);
+      camera.draw(Layers.MARKERS, Assets.lilAxe, pos.x, pos.y);
     }
   }
 
   @Override
   public boolean isWalkable() {
     return false;
-  }
-
-  @Override
-  public Vector4f getWorldBox() {
-    return new Vector4f(x, y, x + 1, y + 1);
   }
 
   public static final Action ACTION_CHOP = new Action("Chop");
@@ -74,11 +69,12 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
 
   @Override
   public Vector2i[] getWorkablePositions() {
+    Vector2i pos = getWorldPosition().xy();
     return new Vector2i[] {
-      new Vector2i((int)x, (int)y - 1),
-      new Vector2i((int)x, (int)y + 1),
-      new Vector2i((int)x - 1, (int)y),
-      new Vector2i((int)x + 1, (int)y)
+      new Vector2i(pos.x, pos.y - 1),
+      new Vector2i(pos.x, pos.y + 1),
+      new Vector2i(pos.x - 1, pos.y),
+      new Vector2i(pos.x + 1, pos.y)
     };
   }
 
@@ -123,7 +119,8 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
 
   @Override
   public void onRemove() {
-    Log log = new Log((int)x, (int)y);
+    Vector2i pos = getWorldPosition().xy();
+    Log log = new Log(pos.x, pos.y);
     getTile().placeThing(log);
   }
 

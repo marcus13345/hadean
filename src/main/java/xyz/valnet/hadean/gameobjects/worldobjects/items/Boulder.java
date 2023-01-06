@@ -1,5 +1,6 @@
 package xyz.valnet.hadean.gameobjects.worldobjects.items;
 
+import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.detail.Detail;
@@ -7,8 +8,7 @@ import xyz.valnet.hadean.util.detail.Detail;
 public class Boulder extends Item {
 
   public Boulder(int x, int y) {
-    this.x = x;
-    this.y = y;
+    setPosition(x, y);
   }
 
   @Override
@@ -18,7 +18,8 @@ public class Boulder extends Item {
 
   @Override
   public void render() {
-    camera.draw(Layers.GROUND, Assets.bigRock, x, y);
+    Vector2i pos = getWorldPosition().xy();
+    camera.draw(Layers.GROUND, Assets.bigRock, pos.x, pos.y);
   }
 
   @Override

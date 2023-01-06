@@ -1,32 +1,25 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
 import xyz.valnet.engine.math.Vector4f;
+import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.interfaces.BuildableMetadata;
-import xyz.valnet.hadean.interfaces.IBuildable;
 import xyz.valnet.hadean.interfaces.ISelectable;
-import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.detail.Detail;
 
 @BuildableMetadata(category = "Zones", name = "Farm Plot")
-public class FarmPlot extends WorldObject implements ISelectable, ITileThing, IBuildable {
-
-  private int w, h;
+public class FarmPlot extends Buildable implements ISelectable {
 
   @Override
   public void renderAlpha() {
     if(!visible) return;
+    Vector4i pos = getWorldPosition();
     Assets.flat.pushColor(new Vector4f(0.4f, 1f, 0.3f, 0.2f));
-    camera.draw(Layers.GROUND, Assets.whiteBox, x, y, w, h);
+    camera.draw(Layers.GROUND, Assets.whiteBox, pos.x, pos.y, pos.z, pos.w);
     Assets.flat.popColor();
-  }
-
-  @Override
-  public Vector4f getWorldBox() {
-    return new Vector4f(x, y, x + w, y + h);
   }
 
   private static Action TOGGLE_VISIBILITY = new Action("Hide\n----\nShow");
@@ -63,20 +56,6 @@ public class FarmPlot extends WorldObject implements ISelectable, ITileThing, IB
   @Override
   public void onRemove() {
     
-  }
-
-  @Override
-  public void buildAt(int x, int y, int w, int h) {
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
-    
-    for(int i = x; i < x + w; i ++) {
-      for(int j = y; j < y + h; j ++) {
-        terrain.getTile(i, j).placeThing(this);
-      }
-    }
   }
 
   @Override

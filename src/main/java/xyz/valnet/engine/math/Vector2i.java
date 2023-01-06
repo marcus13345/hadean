@@ -22,7 +22,7 @@ public class Vector2i implements Serializable {
 
   public boolean isOneOf(Vector2i[] others) {
     for(Vector2i other : others) {
-      if(other.equals(this)) {
+       if(other.equals(this)) {
         return true;
       }
     }

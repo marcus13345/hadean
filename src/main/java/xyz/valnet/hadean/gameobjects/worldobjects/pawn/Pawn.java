@@ -103,8 +103,10 @@ public class Pawn extends Agent {
   }
 
   protected void create() {
-    x = (int) (Math.random() * Terrain.WORLD_SIZE);
-    y = (int) (Math.random() * Terrain.WORLD_SIZE);
+    setPosition(
+      (int) (Math.random() * Terrain.WORLD_SIZE),
+      (int) (Math.random() * Terrain.WORLD_SIZE)
+    );
   }
 
   @Override
@@ -131,11 +133,6 @@ public class Pawn extends Agent {
       new BooleanDetail("Pathing", isPathing()),
       new ObjectDetail<Integer>("Inventory", inventory.size())
     });
-  }
-
-  @Override
-  public Vector2f getWorldPosition() {
-    return new Vector2f(x, y);
   }
 
   @Override

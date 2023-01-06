@@ -37,11 +37,6 @@ public abstract class Item extends WorldObject implements ISelectable, ITileThin
     return null;
   }
 
-  @Override
-  public Vector4f getWorldBox() {
-    return new Vector4f(x, y, x + 1, y + 1);
-  }
-
   public static final Action HAUL = new Action("Haul");
   public static final Action CANCEL_HAUL = new Action("Cancel\n Haul");
 
@@ -57,7 +52,7 @@ public abstract class Item extends WorldObject implements ISelectable, ITileThin
   public void renderAlpha() {
     if(haulJob != null) {
       // Assets.flat.pushColor(Vector4f.opacity(1f));
-      camera.draw(Layers.MARKERS, Assets.haulArrow, getWorldPosition());
+      camera.draw(Layers.MARKERS, Assets.haulArrow, getWorldPosition().xy().asFloat());
       // Assets.flat.popColor();
     }
   }
@@ -90,8 +85,7 @@ public abstract class Item extends WorldObject implements ISelectable, ITileThin
 
   @Override
   public void onPlaced(Tile tile) {
-    this.x = tile.getCoords().x;
-    this.y = tile.getCoords().y;
+    setPosition(tile.getWorldPosition());
   }
 
   public boolean matches(IItemPredicate itemPredicate) {

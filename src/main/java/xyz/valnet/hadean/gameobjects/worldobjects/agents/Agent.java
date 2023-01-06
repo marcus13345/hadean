@@ -40,11 +40,12 @@ public abstract class Agent extends WorldObject implements ISelectable {
   }
 
   public Vector2f getCalculatedPosition() {
-    if(path == null || path.isComplete()) return getWorldPosition();
+    if(path == null || path.isComplete()) return getWorldPosition().xy().asFloat();
+    Vector2i pos = getWorldPosition().xy();
     Vector2f nextPos = path.peek().getPosition().asFloat();
     return new Vector2f(
-      lerp(x, nextPos.x, frameCounter / (float)speed),
-      lerp(y, nextPos.y, frameCounter / (float)speed)
+      lerp(pos.x, nextPos.x, frameCounter / (float)speed),
+      lerp(pos.y, nextPos.y, frameCounter / (float)speed)
     );
   }
 
@@ -68,8 +69,7 @@ public abstract class Agent extends WorldObject implements ISelectable {
     frameCounter += dTime;
     if(frameCounter >= speed) {
       Vector2i nextPos = path.pop().getPosition();
-      this.x = nextPos.x;
-      this.y = nextPos.y;
+      setPosition(nextPos.x, nextPos.y);
       if(nextPath != null) {
         path = nextPath;
         nextPath = null;
@@ -92,16 +92,17 @@ public abstract class Agent extends WorldObject implements ISelectable {
   private void correctPath() {
     if(path != null && path.isComplete()) path = null;
     if(path == null) return;
-    if(path.peek().getPosition().equals(this.getWorldPosition().asInt())) {
+    if(path.peek().getPosition().equals(this.getWorldPosition().xy())) {
       path.pop();
     }
     if(path != null && path.isComplete()) path = null;
     if(path == null) return;
     Tile nextTile = terrain.getTile(path.peek().getPosition());
     if(!nextTile.isWalkable()) {
+      Vector2i pos = getWorldPosition().xy();
       path = pathfinder.getPath(
-        (int)Math.floor(x),
-        (int)Math.floor(y),
+        pos.x,
+        pos.y,
         path.dst.x,
         path.dst.y
       );
@@ -124,7 +125,8 @@ public abstract class Agent extends WorldObject implements ISelectable {
   private Path nextPath = null;
 
   public void goTo(int x, int y) {
-    Path newPath = pathfinder.getPath((int)this.x, (int)this.y, x, y);
+    Vector2i pos = getWorldPosition().xy();
+    Path newPath = pathfinder.getPath(pos.x, pos.y, x, y);
     if(path == null) {
       path = newPath;
       frameCounter -= 0;
@@ -134,7 +136,7 @@ public abstract class Agent extends WorldObject implements ISelectable {
   }
 
   public void goToClosest(Vector2i[] destinations) {
-    Path newPath = pathfinder.getBestPath(this.getWorldPosition().asInt(), destinations);
+    Path newPath = pathfinder.getBestPath(getWorldPosition().xy(), destinations);
     if(path == null) {
       path = newPath;
       frameCounter = 0;
@@ -148,9 +150,10 @@ public abstract class Agent extends WorldObject implements ISelectable {
   }
 
   public void wander() {
+    Vector2i pos = getWorldPosition().xy();
     int randomX = (int)Math.floor(Math.random() * Terrain.WORLD_SIZE);
     int randomY = (int)Math.floor(Math.random() * Terrain.WORLD_SIZE);
-    path = pathfinder.getPath((int)x, (int)y, randomX, randomY);
+    path = pathfinder.getPath(pos.x, pos.y, randomX, randomY);
   }
 
   @Override
@@ -164,7 +167,8 @@ public abstract class Agent extends WorldObject implements ISelectable {
         glBegin(GL_LINES);
           Vector2f u, v;
 
-          if(node.from == null) u = camera.world2screen(x, y);
+          Vector2i pos = getWorldPosition().xy();
+          if(node.from == null) u = camera.world2screen(pos.x, pos.y);
           else u = camera.world2screen(node.from.x + 0.5f, node.from.y + 0.5f);
 
           v = camera.world2screen(node.x + 0.5f, node.y + 0.5f);

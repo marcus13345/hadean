@@ -51,3 +51,22 @@ consequence is that without proper care a single
 event could immediately open & close the panel in
 the same frame. so, the event should be able to
 be captured and cease propogation.
+
+
+# ready()
+call order goes from top to bottom \/\/\/
+ready is called before scene linkage, and
+serves to initialize values that may be
+needed before incoming requests.
+
+# connect()
+connect is solely for ensuring links to
+other objects. get() and getAll()
+
+# create()
+create is guaranteed to only run once for
+an object, even after save/load
+
+# start()
+start is called any time the object is added
+to a scene

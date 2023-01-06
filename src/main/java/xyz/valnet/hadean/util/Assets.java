@@ -49,7 +49,7 @@ public class Assets {
   public static final SimpleShader flat;
 
   static {
-    flat = new SimpleShader("shaders/flat.vert", "shaders/flat.frag");
+    flat = new SimpleShader("res/shaders/flat.vert", "res/shaders/flat.frag");
 
     atlas = new Texture("res/textures.png");
 

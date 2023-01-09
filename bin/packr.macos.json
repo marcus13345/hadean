@@ -8,7 +8,7 @@
   "removelibs": [],
   "mainclass": "xyz.valnet.hadean.HadeanGame",
   "vmargs": [
-
+    "-XstartOnFirstThread"
   ],
   "resources": [
     "output/macos/raw/lib",

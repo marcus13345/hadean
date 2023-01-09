@@ -14,15 +14,15 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>16</maven.compiler.source>
+    <maven.compiler.target>16</maven.compiler.target>
     <lwjgl.version>3.3.1</lwjgl.version>
     <jar.finalName>${project.name}</jar.finalName>
   </properties>
 
   <profiles>
     <profile>
-      <id>lwjgl-natives-linux-amd64</id>
+      <id>linux</id>
       <activation>
         <os>
           <family>unix</family>
@@ -31,10 +31,11 @@
       </activation>
       <properties>
         <lwjgl.natives>natives-linux</lwjgl.natives>
+        <platform.name>linux</platform.name>
       </properties>
     </profile>
     <profile>
-      <id>lwjgl-natives-macos-x86_64</id>
+      <id>macos</id>
       <activation>
         <os>
           <family>mac</family>
@@ -43,10 +44,11 @@
       </activation>
       <properties>
         <lwjgl.natives>natives-macos</lwjgl.natives>
+        <platform.name>macos</platform.name>
       </properties>
     </profile>
     <profile>
-      <id>lwjgl-natives-windows-amd64</id>
+      <id>windows</id>
       <activation>
         <os>
           <family>windows</family>
@@ -55,6 +57,7 @@
       </activation>
       <properties>
         <lwjgl.natives>natives-windows</lwjgl.natives>
+        <platform.name>windows</platform.name>
       </properties>
     </profile>
   </profiles>
@@ -72,7 +75,11 @@
   </dependencyManagement>
 
   <dependencies>
-
+    <dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-yaml</artifactId>
+      <version>2.13.4</version>
+    </dependency>
     <dependency>
       <groupId>org.lwjgl</groupId>
       <artifactId>lwjgl</artifactId>
@@ -135,7 +142,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
-          <outputDirectory>output</outputDirectory>
+          <outputDirectory>output/${platform.name}/raw</outputDirectory>
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
@@ -156,7 +163,7 @@
               <goal>copy-dependencies</goal>
             </goals>
             <configuration>
-              <outputDirectory>output/lib</outputDirectory>
+              <outputDirectory>output/${platform.name}/raw/lib</outputDirectory>
             </configuration>
           </execution>
         </executions>
@@ -186,7 +193,7 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <outputDirectory>output/res</outputDirectory>
+              <outputDirectory>output/${platform.name}/raw/res</outputDirectory>
               <encoding>UTF-8</encoding>
               <resources>
                 <resource>
@@ -206,8 +213,10 @@
         <artifactId>maven-install-plugin</artifactId>
         <version>2.5.2</version>
       </plugin>
-
-
+      <plugin>
+        <groupId>com.akathist.maven.plugins.launch4j</groupId>
+        <artifactId>launch4j-maven-plugin</artifactId>
+      </plugin>
     </plugins>
   </build>
 </project>

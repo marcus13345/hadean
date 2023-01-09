@@ -1,0 +1,18 @@
+{
+  "platform": "linux64",
+  "executable": "Hadean",
+  "jdk": "bin/jdk16-linux.gz",
+  "classpath": [
+    "output/linux/raw/hadean.jar"
+  ],
+  "removelibs": [],
+  "mainclass": "xyz.valnet.hadean.HadeanGame",
+  "vmargs": [
+
+  ],
+  "resources": [
+    "output/linux/raw/lib",
+    "output/linux/raw/res"
+  ],
+  "output": "output/linux/built"
+}

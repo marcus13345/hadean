@@ -1,12 +1,7 @@
 package xyz.valnet.hadean.gameobjects.ui.tabs;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +11,15 @@ import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
+import xyz.valnet.hadean.designation.CutTreesDesignation;
+import xyz.valnet.hadean.designation.HaulItemDesignation;
 import xyz.valnet.hadean.gameobjects.BottomBar;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.inputlayer.BuildLayer;
 import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
+import xyz.valnet.hadean.gameobjects.worldobjects.Bed;
+import xyz.valnet.hadean.gameobjects.worldobjects.FarmPlot;
+import xyz.valnet.hadean.gameobjects.worldobjects.Stockpile;
 import xyz.valnet.hadean.input.Button;
 import xyz.valnet.hadean.input.IButtonListener;
 import xyz.valnet.hadean.input.SimpleButton;
@@ -48,57 +48,57 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
 
   private String selectedCategory = "";
 
-  private transient BuildableRecord selectedBuildable = null;
-  private transient Map<String, List<BuildableRecord>> buildables = null;
+  private static transient Map<String, List<BuildableRecord>> buildables = new HashMap<String, List<BuildableRecord>>();
   private transient Map<Button, BuildableRecord> buildableButtons = null;
+  private transient BuildableRecord selectedBuildable = null;
 
-  private int height = 0;
+  private int height = Math.max((int)Math.ceil(buildables.size() / 2f) * 24, 24*3);
 
-  private record BuildableRecord(
+  static {
+    BuildTab.registerBuildable(HaulItemDesignation.class);
+    BuildTab.registerBuildable(CutTreesDesignation.class);
+
+    BuildTab.registerBuildable(Bed.class);
+    
+    BuildTab.registerBuildable(FarmPlot.class);
+    BuildTab.registerBuildable(Stockpile.class);
+  }
+
+  public record BuildableRecord(
     String name,
     Constructor<? extends IBuildable> constructor,
     int type
-  ) {
+  ) {}
 
-  }
-
-  @SuppressWarnings("unchecked")
-  private void calculateBuildables() {
+  public static void registerBuildable(Class<? extends IBuildable> clazz) {
     try {
-      Class<?>[] maybeBuildables = getClasses("xyz.valnet.hadean");
+      System.out.println("Its fine");
 
-      for(Class<?> clazz : maybeBuildables) {
-        if(clazz.isAnonymousClass()) continue;
-        if(!IBuildable.class.isAssignableFrom(clazz)) continue;
-        if(clazz.isInterface()) continue;
-        if(Modifier.isAbstract(clazz.getModifiers())) continue;
-
-        Constructor<? extends IBuildable> constructor = (Constructor<? extends IBuildable>) clazz.getConstructor();
-        if(constructor.getParameterCount() != 0) {
-          System.out.println(clazz + " has no default constructor (no params)");
-          continue;
-        }
-        BuildableMetadata annotation = clazz.getAnnotation(BuildableMetadata.class);
-        if(annotation == null) {
-          System.out.println(clazz + " has no buildable data annotation");
-          continue;
-        }
-        String category = annotation.category();
-        String name = annotation.name();
-        int type = annotation.type();
-
-        if(!buildables.containsKey(category))
-          buildables.put(category, new ArrayList<BuildableRecord>());
-        buildables.get(category).add(new BuildableRecord(name, constructor, type));
-
-        System.out.println("Added " + category + " / " + name);
+      BuildableMetadata annotation = clazz.getAnnotation(BuildableMetadata.class);
+      if(annotation == null) {
+        System.out.println(clazz + " has no buildable data annotation");
+        return;
       }
 
-    } catch (Exception e) {
-      System.out.println(e);
-    }
+      Constructor<? extends IBuildable> constructor = (Constructor<? extends IBuildable>) clazz.getConstructor();
+      if(constructor.getParameterCount() != 0) {
+        System.out.println(clazz + " has no default constructor (no params)");
+        return;
+      }
 
-    height = Math.max((int)Math.ceil(buildables.size() / 2f) * 24, 24*3);
+      String category = annotation.category();
+      String name = annotation.name();
+      int type = annotation.type();
+
+      System.out.println("Added " + category + " / " + name);
+
+      if(!buildables.containsKey(category))
+        buildables.put(category, new ArrayList<BuildableRecord>());
+      buildables.get(category).add(new BuildableRecord(name, constructor, type));
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -146,10 +146,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
       selection.subscribe(this);
     }
 
-    buildables = new HashMap<String, List<BuildableRecord>>();
     buildableButtons = new HashMap<Button, BuildableRecord>();
-
-    calculateBuildables();
   }
 
   private List<Button> categoryButtons = new ArrayList<Button>();
@@ -314,41 +311,5 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
       BuildableRecord newBuildableRecord = buildableButtons.get(target);
       selectBuildable(newBuildableRecord);
     }
-  }
-
-  @SuppressWarnings("rawtypes")
-  private static Class<?>[] getClasses(String packageName) throws ClassNotFoundException, IOException {
-      ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-      assert classLoader != null;
-      String path = packageName.replace('.', '/');
-      Enumeration<URL> resources = classLoader.getResources(path);
-      List<File> dirs = new ArrayList<File>();
-      while (resources.hasMoreElements()) {
-          URL resource = resources.nextElement();
-          dirs.add(new File(resource.getFile()));
-      }
-      ArrayList<Class> classes = new ArrayList<Class>();
-      for (File directory : dirs) {
-          classes.addAll(findClasses(directory, packageName));
-      }
-      return (Class<?>[]) classes.toArray(new Class[classes.size()]);
-  }
-  
-  @SuppressWarnings("rawtypes")
-  private static List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException {
-    List<Class> classes = new ArrayList<Class>();
-    if (!directory.exists()) {
-        return classes;
-    }
-    File[] files = directory.listFiles();
-    for (File file : files) {
-        if (file.isDirectory()) {
-            assert !file.getName().contains(".");
-            classes.addAll(findClasses(file, packageName + "." + file.getName()));
-        } else if (file.getName().endsWith(".class")) {
-            classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
-        }
-    }
-    return classes;
   }
 }

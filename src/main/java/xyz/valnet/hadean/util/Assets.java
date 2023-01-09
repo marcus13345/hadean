@@ -49,10 +49,14 @@ public class Assets {
   public static final SimpleShader flat;
 
   static {
+    System.out.println("START ASSETS");
     flat = new SimpleShader("res/shaders/flat.vert", "res/shaders/flat.frag");
+    System.out.println("SHADERS LOADED");
 
     atlas = new Texture("res/textures.png");
+    System.out.println("ATLAS LOADED");
 
+    System.out.println("CREATE SPRITES");
     whiteBox = new Sprite(atlas, 0, 88, 8, 8);
 
     defaultTerrain = new Sprite[] {
@@ -300,5 +304,6 @@ public class Assets {
       new Sprite(atlas, 7, 103, 1, 1)
     );
 
+    System.out.println("END ASSETS");
   }
 }

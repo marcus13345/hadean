@@ -1,0 +1,18 @@
+{
+  "platform": "mac",
+  "executable": "Hadean",
+  "jdk": "bin/jdk16-macos.gz",
+  "classpath": [
+    "output/macos/raw/hadean.jar"
+  ],
+  "removelibs": [],
+  "mainclass": "xyz.valnet.hadean.HadeanGame",
+  "vmargs": [
+
+  ],
+  "resources": [
+    "output/macos/raw/lib",
+    "output/macos/raw/res"
+  ],
+  "output": "output/macos/built"
+}

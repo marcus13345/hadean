@@ -25,6 +25,9 @@ jobs:
     - name: LFS Install
       run: git lfs install
 
+    - name: LFS Fetch
+      run: git lfs fetch
+
     - name: LFS Checkout
       run: git lfs checkout
 

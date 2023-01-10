@@ -1,0 +1,18 @@
+{
+  "platform": "windows64",
+  "executable": "Hadean",
+  "jdk": "bin/jdk16-windows.zip",
+  "classpath": [
+    "output/windows/raw/hadean.jar"
+  ],
+  "removelibs": [],
+  "mainclass": "xyz.valnet.hadean.HadeanGame",
+  "vmargs": [
+
+  ],
+  "resources": [
+    "output/windows/raw/lib",
+    "output/windows/raw/res"
+  ],
+  "output": "output/windows/built"
+}

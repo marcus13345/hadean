@@ -1,4 +1,5 @@
 target
 out
-bin
+output
 SAVE_DATA.TXT
+.DS_Store

@@ -19,7 +19,6 @@ public class SimpleShader extends Shader {
 
   public void pushColor(Vector4f color) {
     colorStack.push(color);
-
     setUniform4f("uColor", color);
   }
 

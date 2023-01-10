@@ -29,6 +29,7 @@ public class App {
 
   public void run() {
 
+
     init();
     loop();
 
@@ -65,7 +66,7 @@ public class App {
       if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
         glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
     });
-    
+
 
     glfwSetCursorPosCallback(window, new GLFWCursorPosCallback() {
       @Override
@@ -115,6 +116,7 @@ public class App {
       );
     } // the stack frame is popped automatically
 
+
     // Make the OpenGL context current
     glfwMakeContextCurrent(window);
     // Enable v-sync
@@ -130,6 +132,7 @@ public class App {
     // bindings available for use.
     GL.createCapabilities();
 
+
         
     float clearBrightness = 0.09f;
     glClearColor(clearBrightness, clearBrightness, clearBrightness, 1.0f);
@@ -139,6 +142,7 @@ public class App {
     glDepthFunc(GL_LEQUAL);
     glDepthMask(true);
     glfwSwapInterval(1);
+
 
     game.start();
   }

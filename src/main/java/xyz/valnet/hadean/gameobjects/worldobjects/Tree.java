@@ -120,8 +120,7 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   @Override
   public void onRemove() {
     Vector2i pos = getWorldPosition().xy();
-    Log log = new Log(pos.x, pos.y);
-    getTile().placeThing(log);
+    add(new Log(pos.x, pos.y));
   }
 
   @Override

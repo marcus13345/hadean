@@ -3,6 +3,7 @@ package xyz.valnet.hadean.gameobjects.worldobjects;
 import java.util.HashSet;
 import java.util.Set;
 
+import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.scenegraph.GameObject;
@@ -42,6 +43,7 @@ public abstract class WorldObject extends GameObject {
   private void updateTileLinks(Set<Tile> tiles) {
     if(tiles == null || tiles.size() == 0) return;
     if(!(this instanceof ITileThing)) return;
+    boolean inScene = inScene();
 
     Set<Tile> removeTiles = new HashSet<Tile>();
     Set<Tile> addTiles = new HashSet<Tile>();
@@ -58,25 +60,41 @@ public abstract class WorldObject extends GameObject {
 
     for(Tile tile : removeTiles) {
       linkedTiles.remove(tile);
-      tile.remove(this);
+      if(this instanceof ITileThing) {
+        tile.removeThing((ITileThing) this);
+      }
     }
 
     for(Tile tile : addTiles) {
       linkedTiles.add(tile);
-      tile.placeThing((ITileThing) this);
+      if(this instanceof ITileThing) {
+        tile.placeThing((ITileThing) this);
+      }
+    }
+
+    if(linkedTiles.size() == 0 && inScene()) {
+      remove(this);
+    }
+    
+    if(linkedTiles.size() != 0 && !inScene()) {
+      add(this);
     }
 
   }
 
-  public void setPosition(Vector4i vector) {
+  protected void setPosition(Vector4i vector) {
     setPosition(vector.x, vector.y, vector.z, vector.w);
   }
 
-  public void setPosition(int x, int y) {
+  protected void setPosition(Vector2i vector) {
+    setPosition(vector.x, vector.y);
+  }
+
+  protected void setPosition(int x, int y) {
     setPosition(x, y, 1, 1);
   }
 
-  public void setPosition(int x, int y, int w, int h) {
+  protected void setPosition(int x, int y, int w, int h) {
     this.x = x;
     this.y = y;
     this.w = w;

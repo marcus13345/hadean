@@ -21,6 +21,18 @@ public abstract class Designation<T extends ISelectable> extends GameObject impl
     }
   }
 
+  @Override
+  @SuppressWarnings("unchecked")
+  public void buildAt(int x, int y) {
+    Class<T> type = getType();
+    List<T> things = getAll(type);
+    for(ISelectable thing : things) {
+      Vector4f box = thing.getWorldBox();
+      if(rectanglesIntersect(x, y, x + 1, y + 1, box.x, box.y, box.z, box.w))
+      designate((T) thing);
+    }
+  }
+
   public boolean rectanglesIntersect( 
     float minAx, float minAy, float maxAx, float maxAy,
     float minBx, float minBy, float maxBx, float maxBy ) {

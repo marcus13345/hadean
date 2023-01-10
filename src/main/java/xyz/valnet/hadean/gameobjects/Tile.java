@@ -1,7 +1,9 @@
 package xyz.valnet.hadean.gameobjects;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
@@ -28,7 +30,7 @@ public class Tile extends WorldObject implements IWorkable {
   private final int tileSelector = (int)Math.floor(Math.random() * 4);
   private boolean rocks = false;
 
-  private List<ITileThing> stuff = new ArrayList<ITileThing>();
+  private Set<ITileThing> stuff = new HashSet<ITileThing>();
   // TODO remove remove queue, cause like, we dont iterate over
   // things? so why remove queue them? that just leads to unneccesary
   // timing issues. you dumb fuck.

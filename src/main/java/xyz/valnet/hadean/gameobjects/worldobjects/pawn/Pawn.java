@@ -42,7 +42,7 @@ public class Pawn extends Agent {
 
   public void pickupItemByPredicate(IItemPredicate itemPredicate) {
     Item item = getTile().pickupByItemPredicate(itemPredicate);
-    dropoffItem(item);
+    inventory.add(item);
   }
 
   public void pickupItem(Item i) {

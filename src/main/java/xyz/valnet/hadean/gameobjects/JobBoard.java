@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import xyz.valnet.engine.math.Vector2f;
+import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.gameobjects.worldobjects.pawn.Pawn;
 import xyz.valnet.hadean.interfaces.IWorkable;
@@ -59,7 +59,7 @@ public class JobBoard extends GameObject {
   }
 
   private List<Job> getJobsForWorker(Pawn worker) {
-    Vector2f workerLocation = worker.getWorldPosition();
+    Vector2i workerLocation = worker.getWorldPosition().xy();
 
     List<Job> workables = availableJobs
       .stream()

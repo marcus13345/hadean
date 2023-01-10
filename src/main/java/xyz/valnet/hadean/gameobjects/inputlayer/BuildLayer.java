@@ -7,6 +7,7 @@ import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.gameobjects.Camera;
+import xyz.valnet.hadean.interfaces.BuildableMetadata;
 import xyz.valnet.hadean.interfaces.IBuildLayerListener;
 import xyz.valnet.hadean.util.Layers;
 
@@ -20,6 +21,12 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
 
   private IBuildLayerListener listener = null;
 
+  private BuildableMetadata.Type type = BuildableMetadata.Type.AREA;
+
+  public void setBuildType(BuildableMetadata.Type type) {
+    this.type = type;
+  }
+
   @Override
   protected void connect() {
     camera = get(Camera.class);
@@ -28,6 +35,8 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
   @Override
   public void update(float dTime) {
     if(listener == null) return;
+    if(type == BuildableMetadata.Type.SINGLE && mouseDown) return;
+    
     broadcastWorldCoords();
   }
 
@@ -77,27 +86,33 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
     if(button == 1 && active && hovered) {
       listener.cancel();
     } else if(button == 0 && active && hovered) {
+      // TODO this conversion in negative numbers definitely works wrong.
       Vector2i worldcoords = camera.screen2world(App.mouseX, App.mouseY).asInt();
       mouseDown = true;
       x = worldcoords.x;
       y = worldcoords.y;
+      if(type == BuildableMetadata.Type.SINGLE) {
+        listener.build(x, y);
+      }
     }
   }
 
   @Override
   public void mouseUp(int button) {
     if(button == 0 && active && mouseDown) {
-      Vector2i worldcoords = camera.screen2world(App.mouseX, App.mouseY).asInt();
       mouseDown = false;
-      int x1 = x;
-      int y1 = y;
-      int x2 = worldcoords.x;
-      int y2 = worldcoords.y;
-      int minX = Math.min(x1, x2);
-      int minY = Math.min(y1, y2);
-      int maxX = Math.max(x1, x2);
-      int maxY = Math.max(y1, y2);
-      listener.build(minX, minY, maxX, maxY);
+      if(type == BuildableMetadata.Type.AREA) {
+        Vector2i worldcoords = camera.screen2world(App.mouseX, App.mouseY).asInt();
+        int x1 = x;
+        int y1 = y;
+        int x2 = worldcoords.x;
+        int y2 = worldcoords.y;
+        int minX = Math.min(x1, x2);
+        int minY = Math.min(y1, y2);
+        int maxX = Math.max(x1, x2);
+        int maxY = Math.max(y1, y2);
+        listener.build(minX, minY, maxX, maxY);
+      }
     }
   }
 

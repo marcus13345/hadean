@@ -43,7 +43,7 @@ public class JobActivity extends Activity {
   }
 
   private boolean isAtJobStepLocation() {
-    return worker.getWorldPosition().asInt().isOneOf(job.getCurrentStep().getLocations());
+    return worker.getWorldPosition().xy().isOneOf(job.getCurrentStep().getLocations());
   }
 
   private void goToJobStepLocation() {

@@ -4,10 +4,10 @@ import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.Job;
 import xyz.valnet.hadean.gameobjects.JobBoard;
+import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Log;
 import xyz.valnet.hadean.interfaces.BuildableMetadata;
-import xyz.valnet.hadean.interfaces.IBuildable;
 import xyz.valnet.hadean.interfaces.IItemReceiver;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.IWorkable;
@@ -19,8 +19,8 @@ import xyz.valnet.hadean.util.detail.Detail;
 import xyz.valnet.hadean.util.detail.ObjectDetail;
 import xyz.valnet.hadean.util.detail.PercentDetail;
 
-@BuildableMetadata(category = "Furniture", name = "Bed", type = BuildableMetadata.SINGLE)
-public class Bed extends WorldObject implements IBuildable, IItemReceiver, IWorkable, ISelectable {
+@BuildableMetadata(category = "Furniture", name = "Bed", type = BuildableMetadata.Type.SINGLE)
+public class Bed extends Buildable implements IItemReceiver, IWorkable, ISelectable {
 
   private int logs = 0;
   private float work = 0;
@@ -29,10 +29,14 @@ public class Bed extends WorldObject implements IBuildable, IItemReceiver, IWork
   private Job job = null;
 
   @Override
+  protected Vector2i getDefaultDimensions() {
+    return new Vector2i(1, 2);
+  }
+
+  @Override
   protected void create() {
     super.create();
     job = add(new Job("Build Bed"));
-    Log log = get(Log.class);
     job.addStep(job.new PickupItemByPredicate(Log.LOG_PREDICATE));
     job.addStep(job.new DropoffPredicateAtItemReceiver(this, Log.LOG_PREDICATE));
     job.addStep(job.new Work(this));
@@ -42,15 +46,16 @@ public class Bed extends WorldObject implements IBuildable, IItemReceiver, IWork
   @Override
   public void render() {
     super.render();
+    Vector2i pos = getWorldPosition().xy();
 
     if(isBuilt()) {
-      camera.draw(Layers.GROUND, Assets.bed, (int)x, (int)y, 1, 2);
+      camera.draw(Layers.GROUND, Assets.bed, pos.x, pos.y, 1, 2);
     } else {
       float p = work / maxWork;
       float b = 4;
 
       Assets.flat.pushColor(new Vector4f(b, b, b, 0.5f));
-      camera.draw(Layers.GROUND, Assets.bed, (int)x, (int)y, 1, 2);
+      camera.draw(Layers.GROUND, Assets.bed, pos.x, pos.y, 1, 2);
       Assets.flat.popColor();
 
       if(logs > 0) {
@@ -62,21 +67,8 @@ public class Bed extends WorldObject implements IBuildable, IItemReceiver, IWork
   }
 
   @Override
-  public void buildAt(int x, int y, int w, int h) {
-    this.x = x;
-    this.y = y;
-    this.w = 1;
-    this.h = 2;
-  }
-
-  @Override
   public String getName() {
     return "Bed";
-  }
-
-  @Override
-  public Vector4f getWorldBox() {
-    return new Vector4f(x, y, x+w, y+h);
   }
 
   @Override
@@ -99,16 +91,17 @@ public class Bed extends WorldObject implements IBuildable, IItemReceiver, IWork
   }
 
   private Vector2i[] getBorders() {
+    Vector2i pos = getWorldPosition().xy();
     return new Vector2i[] {
-      new Vector2i((int) x, (int) y - 1),
+      new Vector2i(pos.x, pos.y - 1),
 
-      new Vector2i((int) x - 1, (int) y),
-      new Vector2i((int) x + 1, (int) y),
+      new Vector2i(pos.x - 1, pos.y),
+      new Vector2i(pos.x + 1, pos.y),
 
-      new Vector2i((int) x - 1, (int) y + 1),
-      new Vector2i((int) x + 1, (int) y + 1),
+      new Vector2i(pos.x - 1, pos.y + 1),
+      new Vector2i(pos.x + 1, pos.y + 1),
 
-      new Vector2i((int) x, (int) y + 2),
+      new Vector2i(pos.x, pos.y + 2),
     };
   }
 
@@ -145,5 +138,19 @@ public class Bed extends WorldObject implements IBuildable, IItemReceiver, IWork
       new ObjectDetail<Integer>("Logs", logs),
     };
   }
-  
+
+  @Override
+  public boolean isWalkable() {
+    return false;
+  }
+
+  @Override
+  public boolean shouldRemove() {
+    return false;
+  }
+
+  @Override
+  public void onRemove() {
+    
+  }
 }

@@ -42,8 +42,6 @@ public class Pawn extends Agent {
 
   public void pickupItemByPredicate(IItemPredicate itemPredicate) {
     Item item = getTile().pickupByItemPredicate(itemPredicate);
-    if(item == null) return;
-    remove(item);
     inventory.add(item);
   }
 
@@ -58,8 +56,8 @@ public class Pawn extends Agent {
     if(!inventory.contains(item)) {
       return;
     }
-    inventory.remove(item);
-    add(item);
+    inventory.remove(add(item));
+    item.setPosition(getWorldPosition().xy());
     getTile().placeThing(item);
   }
 
@@ -103,8 +101,10 @@ public class Pawn extends Agent {
   }
 
   protected void create() {
-    x = (int) (Math.random() * Terrain.WORLD_SIZE);
-    y = (int) (Math.random() * Terrain.WORLD_SIZE);
+    setPosition(
+      (int) (Math.random() * Terrain.WORLD_SIZE),
+      (int) (Math.random() * Terrain.WORLD_SIZE)
+    );
   }
 
   @Override
@@ -131,11 +131,6 @@ public class Pawn extends Agent {
       new BooleanDetail("Pathing", isPathing()),
       new ObjectDetail<Integer>("Inventory", inventory.size())
     });
-  }
-
-  @Override
-  public Vector2f getWorldPosition() {
-    return new Vector2f(x, y);
   }
 
   @Override

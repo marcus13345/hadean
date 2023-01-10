@@ -1,5 +1,6 @@
 package xyz.valnet.hadean.gameobjects.worldobjects.items;
 
+import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.hadean.interfaces.IItemPredicate;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
@@ -15,13 +16,13 @@ public class Log extends Item {
   public static IItemPredicate LOG_PREDICATE = (item) -> (item instanceof Log);
 
   public Log(int x, int y) {
-    this.x = x;
-    this.y = y;
+    setPosition(x, y);
   }
 
   @Override
   public void render() {
-    camera.draw(Layers.GROUND, Assets.log, x, y);
+    Vector2i pos = getWorldPosition().xy();
+    camera.draw(Layers.GROUND, Assets.log, pos.x, pos.y);
   }
 
   @Override

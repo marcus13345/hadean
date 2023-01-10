@@ -67,7 +67,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
   public record BuildableRecord(
     String name,
     Constructor<? extends IBuildable> constructor,
-    int type
+    BuildableMetadata.Type type
   ) {}
 
   public static void registerBuildable(Class<? extends IBuildable> clazz) {
@@ -88,7 +88,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
 
       String category = annotation.category();
       String name = annotation.name();
-      int type = annotation.type();
+      BuildableMetadata.Type type = annotation.type();
 
       System.out.println("Added " + category + " / " + name);
 
@@ -160,6 +160,11 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
     if(buildableRecord == null) deselectBuilding();
     if (selectedBuildable == null) activateBuildLayer();
     selectedBuildable = buildableRecord;
+    swapBuildLayerType(selectedBuildable.type);
+  }
+
+  private void swapBuildLayerType(BuildableMetadata.Type type) {
+    buildLayer.setBuildType(type);
   }
 
   private void activateBuildLayer() {
@@ -181,6 +186,22 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
             add((GameObject) building);
           }
           building.buildAt(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
+        } catch (Exception e) {
+          System.out.println(e);
+        }
+
+        // opened.set(false);
+      }
+
+      @Override
+      public void build(int x1, int y1) {
+        if(selectedBuildable == null) return;
+        try {
+          IBuildable building = selectedBuildable.constructor.newInstance();
+          if(building instanceof GameObject) {
+            add((GameObject) building);
+          }
+          building.buildAt(x1, y1);
         } catch (Exception e) {
           System.out.println(e);
         }

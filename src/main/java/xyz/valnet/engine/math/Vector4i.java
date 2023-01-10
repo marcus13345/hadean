@@ -20,4 +20,8 @@ public class Vector4i implements Serializable {
 		this.w = w;
 	}
 
+  public Vector2i xy() {
+    return new Vector2i(x, y);
+  }
+
 }

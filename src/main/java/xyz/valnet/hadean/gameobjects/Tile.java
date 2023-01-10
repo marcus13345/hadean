@@ -1,11 +1,13 @@
 package xyz.valnet.hadean.gameobjects;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
+import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.gameobjects.worldobjects.FarmPlot;
 import xyz.valnet.hadean.gameobjects.worldobjects.Tree;
@@ -28,47 +30,44 @@ public class Tile extends WorldObject implements IWorkable {
   private final int tileSelector = (int)Math.floor(Math.random() * 4);
   private boolean rocks = false;
 
-  private List<ITileThing> stuff = new ArrayList<ITileThing>();
+  private Set<ITileThing> stuff = new HashSet<ITileThing>();
   // TODO remove remove queue, cause like, we dont iterate over
   // things? so why remove queue them? that just leads to unneccesary
   // timing issues. you dumb fuck.
   private List<ITileThing> toRemove = new ArrayList<ITileThing>();
 
   public Tile(int x, int y) {
-    this.x = x;
-    this.y = y;
+    setPosition(x, y);
   }
 
   public Vector2i getCoords() {
-    return new Vector2f(x, y).asInt();
+    return getWorldPosition().xy();
   }
 
   public void start() {
     super.start();
+    Vector4i pos = getWorldPosition();
 
     float scale = 1;
 
-    float red =   (float) terrain.getNoise(redSeed,   x * scale, y * scale);
-    float green = (float) terrain.getNoise(greenSeed, x * scale, y * scale);
-    float blue =  (float) terrain.getNoise(blueSeed,  x * scale, y * scale);
+    float red =   (float) terrain.getNoise(redSeed,   pos.x * scale, pos.y * scale);
+    float green = (float) terrain.getNoise(greenSeed, pos.x * scale, pos.y * scale);
+    float blue =  (float) terrain.getNoise(blueSeed,  pos.x * scale, pos.y * scale);
 
     if(color == null) color = new Vector4f(red * 0.1f, 0.4f + green * 0.15f, blue * 0.05f, 1f);
   }
 
   @Override
   protected void create() {
+    Vector4i pos = getWorldPosition();
     if(Math.random() > 0.95) {
       rocks = true;
     }
     if(Math.random() > 0.97) {
-      Tree tree = new Tree((int)x, (int)y);
-      stuff.add(tree);
-      add(tree);
+      add(new Tree(pos.x, pos.y));
     } else if(Math.random() > 0.98) {
       rocks = false;
-      Boulder tree = new Boulder((int)x, (int)y);
-      stuff.add(tree);
-      add(tree);
+      add(new Boulder(pos.x, pos.y));
     }
   }
 
@@ -130,15 +129,16 @@ public class Tile extends WorldObject implements IWorkable {
 
   @Override
   public void render() {
+    Vector4i pos = getWorldPosition();
     if(tillLevel < 1f) {
       Assets.flat.pushColor(color);
-      camera.draw(Layers.TILES, Assets.defaultTerrain[tileSelector], x, y);
+      camera.draw(Layers.TILES, Assets.defaultTerrain[tileSelector], pos.x, pos.y);
       Assets.flat.popColor();
-      if(rocks) camera.draw(Layers.TILES, Assets.rocks, x, y);
+      if(rocks) camera.draw(Layers.TILES, Assets.rocks, pos.x, pos.y);
     }
     if(tillLevel > 0f) {
       Assets.flat.pushColor(Vector4f.opacity(tillLevel));
-      camera.draw(Layers.TILES, Assets.farmPlot[tileSelector], x, y);
+      camera.draw(Layers.TILES, Assets.farmPlot[tileSelector], pos.x, pos.y);
       Assets.flat.popColor();
     }
   }
@@ -154,16 +154,17 @@ public class Tile extends WorldObject implements IWorkable {
 
   @Override
   public Vector2i[] getWorkablePositions() {
+    Vector4i pos = getWorldPosition();
     return new Vector2i[] {
-      new Vector2i((int)x - 1, (int)y - 1),
-      new Vector2i((int)x,     (int)y - 1),
-      new Vector2i((int)x + 1, (int)y - 1),
-      new Vector2i((int)x - 1, (int)y + 0),
-      new Vector2i((int)x,     (int)y + 0),
-      new Vector2i((int)x + 1, (int)y + 0),
-      new Vector2i((int)x - 1, (int)y + 1),
-      new Vector2i((int)x,     (int)y + 1),
-      new Vector2i((int)x + 1, (int)y + 1),
+      new Vector2i(pos.x - 1, pos.y - 1),
+      new Vector2i(pos.x,     pos.y - 1),
+      new Vector2i(pos.x + 1, pos.y - 1),
+      new Vector2i(pos.x - 1, pos.y + 0),
+      new Vector2i(pos.x,     pos.y + 0),
+      new Vector2i(pos.x + 1, pos.y + 0),
+      new Vector2i(pos.x - 1, pos.y + 1),
+      new Vector2i(pos.x,     pos.y + 1),
+      new Vector2i(pos.x + 1, pos.y + 1),
     };
   }
 
@@ -186,11 +187,6 @@ public class Tile extends WorldObject implements IWorkable {
     } else if (tillLevel < 1) {
       return "Tilled Soil (" + Math.floor(tillLevel * 100) + "%)";
     } else return "Tilled Soil";
-  }
-
-  @Override
-  public Vector4f getWorldBox() {
-    return new Vector4f(x, y, x+1, y+1);
   }
 
   public String toThingsString() {

@@ -1,6 +1,7 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
 import xyz.valnet.engine.math.Vector2f;
+import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
 import xyz.valnet.hadean.util.Action;
@@ -12,16 +13,16 @@ public class Rice extends Item {
 
 
   public Rice(int x, int y) {
-    this.x = x;
-    this.y = y;
+    setPosition(x, y);
   }
 
   @Override
   public void render() {
-    camera.draw(Layers.AIR, Assets.riceBag, x, y);
+    Vector2i pos = getWorldPosition().xy();
+    camera.draw(Layers.AIR, Assets.riceBag, pos.x, pos.y);
 
     Assets.flat.pushColor(Vector4f.black);
-    Vector2f screeCoords = camera.world2screen(x, y);
+    Vector2f screeCoords = camera.world2screen(pos.x, pos.y);
     Assets.miniFont.drawString("123", (int)screeCoords.x, (int)screeCoords.y);
     Assets.flat.popColor();
   }
@@ -38,11 +39,6 @@ public class Rice extends Item {
 
   @Override
   public void onRemove() {}
-
-  @Override
-  public Vector4f getWorldBox() {
-    return new Vector4f(x, y, x + 1, y + 1);
-  }
 
   @Override
   public Action[] getActions() {

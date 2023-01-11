@@ -39,6 +39,7 @@ public class BottomBar extends GameObject implements IButtonListener, ITransient
 
       int w = r - l;
       Button btn = new SimpleButton(item.getTabName(), l, 576 - bottomBarHeight, w, bottomBarHeight, Layers.BOTTOM_BAR);
+      if(item.isButtonClickSilent()) btn = btn.setClickSound(false);
       btn.registerClickListener(this);
       add(btn);
 

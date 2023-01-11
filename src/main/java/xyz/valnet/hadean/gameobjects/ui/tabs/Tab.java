@@ -18,4 +18,9 @@ public abstract class Tab extends GameObject implements IBottomBarItem, ITransie
   protected void start() {
     bottombar.registerButton(this);
   }
+
+  @Override
+  public boolean isButtonClickSilent() {
+    return false;
+  }
 }

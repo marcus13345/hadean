@@ -13,6 +13,8 @@ import xyz.valnet.hadean.util.Assets;
 
 public class Button extends GameObject implements IMouseCaptureArea, ITransient {
 
+  private boolean clickSound = true;
+
   private int x, y, width, height;
   private String text;
   protected Tile9 frame;
@@ -40,6 +42,11 @@ public class Button extends GameObject implements IMouseCaptureArea, ITransient 
     setText(text);
     box = new Vector4i(x, y, w, h);
     layer = l;
+  }
+
+  public Button setClickSound(boolean b) {
+    this.clickSound = b;
+    return this;
   }
 
   public String getText() {
@@ -146,7 +153,7 @@ public class Button extends GameObject implements IMouseCaptureArea, ITransient 
           state = HOVER;
         }
         listener.click(this);
-        Assets.sndBubble.play();
+        if (clickSound) Assets.sndBubble.play();
       }
     } else if (state == ACTIVE_NO_HOVER) {
       if(hovered) {

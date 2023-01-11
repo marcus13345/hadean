@@ -135,11 +135,13 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
 
       @Override
       public void rise() {
+        Assets.sndBubble.play();
         activate();
       }
 
       @Override
       public void fall() {
+        Assets.sndCancel.play();
         deactiveate();
       }
 
@@ -264,7 +266,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
     opened.toggle();
 
     if(opened.value()) {
-      selection.updateSelection(new ArrayList<ISelectable>());
+      selection.clearSelection();
     }
   }
 
@@ -335,5 +337,10 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
       BuildableRecord newBuildableRecord = buildableButtons.get(target);
       selectBuildable(newBuildableRecord);
     }
+  }
+
+  @Override
+  public boolean isButtonClickSilent() {
+    return true;
   }
 }

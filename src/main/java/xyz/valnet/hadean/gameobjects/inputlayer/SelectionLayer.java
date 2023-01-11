@@ -107,7 +107,8 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
   private List<ISelectable> selected = new ArrayList<ISelectable>();
 
   private void makeSelection(Vector4f a) {
-    selected.clear();
+    List<ISelectable> newSelection = new ArrayList<ISelectable>();
+
     Vector4f normalizedSelectionBoxScreen = sortVector(a);
     Vector2f selectionBoxWorldMin = camera.screen2world(normalizedSelectionBoxScreen.x, normalizedSelectionBoxScreen.y);
     Vector2f selectionBoxWorldMax = camera.screen2world(normalizedSelectionBoxScreen.z, normalizedSelectionBoxScreen.w);
@@ -122,19 +123,19 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
         thingBox.x, thingBox.y,
         thingBox.z, thingBox.w
       )) {
-        selected.add(thing);
+        newSelection.add(thing);
       }
     }
 
     animation = 0;
-    broadcastSelectionChanged();
+    updateSelection(newSelection);
 
   }
 
   private void broadcastSelectionChanged() {
-    Assets.sndSelectionChanged.play();
-    // if(selected.size() > 0) Assets.sndBubble.play();
-    // if(selected.size() == 0) Assets.sndCancel.play();
+    // Assets.sndSelectionChanged.play();
+    if(selected.size() > 0) Assets.sndBubble.play();
+    if(selected.size() == 0) Assets.sndCancel.play();
     
     for(ISelectionChangeListener listener : listeners) {
       listener.selectionChanged(selected);
@@ -142,6 +143,7 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
   }
 
   public void updateSelection(List<ISelectable> newSelection) {
+    if(selected.size() == 0 && newSelection.size() == 0) return;
     selected = newSelection;
     broadcastSelectionChanged();
   }
@@ -191,10 +193,15 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
       if(selected.size() == 0) {
         buildTab.evoke();
       } else {
-        selected.clear();
-        broadcastSelectionChanged();
+        clearSelection();
       }
     }
+  }
+
+  public void clearSelection() {
+    if(selected.size() == 0) return;
+    selected.clear();
+    broadcastSelectionChanged();
   }
 
   @Override

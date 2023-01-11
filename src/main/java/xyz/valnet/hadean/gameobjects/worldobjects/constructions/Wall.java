@@ -100,15 +100,10 @@ public class Wall extends Buildable implements IItemReceiver, IWorkable, ISelect
   private Vector2i[] getBorders() {
     Vector2i pos = getWorldPosition().xy();
     return new Vector2i[] {
-      new Vector2i(pos.x, pos.y - 1),
-
-      new Vector2i(pos.x - 1, pos.y),
-      new Vector2i(pos.x + 1, pos.y),
-
-      new Vector2i(pos.x - 1, pos.y + 1),
-      new Vector2i(pos.x + 1, pos.y + 1),
-
-      new Vector2i(pos.x, pos.y + 2),
+      pos.north(),
+      pos.east(),
+      pos.south(),
+      pos.west()
     };
   }
 
@@ -152,7 +147,7 @@ public class Wall extends Buildable implements IItemReceiver, IWorkable, ISelect
 
   @Override
   public boolean isWalkable() {
-    return false;
+    return isBuilt();
   }
 
   @Override

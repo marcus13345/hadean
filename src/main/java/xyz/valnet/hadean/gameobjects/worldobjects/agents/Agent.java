@@ -203,6 +203,11 @@ public abstract class Agent extends WorldObject implements ISelectable {
     return new Action[0];
   }
 
+  @Override
+  public ISelectable.Priority getSelectPriority() {
+    return ISelectable.Priority.HIGH;
+  }
+
   public Vector2i getDestination() {
     if(nextPath != null) return nextPath.getDestination().getPosition();
     if(path == null) return null;

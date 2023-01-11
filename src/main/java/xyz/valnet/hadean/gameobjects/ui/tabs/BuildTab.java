@@ -20,6 +20,7 @@ import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
 import xyz.valnet.hadean.gameobjects.worldobjects.FarmPlot;
 import xyz.valnet.hadean.gameobjects.worldobjects.Stockpile;
 import xyz.valnet.hadean.gameobjects.worldobjects.constructions.Bed;
+import xyz.valnet.hadean.gameobjects.worldobjects.constructions.Quarry;
 import xyz.valnet.hadean.gameobjects.worldobjects.constructions.Wall;
 import xyz.valnet.hadean.input.Button;
 import xyz.valnet.hadean.input.IButtonListener;
@@ -62,6 +63,8 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
     BuildTab.registerBuildable(Bed.class);
 
     BuildTab.registerBuildable(Wall.class);
+
+    BuildTab.registerBuildable(Quarry.class);
     
     BuildTab.registerBuildable(FarmPlot.class);
     BuildTab.registerBuildable(Stockpile.class);

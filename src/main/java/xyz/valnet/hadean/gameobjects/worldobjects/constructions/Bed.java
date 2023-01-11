@@ -30,7 +30,7 @@ public class Bed extends Buildable implements IItemReceiver, IWorkable, ISelecta
   private Job job = null;
 
   @Override
-  protected Vector2i getDefaultDimensions() {
+  protected Vector2i getDimensions() {
     return new Vector2i(1, 2);
   }
 

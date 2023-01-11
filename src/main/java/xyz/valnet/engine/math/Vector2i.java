@@ -39,4 +39,20 @@ public class Vector2i implements Serializable {
     return new Vector2f(x, y);
   }
 
+  public Vector2i north() {
+    return new Vector2i(x, y - 1);
+  }
+
+  public Vector2i east() {
+    return new Vector2i(x + 1, y);
+  }
+
+  public Vector2i south() {
+    return new Vector2i(x, y + 1);
+  }
+
+  public Vector2i west() {
+    return new Vector2i(x - 1, y);
+  }
+
 }

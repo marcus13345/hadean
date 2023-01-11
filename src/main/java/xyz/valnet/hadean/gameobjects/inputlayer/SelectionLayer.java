@@ -115,6 +115,8 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
 
     List<ISelectable> selectables = getAll(ISelectable.class);
 
+    int prio = Integer.MIN_VALUE;
+
     for(ISelectable thing : selectables) {
       Vector4f thingBox = thing.getWorldBox();
       if(rectanglesIntersect(
@@ -123,7 +125,18 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
         thingBox.x, thingBox.y,
         thingBox.z, thingBox.w
       )) {
-        newSelection.add(thing);
+        System.out.println("Considering selecting " + thing);
+        int thingPrio = thing.getSelectPriority().toValue();
+        if(thingPrio > prio) {
+          newSelection.clear();
+          prio = thingPrio;
+          System.out.println("updated prio to " + prio);
+          System.out.println("List cleared");
+        }
+        if(thingPrio >= prio) {
+          System.out.println("added " + thing);
+          newSelection.add(thing);
+        }
       }
     }
 

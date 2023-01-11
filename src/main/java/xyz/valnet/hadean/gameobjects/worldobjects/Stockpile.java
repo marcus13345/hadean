@@ -14,7 +14,7 @@ import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.detail.Detail;
 
 @BuildableMetadata(category = "Zones", name = "Stockpile")
-public class Stockpile extends Buildable implements ISelectable {
+public class Stockpile extends Buildable {
 
   @Override
   public void render() {
@@ -81,4 +81,8 @@ public class Stockpile extends Buildable implements ISelectable {
   @Override
   public void onPlaced(Tile tile) {}
 
+  @Override
+  public ISelectable.Priority getSelectPriority() {
+    return ISelectable.Priority.LOW;
+  }
 }

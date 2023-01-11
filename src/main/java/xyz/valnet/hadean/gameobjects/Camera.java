@@ -76,6 +76,10 @@ public class Camera extends GameObject {
     draw(layer, sprite, pos.x, pos.y, 1, 1);
   }
 
+  public void draw(float layer, Sprite sprite, Vector4i pos) {
+    draw(layer, sprite, pos.x, pos.y, pos.z, pos.w);
+  }
+
   public void draw(float layer, Sprite sprite, float x, float y, float w, float h) {
     Vector2f screenPos = world2screen(x, y);
     Drawing.setLayer(layer + (((y + h) - minY) / (maxY - minY)));

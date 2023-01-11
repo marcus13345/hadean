@@ -75,8 +75,6 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
 
   public static void registerBuildable(Class<? extends IBuildable> clazz) {
     try {
-      System.out.println("Its fine");
-
       BuildableMetadata annotation = clazz.getAnnotation(BuildableMetadata.class);
       if(annotation == null) {
         System.out.println(clazz + " has no buildable data annotation");

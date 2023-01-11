@@ -176,16 +176,15 @@ public abstract class SceneGraph implements IScene {
       FileOutputStream file = new FileOutputStream("SAVE_DATA.TXT");
       ObjectOutputStream out = new ObjectOutputStream(file);
       ArrayList<GameObject> toSave = getNonTransientObjects();
-        
+      System.out.println("=== [ SAVING ] ===");
       dump(toSave);
       out.writeObject(toSave);
       out.close();
       file.close();
-    } catch (NotSerializableException e) {
-      System.out.println("HEY");
-      e.printStackTrace();
+      System.out.println("=== [ SAVED ] ===");
     } catch (Exception e) {
-      System.out.println(e);
+      e.printStackTrace();
+      System.out.println("=== [ FAILED ] ===");
     }
     saveFlag = false;
   }

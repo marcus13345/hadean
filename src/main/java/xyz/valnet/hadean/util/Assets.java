@@ -57,14 +57,11 @@ public class Assets {
   public static final SimpleShader flat;
 
   static {
-    System.out.println("START ASSETS");
+    System.out.println("=== [ LOADING ASSETS ] ===");
     flat = new SimpleShader("res/shaders/flat.vert", "res/shaders/flat.frag");
-    System.out.println("SHADERS LOADED");
 
     atlas = new Texture("res/textures.png");
-    System.out.println("ATLAS LOADED");
 
-    System.out.println("CREATE SPRITES");
     whiteBox = new Sprite(atlas, 0, 88, 8, 8);
 
     defaultTerrain = new Sprite[] {
@@ -320,6 +317,6 @@ public class Assets {
     sndCancel = new Sound("res/sounds/leohpaz/retro-rpg-menu-sounds/098_Unpause_04.ogg").setVolume(0.8f);
     sndGlassTap = new Sound("res/sounds/p0ss/interface-sounds/click5.ogg").setVolume(0.2f);
 
-    System.out.println("END ASSETS");
+    System.out.println("=== [ ASSETS LOADED ] ===");
   }
 }

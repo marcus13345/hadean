@@ -132,6 +132,10 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
   }
 
   private void broadcastSelectionChanged() {
+    Assets.sndSelectionChanged.play();
+    // if(selected.size() > 0) Assets.sndBubble.play();
+    // if(selected.size() == 0) Assets.sndCancel.play();
+    
     for(ISelectionChangeListener listener : listeners) {
       listener.selectionChanged(selected);
     }

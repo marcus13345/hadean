@@ -10,9 +10,15 @@ import xyz.valnet.engine.graphics.Tile16;
 import xyz.valnet.engine.graphics.Tile9;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.shaders.SimpleShader;
+import xyz.valnet.engine.sound.Sound;
 
 public class Assets {
-
+  
+  public static final Sound sndBubble;
+  public static final Sound sndCancel;
+  public static final Sound sndGlassTap;
+  public static final Sound sndSelectionChanged;
+  
   public static final Texture atlas;
   public static final Font font;
   public static final Font miniFont;
@@ -307,6 +313,12 @@ public class Assets {
     );
 
     wall = new Tile16(atlas, new Vector4i(0, 17 * 8, 32, 32));
+
+    sndSelectionChanged = new Sound("res/sounds/leohpaz/retro-rpg-menu-sounds/079_Buy_sell_01.ogg");
+    sndBubble = new Sound("res/sounds/p0ss/interface-sounds/appear-online.ogg");
+    // sndCancel = new Sound("res/sounds/Listener/botton-sound-pack/cancel.ogg").setVolume(2f);
+    sndCancel = new Sound("res/sounds/leohpaz/retro-rpg-menu-sounds/098_Unpause_04.ogg").setVolume(0.8f);
+    sndGlassTap = new Sound("res/sounds/p0ss/interface-sounds/click5.ogg").setVolume(0.2f);
 
     System.out.println("END ASSETS");
   }

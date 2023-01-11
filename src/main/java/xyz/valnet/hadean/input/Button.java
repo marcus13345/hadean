@@ -121,6 +121,7 @@ public class Button extends GameObject implements IMouseCaptureArea, ITransient 
 
     if(state == IDLE) {
       if(hovered) {
+        Assets.sndGlassTap.play();
         state = HOVER;
       } else if (mouseDown) {
         state = INACTIVE;
@@ -139,8 +140,13 @@ public class Button extends GameObject implements IMouseCaptureArea, ITransient 
       if(!hovered) {
         state = ACTIVE_NO_HOVER;
       } else if(!mouseDown) {
-        state = IDLE;
+        if(!hovered) {
+          state = IDLE;
+        } else {
+          state = HOVER;
+        }
         listener.click(this);
+        Assets.sndBubble.play();
       }
     } else if (state == ACTIVE_NO_HOVER) {
       if(hovered) {

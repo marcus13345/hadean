@@ -1,6 +1,7 @@
 package xyz.valnet.engine;
 
 import org.lwjgl.glfw.*;
+import org.lwjgl.openal.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
@@ -14,6 +15,8 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
+import static org.lwjgl.openal.ALC10.*;
+
 public class App {
 
   // The window handle
@@ -22,6 +25,9 @@ public class App {
   private Matrix4f matrix = Matrix4f.orthographic(0, width, height, 0, 0, 100);
   public static int mouseX, mouseY;
   
+  public static long audioContext;
+  public static long audioDevice;
+
   @Deprecated
   public static boolean mouseLeft, mouseMiddle, mouseRight;
   
@@ -36,6 +42,9 @@ public class App {
     // Free the window callbacks and destroy the window
     glfwFreeCallbacks(window);
     glfwDestroyWindow(window);
+
+    alcDestroyContext(audioContext);
+    alcCloseDevice(audioDevice);
 
     // Terminate GLFW and free the error callback
     glfwTerminate();
@@ -121,6 +130,20 @@ public class App {
     glfwMakeContextCurrent(window);
     // Enable v-sync
     glfwSwapInterval(1);
+
+    // Audio device
+    String defaultDeviceName = alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER);
+    audioDevice = alcOpenDevice(defaultDeviceName);
+    int[] attributes = {0};
+    audioContext = alcCreateContext(audioDevice, attributes);
+    alcMakeContextCurrent(audioContext);
+
+    ALCCapabilities alcCapabilities = ALC.createCapabilities(audioDevice);
+    ALCapabilities alCapabilities = AL.createCapabilities(alcCapabilities);
+
+    if(!alCapabilities.OpenAL10) {
+      System.err.println("Audio not supported?!");
+    }
 
     // Make the window visible
     glfwShowWindow(window);

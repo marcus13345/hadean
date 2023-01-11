@@ -9,6 +9,7 @@ import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.interfaces.BuildableMetadata;
 import xyz.valnet.hadean.interfaces.IBuildLayerListener;
+import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 
 public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransient {
@@ -84,6 +85,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
   @Override
   public void mouseDown(int button) {
     if(button == 1 && active && hovered) {
+      Assets.sndCancel.play();
       listener.cancel();
     } else if(button == 0 && active && hovered) {
       // TODO this conversion in negative numbers definitely works wrong.

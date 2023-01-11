@@ -43,7 +43,6 @@ public abstract class WorldObject extends GameObject {
   private void updateTileLinks(Set<Tile> tiles) {
     if(tiles == null || tiles.size() == 0) return;
     if(!(this instanceof ITileThing)) return;
-    boolean inScene = inScene();
 
     Set<Tile> removeTiles = new HashSet<Tile>();
     Set<Tile> addTiles = new HashSet<Tile>();

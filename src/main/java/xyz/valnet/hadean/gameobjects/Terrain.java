@@ -45,6 +45,8 @@ public class Terrain extends GameObject implements IPathable, IWorldBoundsAdapte
   }
 
   public Tile getTile(int x, int y) {
+    if(x < 0 || y < 0) return null;
+    if(x >= WORLD_SIZE || y >= WORLD_SIZE) return null;
     return tiles[x][y];
   }
 

@@ -8,6 +8,7 @@ public @interface BuildableMetadata {
 
   public enum Type {
     AREA,
+    LINE,
     SINGLE
   }
 

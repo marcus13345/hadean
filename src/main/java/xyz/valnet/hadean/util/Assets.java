@@ -6,6 +6,7 @@ import java.util.Map;
 import xyz.valnet.engine.graphics.Font;
 import xyz.valnet.engine.graphics.Sprite;
 import xyz.valnet.engine.graphics.Texture;
+import xyz.valnet.engine.graphics.Tile16;
 import xyz.valnet.engine.graphics.Tile9;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.shaders.SimpleShader;
@@ -24,7 +25,8 @@ public class Assets {
   public static final Tile9 uiFrameDark;
   public static final Tile9 fillColor;
   
-  
+  public static final Tile16 wall;
+
   public static final Sprite[] defaultTerrain;
   public static final Sprite[] growingRice;
   public static final Sprite[] farmPlot;
@@ -303,6 +305,8 @@ public class Assets {
       new Sprite(atlas, 1, 103, 6, 1),
       new Sprite(atlas, 7, 103, 1, 1)
     );
+
+    wall = new Tile16(atlas, new Vector4i(0, 17 * 8, 32, 32));
 
     System.out.println("END ASSETS");
   }

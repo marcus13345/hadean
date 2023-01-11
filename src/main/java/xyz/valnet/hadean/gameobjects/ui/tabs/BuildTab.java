@@ -17,9 +17,10 @@ import xyz.valnet.hadean.gameobjects.BottomBar;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.inputlayer.BuildLayer;
 import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
-import xyz.valnet.hadean.gameobjects.worldobjects.Bed;
 import xyz.valnet.hadean.gameobjects.worldobjects.FarmPlot;
 import xyz.valnet.hadean.gameobjects.worldobjects.Stockpile;
+import xyz.valnet.hadean.gameobjects.worldobjects.constructions.Bed;
+import xyz.valnet.hadean.gameobjects.worldobjects.constructions.Wall;
 import xyz.valnet.hadean.input.Button;
 import xyz.valnet.hadean.input.IButtonListener;
 import xyz.valnet.hadean.input.SimpleButton;
@@ -59,6 +60,8 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
     BuildTab.registerBuildable(CutTreesDesignation.class);
 
     BuildTab.registerBuildable(Bed.class);
+
+    BuildTab.registerBuildable(Wall.class);
     
     BuildTab.registerBuildable(FarmPlot.class);
     BuildTab.registerBuildable(Stockpile.class);

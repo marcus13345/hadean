@@ -15,6 +15,7 @@ import xyz.valnet.hadean.gameobjects.worldobjects.WorldObject;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Boulder;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
 import xyz.valnet.hadean.interfaces.IItemPredicate;
+import xyz.valnet.hadean.interfaces.IPingable;
 import xyz.valnet.hadean.interfaces.ITileThing;
 import xyz.valnet.hadean.interfaces.IWorkable;
 import xyz.valnet.hadean.util.Assets;
@@ -91,12 +92,36 @@ public class Tile extends WorldObject implements IWorkable {
     return null;
   }
 
+  public void pingThings() {
+    for(ITileThing thing : stuff) {
+      if(thing instanceof IPingable) {
+        ((IPingable)thing).ping();
+      }
+    }
+  }
+
+  private void pingNeighbors() {
+    Vector2i pos = getCoords();
+    Tile north = terrain.getTile(pos.x, pos.y - 1);
+    Tile east = terrain.getTile(pos.x - 1, pos.y);
+    Tile south = terrain.getTile(pos.x, pos.y + 1);
+    Tile west = terrain.getTile(pos.x + 1, pos.y);
+    if(north != null) north.pingThings();
+    if(east != null) east.pingThings();
+    if(south != null) south.pingThings();
+    if(west != null) west.pingThings();
+  }
+
   public void placeThing(ITileThing thing) {
     stuff.add(thing);
     if(thing instanceof GameObject) {
       add((GameObject)thing);
     }
     thing.onPlaced(this);
+
+    pingThings();
+    pingNeighbors();
+
     if(thing instanceof FarmPlot) {
       get(JobBoard.class).postSimpleWorkJob("Till Soil", this);
     }
@@ -107,6 +132,10 @@ public class Tile extends WorldObject implements IWorkable {
     if(toRemove.contains(thing)) return null;
 
     toRemove.add(thing);
+    
+    pingThings();
+    pingNeighbors();
+
     return thing;
   }
 
@@ -196,5 +225,14 @@ public class Tile extends WorldObject implements IWorkable {
       str += "  - " + thing + "\n";
     }
     return str.stripTrailing();
+  }
+
+  public <T> boolean has(Class<T> clazz) {
+    for(ITileThing thing : stuff) {
+      if(clazz.isInstance(thing)) {
+        return true;
+      }
+    }
+    return false;
   }
 }

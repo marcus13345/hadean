@@ -1,11 +1,14 @@
 package xyz.valnet.hadean.gameobjects.worldobjects.items;
 
 import xyz.valnet.engine.math.Vector2i;
+import xyz.valnet.hadean.interfaces.IItemPredicate;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.detail.Detail;
 
 public class Boulder extends Item {
+
+  public static IItemPredicate BOULDER_PREDICATE = (item) -> (item instanceof Boulder);
 
   public Boulder(int x, int y) {
     setPosition(x, y);

@@ -15,5 +15,4 @@ public class CutTreesDesignation extends Designation<Tree> {
   protected void designate(Tree thing) {
     thing.runAction(Tree.ACTION_CHOP);
   }
-  
 }

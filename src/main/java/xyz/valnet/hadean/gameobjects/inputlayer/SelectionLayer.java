@@ -125,16 +125,12 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
         thingBox.x, thingBox.y,
         thingBox.z, thingBox.w
       )) {
-        System.out.println("Considering selecting " + thing);
         int thingPrio = thing.getSelectPriority().toValue();
         if(thingPrio > prio) {
           newSelection.clear();
           prio = thingPrio;
-          System.out.println("updated prio to " + prio);
-          System.out.println("List cleared");
         }
         if(thingPrio >= prio) {
-          System.out.println("added " + thing);
           newSelection.add(thing);
         }
       }

@@ -51,17 +51,32 @@ public class AStarPathfinder implements IPathfinder, Serializable {
     return node;
   }
 
-  private Node[] getNeighbors(Node base, List<Node> open, List<Node> closed, int dstX, int dstY) {
-    Node[] neighbors = new Node[8];
-    neighbors[0] = getPathfindingNode(base.x - 1, base.y - 1, open, closed, base, dstX, dstY);
-    neighbors[1] = getPathfindingNode(base.x,     base.y - 1, open, closed, base, dstX, dstY);
-    neighbors[2] = getPathfindingNode(base.x + 1, base.y - 1, open, closed, base, dstX, dstY);
-    neighbors[3] = getPathfindingNode(base.x - 1, base.y,     open, closed, base, dstX, dstY);
-    neighbors[4] = getPathfindingNode(base.x + 1, base.y,     open, closed, base, dstX, dstY);
-    neighbors[5] = getPathfindingNode(base.x - 1, base.y + 1, open, closed, base, dstX, dstY);
-    neighbors[6] = getPathfindingNode(base.x,     base.y + 1, open, closed, base, dstX, dstY);
-    neighbors[7] = getPathfindingNode(base.x + 1, base.y + 1, open, closed, base, dstX, dstY);
-    return neighbors;
+  private Node[] getPathableNodesFromNode(Node base, List<Node> open, List<Node> closed, int dstX, int dstY) {
+    List<Node> nodes = new ArrayList<Node>();
+    Node north = getPathfindingNode(base.x,     base.y - 1, open, closed, base, dstX, dstY);
+    Node east =  getPathfindingNode(base.x - 1, base.y,     open, closed, base, dstX, dstY);
+    Node south = getPathfindingNode(base.x,     base.y + 1, open, closed, base, dstX, dstY);
+    Node west =  getPathfindingNode(base.x + 1, base.y,     open, closed, base, dstX, dstY);
+
+    boolean northWalkable = north != null && pathable.isWalkable(north.x, north.y);
+    boolean eastWalkable =  east  != null && pathable.isWalkable(east.x, east.y);
+    boolean southWalkable = south != null && pathable.isWalkable(south.x, south.y);
+    boolean westWalkable =  west  != null && pathable.isWalkable(west.x, west.y);
+
+    if(northWalkable) nodes.add(north);
+    if(eastWalkable)  nodes.add(east);
+    if(southWalkable) nodes.add(south);
+    if(westWalkable)  nodes.add(west);
+
+    if(northWalkable && eastWalkable) nodes.add(getPathfindingNode(base.x - 1, base.y - 1, open, closed, base, dstX, dstY));
+    if(northWalkable && westWalkable) nodes.add(getPathfindingNode(base.x + 1, base.y - 1, open, closed, base, dstX, dstY));
+    if(southWalkable && eastWalkable) nodes.add(getPathfindingNode(base.x - 1, base.y + 1, open, closed, base, dstX, dstY));
+    if(southWalkable && westWalkable) nodes.add(getPathfindingNode(base.x + 1, base.y + 1, open, closed, base, dstX, dstY));
+
+    Node[] nodes2 = new Node[nodes.size()];
+    nodes.toArray(nodes2);
+
+    return nodes2;
   }
 
   public Path getPath(int x1, int y1, int x2, int y2) {
@@ -71,7 +86,7 @@ public class AStarPathfinder implements IPathfinder, Serializable {
     List<Node> open = new ArrayList<Node>();
     List<Node> closed = new ArrayList<Node>();
 
-    if(!pathable.isWalkable(x2, y2, 0, 0)) return null;
+    if(!pathable.isWalkable(x2, y2)) return null;
 
     open.add(getPathfindingNode(x1, y1, open, closed, null, x2, y2));
     
@@ -113,12 +128,12 @@ public class AStarPathfinder implements IPathfinder, Serializable {
         return new Path(path, current);
       }
 
-      Node[] neighbors = getNeighbors(current, open, closed, x2, y2);
+      Node[] neighbors = getPathableNodesFromNode(current, open, closed, x2, y2);
 
       for(Node node : neighbors) {
         if(node == null) continue;
         if(closed.contains(node)) continue;
-        if(!pathable.isWalkable(node.x, node.y, 0, 0)) continue;
+        if(!pathable.isWalkable(node.x, node.y)) continue;
         if(open.contains(node)) {
           int newGCost = current.g + (int)(Math.round(10 * Math.sqrt(Math.pow(node.x - current.x, 2) + Math.pow(node.y - current.y, 2))));
           

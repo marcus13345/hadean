@@ -56,7 +56,7 @@ public class Terrain extends GameObject implements IPathable, IWorldBoundsAdapte
 
   // TODO implement directionality. even the pathfinder doesnt give this info...
   @Override
-  public boolean isWalkable(int x, int y, int fromX, int fromY) {
+  public boolean isWalkable(int x, int y) {
     if(!isOutOfBounds(x, y)) {
       return getTile(x, y).isWalkable();
     } else return false;

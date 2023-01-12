@@ -72,4 +72,16 @@ public class Terrain extends GameObject implements IPathable, IWorldBoundsAdapte
     return new Vector4f(0, 0, WORLD_SIZE, WORLD_SIZE);
   }
 
+  public Tile getRandomWalkableTile() {
+    Tile tile = null;
+    int maxTries = 100;
+    int tries = 0;
+    while((tile == null || !tile.isWalkable()) && tries < maxTries) {
+      tile = tiles[(int)Math.floor(Math.random() * WORLD_SIZE)][(int)Math.floor(Math.random() * WORLD_SIZE)];
+      tries ++;
+    }
+    if(tries >= maxTries) return null;
+    return tile;
+  }
+
 }

@@ -30,4 +30,5 @@ public interface ISelectable {
   public default Priority getSelectPriority() {
     return Priority.NORMAL;
   }
+  public String getName();
 }

@@ -1,6 +1,7 @@
 package xyz.valnet.hadean.scenes;
 
 import xyz.valnet.engine.scenegraph.SceneGraph;
+import xyz.valnet.engine.util.Names;
 import xyz.valnet.hadean.gameobjects.BottomBar;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.Clock;
@@ -30,6 +31,8 @@ public class GameScene extends SceneGraph {
 
   @Override
   protected void construct() {
+
+    Names.loadNames();
     
     objects.add(new Terrain());
     objects.add(new Camera());

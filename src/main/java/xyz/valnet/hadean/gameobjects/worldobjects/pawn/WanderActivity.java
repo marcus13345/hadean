@@ -1,19 +1,23 @@
 package xyz.valnet.hadean.gameobjects.worldobjects.pawn;
 
 import xyz.valnet.engine.math.Vector2i;
+import xyz.valnet.hadean.gameobjects.Terrain;
+import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.gameobjects.worldobjects.agents.Agent;
 
 // TODO actually implement this activity.
 public class WanderActivity extends Activity {
   
-  @SuppressWarnings("unused")
   private Agent agent;
-  @SuppressWarnings("unused")
-  private Needs needs;
+  // TODO implement fun?
+  // private Needs needs;
 
-  public WanderActivity(Agent agent, Needs needs) {
-    this.needs = needs;
+  private Terrain terrain;
+
+  public WanderActivity(Agent agent, Needs needs, Terrain terrain) {
+    // this.needs = needs;
     this.agent = agent;
+    this.terrain = terrain;
   }
 
   @Override
@@ -33,7 +37,7 @@ public class WanderActivity extends Activity {
 
   @Override
   public void act(float dTime) {
-    // since wandering is literally just pathing.
+    callback.apply(this);
   }
 
   ActivityCancellationCallback callback;
@@ -41,6 +45,13 @@ public class WanderActivity extends Activity {
   @Override
   public void begin(ActivityCancellationCallback callback) {
     this.callback = callback;
+
+    Tile tile = terrain.getRandomWalkableTile();
+    if(tile == null) {
+      callback.apply(this);
+      return;
+    }
+    target = tile.getCoords();
   }
 
   @Override
@@ -48,12 +59,15 @@ public class WanderActivity extends Activity {
 
   @Override
   public String toString() {
-    return "Sleeping";
+    return "Wandering";
   }
+
+  private Vector2i target = null;
 
   @Override
   public Vector2i[] getTargetLocations() {
-    return null;
+    if(target == null) return null;
+    return new Vector2i[] { target };
   }
   
 }

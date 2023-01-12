@@ -30,4 +30,28 @@ public abstract class Detail {
     System.arraycopy(b, 0, c, a.length, b.length);
     return c;
   }
+
+  public static Detail[] mergeDetails(Detail[] a, Detail[] b, Detail[] c) {
+    Detail[] d = new Detail[a.length + b.length + c.length];
+    System.arraycopy(a, 0, d, 0, a.length);
+    System.arraycopy(b, 0, d, a.length, b.length);
+    System.arraycopy(c, 0, d, a.length + b.length, c.length);
+    return c;
+  }
+
+  public static Detail[] mergeDetails(Detail[] ... args) {
+    if(args.length == 1) return new Detail[0];
+    if(args.length == 1) return args[0];
+    if(args.length == 2) return mergeDetails(args[0], args[1]);
+    if(args.length == 3) return mergeDetails(args[0], args[1], args[2]);
+
+    Detail[][] merge = new Detail[3][];
+    Detail[][] rest = new Detail[args.length - 3][];
+    System.arraycopy(args, 0, merge, 0, 3);
+    System.arraycopy(args, 3, rest, 0, rest.length);
+    
+    Detail[] first = mergeDetails(merge);
+    Detail[] merged = mergeDetails(rest);
+    return mergeDetails(first, merged);
+  }
 }

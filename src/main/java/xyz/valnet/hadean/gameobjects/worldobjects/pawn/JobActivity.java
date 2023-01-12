@@ -62,7 +62,6 @@ public class JobActivity extends Activity {
     job = jobboard.requestJob(worker);
     if(job == null) callback.apply(this);
     job.registerClosedListener(() -> {
-      System.out.println("job cancelled");
       callback.apply(this);
     });
 
@@ -127,7 +126,7 @@ public class JobActivity extends Activity {
 
   @Override
   public String toString() {
-    if(job == null) return "Activity (Null Job)";
+    if(job == null) return "No Work";
     return job.getJobName();
   }
 

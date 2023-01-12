@@ -1,6 +1,6 @@
 package xyz.valnet.hadean.gameobjects.worldobjects.pawn;
 
-import static xyz.valnet.hadean.util.detail.Detail.mergeDetails;
+import static xyz.valnet.hadean.util.detail.Detail.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,8 @@ import java.util.List;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
+import xyz.valnet.engine.util.Names;
+import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.Clock;
 import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.gameobjects.Terrain;
@@ -27,7 +29,7 @@ import xyz.valnet.hadean.util.detail.PercentDetail;
 public class Pawn extends Agent {
 
   private static int pawnCount = 0;
-  private String name = "Pawn " + (++ pawnCount);
+  private String name = Names.getRandomName();
   private Needs needs = new Needs();
 
   // private int meaningless = 0;
@@ -98,6 +100,7 @@ public class Pawn extends Agent {
 
     activities.add(new JobActivity(this, get(JobBoard.class)));
     activities.add(new SleepActivity(needs, get(Clock.class)));
+    activities.add(new WanderActivity(this, needs, get(Terrain.class)));
   }
 
   protected void create() {
@@ -125,12 +128,21 @@ public class Pawn extends Agent {
   @Override
   public Detail[] getDetails() {
     // return needs.getDetails();
-    return mergeDetails(needs.getDetails(), new Detail[] {
+    Detail[] details = mergeDetails(needs.getDetails(), new Detail[] {
       new ObjectDetail<Activity>("Activity", currentActivity),
-      new PercentDetail("Sleep Value", activities.get(1).getBenefit(), 2),
       new BooleanDetail("Pathing", isPathing()),
       new ObjectDetail<Integer>("Inventory", inventory.size())
     });
+
+    if(HadeanGame.debugView) {
+      for(Activity activity : activities) {
+        details = mergeDetails(details, new Detail[] {
+          new PercentDetail(activity.toString(), activity.getBenefit())
+        });
+      }
+    }
+
+    return details;
   }
 
   @Override
@@ -164,15 +176,13 @@ public class Pawn extends Agent {
     List<Activity> urgentActivities = activities.stream()
       .filter(a -> a.isValid() && a.isUrgent())
       .toList();
-
+    
     if(urgentActivities.size() > 0) {
       switchActivity(urgentActivities.get(0));
       return;
     }
-
+    
     if(currentActivity != null) return;
-
-    currentActivity = null;
 
     List<Activity> valueSortedActivities = activities.stream()
       .filter(a -> a.isValid())
@@ -188,6 +198,7 @@ public class Pawn extends Agent {
   }
 
   private void switchActivity(Activity activity) {
+    if(activity == currentActivity) return;
     if(currentActivity != null) currentActivity.end();
     currentActivity = activity;
     stopPathing();
@@ -202,12 +213,9 @@ public class Pawn extends Agent {
     }
   }
 
-  // TODO at some point rewrite this to use an actor component array
-  // where we loop through until something _does_ sometihng.
   @Override
   protected boolean act(float dTime) {
     if(super.act(dTime)) return true;
-    // if(doJob()) return true;
     if(currentActivity != null) {
       currentActivity.act(dTime);
       return true;

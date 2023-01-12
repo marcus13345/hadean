@@ -2,6 +2,7 @@ package xyz.valnet.hadean.gameobjects.worldobjects.pawn;
 
 import java.io.Serializable;
 
+import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.util.detail.Detail;
 import xyz.valnet.hadean.util.detail.PercentDetail;
 
@@ -23,6 +24,9 @@ public class Needs implements Serializable {
   }
 
   public float getSleepNeed() {
+    if(HadeanGame.debugView) {
+      return 0;
+    }
     return 1 - energy;
   }
 

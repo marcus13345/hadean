@@ -24,6 +24,7 @@ import xyz.valnet.hadean.util.detail.Detail;
 public class SelectionUI extends GameObject implements ISelectionChangeListener, IButtonListener, IMouseCaptureArea, ITransient {
 
   private String name = "";
+  private String genericName = "";
   private int count = 0;
   private List<ISelectable> selected = new ArrayList<ISelectable>();
   private HashMap<String, Integer> selectedTypes = new HashMap<String, Integer>();
@@ -58,12 +59,12 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
     Assets.uiFrame.draw(10, 576 - BottomBar.bottomBarHeight - height - padding, width, height);
 
     if(selectedTypes.size() == 1) {
-      Assets.font.drawString("" + count + "x " + name, 26, 576 - BottomBar.bottomBarHeight - height);
-
       if(count == 1) {
-
+        Assets.font.drawString(name, 26, 576 - BottomBar.bottomBarHeight - height);
         String details = Detail.renderDetails(selected.get(0).getDetails());
         Assets.font.drawString(details, 26, 576 - BottomBar.bottomBarHeight - height + 32);
+      } else {
+        Assets.font.drawString("" + count + "x " + genericName, 26, 576 - BottomBar.bottomBarHeight - height);
       }
 
     } else {
@@ -109,6 +110,7 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
     for(ISelectable selectable : selected) {
       String name = selectable.getClass().getName();
       String[] splitName = name.split("\\.");
+      String properName = selectable.getName();
       String shortName = splitName[splitName.length - 1];
       
       if(selectedTypes.containsKey(name)) {
@@ -119,7 +121,7 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
         btn.setText("" + items.size() + "x " + shortName);
         count ++;
       } else {
-        Button btn = new SimpleButton("1x " + shortName, 20, 576 - BottomBar.bottomBarHeight - height + 30 * selectedTypes.size(), width - padding * 2, 24, Layers.GENERAL_UI_INTERACTABLE);
+        Button btn = new SimpleButton(properName, 20, 576 - BottomBar.bottomBarHeight - height + 30 * selectedTypes.size(), width - padding * 2, 24, Layers.GENERAL_UI_INTERACTABLE);
         btn.registerClickListener(this);
         selectedTypes.put(name, 1);
         addNarrowButton(name, btn);
@@ -127,7 +129,8 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
         list.add(selectable);
         narrowBuckets.put(btn, list);
         count = 1;
-        this.name = shortName;
+        this.name = properName;
+        this.genericName = shortName;
       }
     }
     if(selectedTypes.size() == 1) {

@@ -28,7 +28,6 @@ import xyz.valnet.hadean.util.detail.PercentDetail;
 
 public class Pawn extends Agent {
 
-  private static int pawnCount = 0;
   private String name = Names.getRandomName();
   private Needs needs = new Needs();
 
@@ -39,8 +38,6 @@ public class Pawn extends Agent {
 
   private transient List<Activity> activities = new ArrayList<Activity>();
   private Activity currentActivity = null;
-
-  private Item heldItem = null;
 
   public void pickupItemByPredicate(IItemPredicate itemPredicate) {
     Item item = getTile().pickupByItemPredicate(itemPredicate);
@@ -100,7 +97,7 @@ public class Pawn extends Agent {
 
     activities.add(new JobActivity(this, get(JobBoard.class)));
     activities.add(new SleepActivity(needs, get(Clock.class)));
-    activities.add(new WanderActivity(this, needs, get(Terrain.class)));
+    activities.add(new WanderActivity(get(Terrain.class)));
   }
 
   protected void create() {

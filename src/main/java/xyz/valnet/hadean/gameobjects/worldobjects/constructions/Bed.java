@@ -4,13 +4,11 @@ import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.Job;
 import xyz.valnet.hadean.gameobjects.JobBoard;
-import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.gameobjects.worldobjects.Buildable;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Log;
 import xyz.valnet.hadean.interfaces.BuildableMetadata;
 import xyz.valnet.hadean.interfaces.IItemReceiver;
-import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.IWorkable;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
@@ -21,7 +19,7 @@ import xyz.valnet.hadean.util.detail.ObjectDetail;
 import xyz.valnet.hadean.util.detail.PercentDetail;
 
 @BuildableMetadata(category = "Furniture", name = "Bed", type = BuildableMetadata.Type.SINGLE)
-public class Bed extends Buildable implements IItemReceiver, IWorkable, ISelectable {
+public class Bed extends Buildable implements IItemReceiver, IWorkable {
 
   private int logs = 0;
   private float work = 0;

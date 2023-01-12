@@ -5,9 +5,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.lang.Math;
 
-import org.yaml.snakeyaml.TypeDescription;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
 
 public class Names {
 
@@ -32,11 +30,6 @@ public class Names {
   private void load() {
     InputStream fileStream = null;
     try {
-      // Constructor constructor = new Constructor();
-      // TypeDescription typeDescription = new TypeDescription(NameYaml.class);
-      // // typeDescription.putListPropertyType("things", ConfigurableThing.class);
-      // constructor.addTypeDescription(typeDescription);
-
       Yaml yaml = new Yaml();
       fileStream = new FileInputStream("res/names.yaml");
       var loaded = yaml.loadAs(fileStream, NamesYaml.class).names;

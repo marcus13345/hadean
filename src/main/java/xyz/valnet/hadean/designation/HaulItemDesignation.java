@@ -1,6 +1,5 @@
 package xyz.valnet.hadean.designation;
 
-import xyz.valnet.hadean.gameobjects.ui.tabs.BuildTab;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
 import xyz.valnet.hadean.interfaces.BuildableMetadata;
 

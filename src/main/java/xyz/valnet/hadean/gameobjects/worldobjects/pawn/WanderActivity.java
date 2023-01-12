@@ -3,20 +3,16 @@ package xyz.valnet.hadean.gameobjects.worldobjects.pawn;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.hadean.gameobjects.Terrain;
 import xyz.valnet.hadean.gameobjects.Tile;
-import xyz.valnet.hadean.gameobjects.worldobjects.agents.Agent;
 
 // TODO actually implement this activity.
 public class WanderActivity extends Activity {
-  
-  private Agent agent;
+
   // TODO implement fun?
   // private Needs needs;
 
   private Terrain terrain;
 
-  public WanderActivity(Agent agent, Needs needs, Terrain terrain) {
-    // this.needs = needs;
-    this.agent = agent;
+  public WanderActivity(Terrain terrain) {
     this.terrain = terrain;
   }
 

@@ -4,14 +4,13 @@ import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.interfaces.BuildableMetadata;
-import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.detail.Detail;
 
 @BuildableMetadata(category = "Zones", name = "Farm Plot")
-public class FarmPlot extends Buildable implements ISelectable {
+public class FarmPlot extends Buildable {
 
   @Override
   public void renderAlpha() {

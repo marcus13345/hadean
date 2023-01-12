@@ -1,11 +1,8 @@
 package xyz.valnet.engine.sound;
 
-import java.io.FileInputStream;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.PointerBuffer;
 import static org.lwjgl.openal.AL10.*;
 
 import static org.lwjgl.stb.STBVorbis.*;

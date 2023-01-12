@@ -14,7 +14,6 @@ import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
 import xyz.valnet.hadean.interfaces.BuildableMetadata;
 import xyz.valnet.hadean.interfaces.IItemReceiver;
 import xyz.valnet.hadean.interfaces.IPingable;
-import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.IWorkable;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
@@ -25,7 +24,7 @@ import xyz.valnet.hadean.util.detail.ObjectDetail;
 import xyz.valnet.hadean.util.detail.PercentDetail;
 
 @BuildableMetadata(category = "Structure", name = "Wall", type = BuildableMetadata.Type.SINGLE)
-public class Wall extends Buildable implements IItemReceiver, IWorkable, ISelectable, IPingable {
+public class Wall extends Buildable implements IItemReceiver, IWorkable, IPingable {
 
   private int boulders = 0;
   private float work = 0;

@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import xyz.valnet.engine.graphics.Tile16.Direction;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
+import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.Job;
 import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.gameobjects.Tile;
@@ -36,8 +37,10 @@ public class Wall extends Buildable implements IItemReceiver, IWorkable, IPingab
   protected void create() {
     super.create();
     job = add(new Job("Build Wall"));
-    job.addStep(job.new PickupItemByPredicate(Boulder.BOULDER_PREDICATE));
-    job.addStep(job.new DropoffPredicateAtItemReceiver(this, Boulder.BOULDER_PREDICATE));
+    if(!HadeanGame.debugView) {
+      job.addStep(job.new PickupItemByPredicate(Boulder.BOULDER_PREDICATE));
+      job.addStep(job.new DropoffPredicateAtItemReceiver(this, Boulder.BOULDER_PREDICATE));
+    }
     job.addStep(job.new Work(this));
     get(JobBoard.class).postJob(job);
   }
@@ -146,7 +149,7 @@ public class Wall extends Buildable implements IItemReceiver, IWorkable, IPingab
 
   @Override
   public boolean isWalkable() {
-    return isBuilt();
+    return !isBuilt();
   }
 
   @Override

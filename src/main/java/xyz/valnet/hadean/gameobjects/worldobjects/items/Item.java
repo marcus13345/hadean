@@ -69,7 +69,7 @@ public abstract class Item extends WorldObject implements ISelectable, ITileThin
 
   private void cancelHaul() {
     if(haulJob == null) return;
-    jobboard.rescindJob(haulJob);
+    haulJob.close();
     haulJob = null;
   }
 

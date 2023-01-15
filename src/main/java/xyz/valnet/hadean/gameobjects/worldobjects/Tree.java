@@ -61,7 +61,7 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
       if(chopJob == null) {
         chopJob = get(JobBoard.class).postSimpleWorkJob("Chop Tree", this);
       } else {
-        get(JobBoard.class).rescindJob(chopJob);
+        chopJob.close();
         chopJob = null;
       }
     }

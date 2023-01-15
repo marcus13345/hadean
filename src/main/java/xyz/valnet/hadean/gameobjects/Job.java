@@ -155,6 +155,7 @@ public class Job extends GameObject {
   private List<JobStep> steps;
   private String name;
   private int step;
+  private boolean hasClosed = false;
 
   public void reset() {
     step = 0;
@@ -171,17 +172,14 @@ public class Job extends GameObject {
 
   public Vector2i[] getLocations() {
     if(steps.size() == 0) throw new Error("Cannot get location of job with no steps");
-    JobStep step = steps.get(0);
+    JobStep step = getCurrentStep();
     return step.getLocations();
   }
 
   public void nextStep() {
     step ++;
     if(isCompleted()) {
-      get(JobBoard.class).completeJob(this);
-      for(Callback callback : closedListeners) {
-        callback.apply();
-      }
+      close();
       remove(this);
     }
   }
@@ -205,6 +203,8 @@ public class Job extends GameObject {
   }
 
   public void close() {
+    if(hasClosed) return;
+    hasClosed = true;
     for(Callback callback : closedListeners) {
       callback.apply();
     }

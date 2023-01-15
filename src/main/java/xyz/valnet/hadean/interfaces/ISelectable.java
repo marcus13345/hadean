@@ -31,4 +31,7 @@ public interface ISelectable {
     return Priority.NORMAL;
   }
   public String getName();
+  public default String getGenericName() {
+    return getName();
+  }
 }

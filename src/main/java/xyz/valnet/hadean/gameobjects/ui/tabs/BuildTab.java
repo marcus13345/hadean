@@ -289,7 +289,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
   public void mouseUp(int button) {}
 
   @Override
-  public Vector4f getBox() {
+  public Vector4f getGuiBox() {
     return new Vector4f(padding, 576 - BottomBar.bottomBarHeight - padding - height, width, height);
   }
 

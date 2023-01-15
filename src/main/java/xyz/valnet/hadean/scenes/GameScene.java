@@ -11,6 +11,7 @@ import xyz.valnet.hadean.gameobjects.Terrain;
 import xyz.valnet.hadean.gameobjects.inputlayer.BuildLayer;
 import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
 import xyz.valnet.hadean.gameobjects.ui.HoverQuery;
+import xyz.valnet.hadean.gameobjects.ui.Popup;
 import xyz.valnet.hadean.gameobjects.ui.tabs.BuildTab;
 import xyz.valnet.hadean.gameobjects.ui.tabs.JobBoardTab;
 import xyz.valnet.hadean.gameobjects.ui.tabs.LoadTab;
@@ -42,7 +43,7 @@ public class GameScene extends SceneGraph {
     for(int i = 0; i < 5; i ++) {
       objects.add(new Pawn());
     }
-    
+
     objects.add(new SelectionLayer());
     objects.add(new SelectionUI());
 
@@ -57,6 +58,8 @@ public class GameScene extends SceneGraph {
     objects.add(new MenuTab());
     objects.add(new SaveTab());
     objects.add(new LoadTab());
+
+    // objects.add(new Popup());
     
   }
 }

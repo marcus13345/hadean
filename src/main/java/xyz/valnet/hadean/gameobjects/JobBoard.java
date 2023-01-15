@@ -10,9 +10,15 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import xyz.valnet.engine.math.Vector2i;
+import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
+import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.worldobjects.pawn.Pawn;
+import xyz.valnet.hadean.interfaces.IItemPredicate;
+import xyz.valnet.hadean.interfaces.IItemReceiver;
 import xyz.valnet.hadean.interfaces.IWorkable;
+import xyz.valnet.hadean.util.Assets;
+import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.Pair;
 
 public class JobBoard extends GameObject {
@@ -28,30 +34,68 @@ public class JobBoard extends GameObject {
     return job;
   }
 
-  public void postJob(Job job) {
-    availableJobs.add(job);
+  private Camera camera;
+
+  @Override
+  public void connect() {
+    camera = get(Camera.class);
   }
 
-  public void rescindJob(Job job) {
-    if(allocations.values().contains(job)) {
-      List<Pawn> toFire = new ArrayList<Pawn>();
-
-      for(Pawn worker : allocations.keySet()) {
-        if(allocations.get(worker) == job) {
-          toFire.add(worker);
+  @Override
+  public void renderAlpha() {
+    super.render();
+    if(HadeanGame.debugView) {
+      float opacity = 0.6f;
+      Assets.flat.pushColor(new Vector4f(1, 0.8f, 0, opacity));
+      for(Job job : availableJobs) {
+        for(Vector2i position : job.getLocations()) {
+          if(job.isValid()) {
+            Assets.flat.swapColor(new Vector4f(1, 0.8f, 0, opacity));
+          } else {
+            Assets.flat.swapColor(new Vector4f(1.0f, 0.2f, 0, opacity));
+          }
+          camera.draw(Layers.GROUND_MARKERS, Assets.fillTile, position.asFloat());
         }
       }
-
-      for(Pawn worker : toFire) {
-        allocations.remove(worker);
+      Assets.flat.swapColor(new Vector4f(0.2f, 1.0f, 0, opacity));
+      for(Job job : allocations.values()) {
+        for(Vector2i position : job.getLocations()) {
+          camera.draw(Layers.GROUND_MARKERS, Assets.fillTile, position.asFloat());
+        }
       }
+      Assets.flat.popColor();
     }
+  }
 
-    if(availableJobs.contains(job)) {
-      availableJobs.remove(job);
-    }
+  public Job postSimpleItemRequirementJob(String name, IItemPredicate predicate, IItemReceiver recv) {
+    Job job = add(new Job(name));
+    job.addStep(job.new PickupItemByPredicate(predicate));
+    job.addStep(job.new DropoffPredicateAtItemReceiver(recv, predicate));
+    postJob(job);
+    return job;
+  }
 
-    job.close();
+  public void postJob(Job job) {
+    job.registerClosedListener(() -> {
+      if(allocations.values().contains(job)) {
+        List<Pawn> toFire = new ArrayList<Pawn>();
+  
+        for(Pawn worker : allocations.keySet()) {
+          if(allocations.get(worker) == job) {
+            toFire.add(worker);
+          }
+        }
+  
+        for(Pawn worker : toFire) {
+          allocations.remove(worker);
+        }
+      }
+  
+      if(availableJobs.contains(job)) {
+        availableJobs.remove(job);
+      }
+    });
+    availableJobs.add(job);
   }
 
   public boolean jobsAvailableForWorker(Pawn worker) {
@@ -97,10 +141,6 @@ public class JobBoard extends GameObject {
     return null;
   }
 
-  public void completeJob(Job job) {
-    this.rescindJob(job);
-  }
-
   public void quitJob(Pawn worker, Job job) {
     if(!allocations.containsKey(worker)) return;
     Job foundJob = allocations.get(worker);
@@ -137,17 +177,28 @@ public class JobBoard extends GameObject {
     
     String takenJobsString = "";
     String availableJobsString = "";
+    String impossibleJobsString = "";
+
+    int possibleJobs = 0;
+    int impossibleJobs = 0;
 
     for(Entry<Pawn, Job> allocation : allocations.entrySet()) {
       takenJobsString += "  " + allocation.getKey().getName() + ": " + allocation.getValue().getJobName() + "\n";
     }
     
     for(Job job : availableJobs) {
-      availableJobsString += "  " + job.getJobName() + "\n";
+      if(job.isValid()) {
+        availableJobsString += "  " + job.getJobName() + "\n";
+        possibleJobs ++;
+      } else {
+        impossibleJobsString += "  " + job.getJobName() + "\n";
+        impossibleJobs ++;
+      }
     }
 
-    return "Available Jobs: " + availableJobs.size() + "\n" + availableJobsString +
-           "Taken Jobs: " + allocations.size() + "\n" + takenJobsString;
+    return "Available Jobs: " + possibleJobs + "\n" + availableJobsString +
+           "Taken Jobs: " + allocations.size() + "\n" + takenJobsString +
+           "Impossible Jobs: " + impossibleJobs + "\n" + impossibleJobsString;
   }
 
 }

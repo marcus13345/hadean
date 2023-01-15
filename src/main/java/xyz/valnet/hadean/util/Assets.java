@@ -21,6 +21,7 @@ public class Assets {
   
   public static final Texture atlas;
   public static final Font font;
+  public static final Font bigFont;
   public static final Font miniFont;
   public static final Tile9 redFrame;
   public static final Tile9 frame;
@@ -52,6 +53,7 @@ public class Assets {
   public static final Sprite lilPickaxe;
   public static final Sprite testTile;
   public static final Sprite quarry;
+  public static final Sprite fillTile;
 
 
   public static final SimpleShader flat;
@@ -198,7 +200,8 @@ public class Assets {
     charset.put('\\', new Sprite(atlas, 208, 32, 8, 16));
     charset.put('♥',  new Sprite(atlas, 216, 32, 8, 16));
     charset.put('|',  new Sprite(atlas, 224, 32, 8, 16));
-    font = new Font(charset, 8, 16);
+    font = new Font(charset, 8, 16, 1);
+    bigFont = new Font(charset, 8, 16, 2);
 
     Map<Character, Sprite> miniCharset = new HashMap<Character, Sprite>();
     miniCharset.put('1', new Sprite(atlas, 0,  112, 4, 5));
@@ -211,7 +214,7 @@ public class Assets {
     miniCharset.put('8', new Sprite(atlas, 28, 112, 4, 5));
     miniCharset.put('9', new Sprite(atlas, 32, 112, 4, 5));
     miniCharset.put('0', new Sprite(atlas, 36, 112, 4, 5));
-    miniFont = new Font(miniCharset, 4, 5);
+    miniFont = new Font(miniCharset, 4, 5, 1);
 
     frame = new Tile9(
       new Sprite(atlas, 24,  88, 8, 8),
@@ -272,6 +275,8 @@ public class Assets {
       new Sprite(atlas, 44, 64, 1, 1),
       new Sprite(atlas, 44, 64, 1, 1)
     );
+
+    fillTile = new Sprite(atlas, 0, 88, 8, 8);
     
     uiFrame = new Tile9(
       new Sprite(atlas, 32, 80, 1, 1),

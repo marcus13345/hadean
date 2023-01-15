@@ -58,4 +58,15 @@ public class Vector4f implements Serializable {
     return new Vector4i((int)x, (int)y, (int)z, (int)w);
   }
 
+  public Vector4f pad(float all) {
+    return new Vector4f(x + all, y + all, z - all * 2, w - all * 2);
+  }
+
+  public Vector4f pad(float top, float bottom, float left, float right) {
+    return new Vector4f(x + left, y + top, z - left - right, w - top - bottom);
+  }
+
+  public Vector4f copy() {
+    return new Vector4f(x, y, z, w);
+  }
 }

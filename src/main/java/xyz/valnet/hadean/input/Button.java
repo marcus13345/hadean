@@ -53,22 +53,29 @@ public class Button extends GameObject implements IMouseCaptureArea, ITransient 
     return text;
   }
 
-  public void setText(String text) {
+  public Button setText(String text) {
+    if(text == this.text) return this;
     this.text = text;
     Vector4i measuredText = Assets.font.measure(text);
     textWidth = measuredText.x;
     textHeight = measuredText.y;
+    return this;
+  }
+
+  public Button setLayer(float layer) {
+    this.layer = layer;
+    return this;
   }
 
   @Override
   public void render() {
     Drawing.setLayer(layer);
     if(state == HOVER) {
-      frameHover.draw(box.x, box.y, box.z, box.w);
+      Assets.uiFrameLight.draw(box.x, box.y, box.z, box.w);
     } else if(state == ACTIVE) {
-      frameActive.draw(box.x, box.y, box.z, box.w);
+      Assets.uiFrameDark.draw(box.x, box.y, box.z, box.w);
     } else {
-      frame.draw(box.x, box.y, box.z, box.w);
+      Assets.uiFrame.draw(box.x, box.y, box.z, box.w);
     }
 
     Assets.flat.pushColor(Vector4f.black);
@@ -78,6 +85,20 @@ public class Button extends GameObject implements IMouseCaptureArea, ITransient 
     Assets.font.drawString(text, x + (width - textWidth) / 2, y + (height - textHeight) / 2);
     
     Assets.flat.popColor();
+  }
+
+  public Button setPosition(int x, int y) {
+    this.x = x;
+    this.y = y;
+    box = new Vector4i(x, y, width, height);
+    return this;
+  }
+
+  public Button setSize(int w, int h) {
+    this.width = w;
+    this.height = h;
+    box = new Vector4i(x, y, w, h);
+    return this;
   }
 
   // public void draw(int x, int y, int w, int h) {
@@ -201,7 +222,7 @@ public class Button extends GameObject implements IMouseCaptureArea, ITransient 
   }
 
   @Override
-  public Vector4f getBox() {
+  public Vector4f getGuiBox() {
     return new Vector4f(x, y, width, height);
   }
 

@@ -4,44 +4,18 @@ import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.Job;
 import xyz.valnet.hadean.gameobjects.JobBoard;
-import xyz.valnet.hadean.gameobjects.worldobjects.Buildable;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Boulder;
 import xyz.valnet.hadean.interfaces.BuildableMetadata;
+import xyz.valnet.hadean.interfaces.IItemPredicate;
 import xyz.valnet.hadean.interfaces.IWorkable;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 
 @BuildableMetadata(category = "Buildings", name = "Quarry", type = BuildableMetadata.Type.SINGLE)
-public class Quarry extends Buildable {
+public class Quarry extends Construction {
 
   private float work = 0;
-  private static float MAX_WORK = 10000;
-
   private Job digJob = null;
-
-  @Override
-  public void create() {
-    super.create();
-    get(JobBoard.class).postSimpleWorkJob("Build Quarry", new IWorkable() {
-      @Override
-      public boolean doWork(float dTime) {
-        work += dTime;
-        return isBuilt();
-      }
-
-      @Override
-      public Vector2i[] getWorkablePositions() {
-        return new Vector2i[] {
-          getWorldPosition().xy().south().east()
-        };
-      }
-
-      @Override
-      public String getJobName() {
-        return "Build Quarry";
-      }
-    });
-  }
 
   @Override
   public void render() {
@@ -53,14 +27,13 @@ public class Quarry extends Buildable {
       }
 
     } else {
-      float p = work / MAX_WORK;
       float b = 4;
 
       Assets.flat.pushColor(new Vector4f(b, b, b, 0.5f));
       camera.draw(Layers.GROUND, Assets.quarry, getWorldPosition());
       Assets.flat.popColor();
 
-      camera.drawProgressBar(p, getWorldBox());
+      camera.drawProgressBar(getBuildProgress(), getWorldBox());
     }
   }
 
@@ -75,6 +48,9 @@ public class Quarry extends Buildable {
     if(!isBuilt()) return;
     if (digJob != null) return;
     if (terrain.getTile(getWorldPosition().xy().south().east()).has(Boulder.class)) return;
+
+
+    System.out.println("Dig job?");
 
     digJob = get(JobBoard.class)
       .postSimpleWorkJob("Mine at Quarry", new IWorkable() {
@@ -118,10 +94,6 @@ public class Quarry extends Buildable {
     tryCreateDigJob();
   }
 
-  private boolean isBuilt() {
-    return work >= MAX_WORK;
-  }
-
   @Override
   public boolean isWalkable() {
     return true;
@@ -139,5 +111,15 @@ public class Quarry extends Buildable {
   @Override
   public String getName() {
     return "Quarry";
+  }
+
+  @Override
+  protected IItemPredicate getBuildingMaterial() {
+    return null;
+  }
+
+  @Override
+  protected int getBuildingMaterialCount() {
+    return 0;
   }
 }

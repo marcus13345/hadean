@@ -181,7 +181,7 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
   }
 
   @Override
-  public Vector4f getBox() {
+  public Vector4f getGuiBox() {
     return new Vector4f(0, 0, 1000, 1000);
   }
 

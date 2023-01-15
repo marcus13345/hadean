@@ -129,7 +129,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
   }
 
   @Override
-  public Vector4f getBox() {
+  public Vector4f getGuiBox() {
     return active ? new Vector4f(0, 0, 1024, 576) : Vector4f.zero;
   }
 

@@ -159,8 +159,8 @@ public abstract class Agent extends WorldObject implements ISelectable {
   @Override
   public void renderAlpha() {
     if(!HadeanGame.debugView) return;
-    Drawing.setLayer(Layers.GENERAL_UI);
-    Assets.flat.pushColor(Vector4f.opacity(0.4f));
+    Drawing.setLayer(Layers.GROUND_MARKERS);
+    Assets.flat.pushColor(Vector4f.opacity(0.6f));
     if(path != null) {
       int count = 0;
       for(Node node : path) {
@@ -183,7 +183,6 @@ public abstract class Agent extends WorldObject implements ISelectable {
         glEnd();
         count ++;
       }
-      Assets.flat.swapColor(Vector4f.opacity(0.6f));
 
       Assets.selectionFrame.draw(
         camera.world2Screen(

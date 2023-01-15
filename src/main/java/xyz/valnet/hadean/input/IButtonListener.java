@@ -1,5 +1,8 @@
 package xyz.valnet.hadean.input;
 
-public interface IButtonListener {
+import java.io.Serializable;
+
+@FunctionalInterface
+public interface IButtonListener extends Serializable {
   public void click(Button target);
 }

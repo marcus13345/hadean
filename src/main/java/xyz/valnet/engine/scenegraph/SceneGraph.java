@@ -83,7 +83,7 @@ public abstract class SceneGraph implements IScene {
       }
     });
     for(IMouseCaptureArea listener : mouseListeners) {
-      boolean currentlyEntered = listener.getBox().contains(App.mouseX, App.mouseY);
+      boolean currentlyEntered = listener.getGuiBox().contains(App.mouseX, App.mouseY);
       if(currentlyEntered) {
         if(listener != hoveredMouseListener) {
           if(hoveredMouseListener != null) {

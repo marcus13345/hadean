@@ -2,40 +2,29 @@ package xyz.valnet.hadean.gameobjects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+import xyz.valnet.engine.graphics.ImmediateUI;
 import xyz.valnet.engine.math.Vector4f;
-import xyz.valnet.engine.scenegraph.GameObject;
-import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
-import xyz.valnet.hadean.input.Button;
-import xyz.valnet.hadean.input.IButtonListener;
-import xyz.valnet.hadean.input.SimpleButton;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
-import xyz.valnet.hadean.util.Action;
-import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.detail.Detail;
 
-public class SelectionUI extends GameObject implements ISelectionChangeListener, IButtonListener, IMouseCaptureArea, ITransient {
+public class SelectionUI extends ImmediateUI implements ISelectionChangeListener, ITransient {
 
-  private String name = "";
-  private String genericName = "";
-  private int count = 0;
+  private class SelectedByType extends HashMap<Class<? extends ISelectable>, List<ISelectable>> {}
+
+  private int selectedCount = 0;
+  private String properName;
+  private String genericName;
   private List<ISelectable> selected = new ArrayList<ISelectable>();
-  private HashMap<String, Integer> selectedTypes = new HashMap<String, Integer>();
-  private HashMap<String, Button> narrowButtons = new HashMap<String, Button>();
-  private HashMap<Button, List<ISelectable>> narrowBuckets = new HashMap<Button, List<ISelectable>>();
-
-  private static final Button[] ACTIONS_BUTTONS_NULL = new Button[] {};
- 
-  private Button[] actionButtons = ACTIONS_BUTTONS_NULL;
+  private transient SelectedByType selectedByType = new SelectedByType();
 
   private SelectionLayer selectionManager;
+
   private final int width = 300, height = 200;
   private final int padding = 10;
   private final int actionButtonSize = 100;
@@ -46,30 +35,11 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
   // exception, where the buttons are attempting to
   // change while updating. 
   // TODO this could be fixed by delaying button clicks to the next frame.
-  private List<ISelectable> newSelection = null;;
+  private List<ISelectable> newSelection = null;
 
   public void start() {
     selectionManager = get(SelectionLayer.class);
     selectionManager.subscribe(this);
-  }
-
-  public void render() {
-    if(selected.isEmpty()) return;
-
-    Assets.uiFrame.draw(10, 576 - BottomBar.bottomBarHeight - height - padding, width, height);
-
-    if(selectedTypes.size() == 1) {
-      if(count == 1) {
-        Assets.font.drawString(name, 26, 576 - BottomBar.bottomBarHeight - height);
-        String details = Detail.renderDetails(selected.get(0).getDetails());
-        Assets.font.drawString(details, 26, 576 - BottomBar.bottomBarHeight - height + 32);
-      } else {
-        Assets.font.drawString("" + count + "x " + genericName, 26, 576 - BottomBar.bottomBarHeight - height);
-      }
-
-    } else {
-    }
-
   }
 
   @Override
@@ -78,136 +48,31 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
       selectionManager.updateSelection(newSelection);
       newSelection = null;
     }
-
-    if(selectedTypes.size() == 1) {
-    } else {
-    }
-  }
-
-  private HashMap<Button, Action> buttonActionMap = new HashMap<Button, Action>();
-
-  private void addNarrowButton(String str, Button btn) {
-    narrowButtons.put(str, btn);
-    add(btn);
-  }
-
-  private void clearNarrowButtons() {
-    for(GameObject obj : narrowButtons.values()) {
-      remove(obj);
-    }
-    narrowButtons.clear();
   }
 
   @Override
-  public void selectionChanged(List<ISelectable> selected) {
-    this.selected = selected;
+  public void selectionChanged(List<ISelectable> newSelection) {
 
-    selectedTypes.clear();
-    clearNarrowButtons();
-    narrowBuckets.clear();
-    buttonActionMap.clear();
-    setActionButtons(ACTIONS_BUTTONS_NULL);
-    for(ISelectable selectable : selected) {
-      String name = selectable.getClass().getName();
-      String[] splitName = name.split("\\.");
-      String properName = selectable.getName();
-      String shortName = splitName[splitName.length - 1];
+    selected = newSelection;
+    selectedByType.clear();
+    selectedCount = newSelection.size();
+
+    for(ISelectable selectable : newSelection) {
+      Class<? extends ISelectable> clazz = selectable.getClass();
       
-      if(selectedTypes.containsKey(name)) {
-        selectedTypes.replace(name, selectedTypes.get(name) + 1);
-        Button btn = narrowButtons.get(name);
-        List<ISelectable> items = narrowBuckets.get(btn);
-        items.add(selectable);
-        btn.setText("" + items.size() + "x " + shortName);
-        count ++;
-      } else {
-        Button btn = new SimpleButton(properName, 20, 576 - BottomBar.bottomBarHeight - height + 30 * selectedTypes.size(), width - padding * 2, 24, Layers.GENERAL_UI_INTERACTABLE);
-        btn.registerClickListener(this);
-        selectedTypes.put(name, 1);
-        addNarrowButton(name, btn);
-        List<ISelectable> list = new ArrayList<ISelectable>();
-        list.add(selectable);
-        narrowBuckets.put(btn, list);
-        count = 1;
-        this.name = properName;
-        this.genericName = shortName;
+      properName = selectable.getName();
+      genericName = selectable.getGenericName();
+      
+      if(!selectedByType.containsKey(clazz)) {
+        selectedByType.put(clazz, new ArrayList<ISelectable>());
       }
-    }
-    if(selectedTypes.size() == 1) {
-      createActionButtons();
-    }
-    if(selectedTypes.size() <= 1) {
-      clearNarrowButtons();
-    }
-  }
 
-  private void createActionButtons() {
-
-    buttonActionMap.clear();
-    setActionButtons(ACTIONS_BUTTONS_NULL);
-
-    Set<Action> actionSet = new HashSet<Action>();
-    for(ISelectable selectable : selected) {
-      for(Action action : selectable.getActions()) {
-        actionSet.add(action);
-      }
-    }
-
-    Action[] actions = new Action[actionSet.size()];
-    actionSet.toArray(actions);
-
-    Button[] actionButtons = new Button[actions.length];
-    for(int i = 0; i < actions.length; i ++) {
-      actionButtons[i] = new SimpleButton(actions[i].name, width + padding * 2 + i * (actionButtonSize + padding), 576 - padding - actionButtonSize - BottomBar.bottomBarHeight, actionButtonSize, actionButtonSize, Layers.GENERAL_UI_INTERACTABLE);
-      actionButtons[i].registerClickListener(this);
-      buttonActionMap.put(actionButtons[i], actions[i]);
-    }
-    setActionButtons(actionButtons);
-  }
-
-  private void setActionButtons(Button[] buttons) {
-    for(Button btn : this.actionButtons) {
-      remove(btn);
-    }
-    this.actionButtons = buttons;
-    for(Button btn : this.actionButtons) {
-      add(btn);
+      selectedByType.get(clazz).add(selectable);
     }
   }
 
   @Override
-  public void click(Button target) {
-    if(narrowBuckets.containsKey(target)) {
-      newSelection = narrowBuckets.get(target);
-    } else if(buttonActionMap.containsKey(target)) {
-      Action action = buttonActionMap.get(target);
-      for(ISelectable selectable : selected) {
-        selectable.runAction(action);
-      }
-      createActionButtons();
-    }
-  }
-
-  @Override
-  public void mouseEnter() {
-  }
-
-  @Override
-  public void mouseLeave() {
-  }
-
-  @Override
-  public void mouseDown(int button) {
-    return;
-  }
-
-  @Override
-  public void mouseUp(int button) {
-    
-  }
-
-  @Override
-  public Vector4f getBox() {
+  public Vector4f getGuiBox() {
     if(selected.isEmpty()) return Vector4f.zero;
     return new Vector4f(10, 576 - BottomBar.bottomBarHeight - height - padding, width, height);
   }
@@ -215,5 +80,40 @@ public class SelectionUI extends GameObject implements ISelectionChangeListener,
   @Override
   public float getLayer() {
     return Layers.GENERAL_UI;
+  }
+
+  @Override
+  protected void gui() {
+    if(selected.isEmpty()) return;
+
+    if(selectedByType.size() == 1) {
+      if(selectedCount == 1) {
+        text(properName + "\n ");
+        group();
+        Detail[] details = selected.get(0).getDetails();
+        if(details.length == 0) {
+          text("No details available.");
+        } else for(Detail detail : details) {
+          text(detail.toString(15));
+        }
+        groupEnd();
+      } else {
+        text("" + selectedCount + "x " + genericName);
+      }
+    } else {
+      text(this.selected.size() + " items selected");
+      text("");
+
+      for(var entry : selectedByType.entrySet()) {
+        List<ISelectable> list = entry.getValue();
+        int count = list.size();
+        if(count <= 0) continue;
+        String name = list.get(0).getGenericName();
+
+        if(button(name, count + "x " + name)) {
+          newSelection = list;
+        }
+      }
+    }
   }
 }

@@ -8,6 +8,7 @@ public class Layers {
   
   public static final float BACKGROUND = current ++;
   public static final float TILES = current ++;
+  public static final float GROUND_MARKERS = current ++;
   public static final float GROUND = current ++;
   public static final float AIR = current ++;
   public static final float PAWNS = Layers.AIR + 0.001f;

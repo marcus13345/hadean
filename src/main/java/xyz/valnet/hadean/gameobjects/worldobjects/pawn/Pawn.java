@@ -148,6 +148,11 @@ public class Pawn extends Agent {
   }
 
   @Override
+  public String getGenericName() {
+    return "Pawn";
+  }
+
+  @Override
   public Vector4f getWorldBox() {
     Vector2f pos = getCalculatedPosition();
     return new Vector4f(pos.x, pos.y, pos.x+1, pos.y+1);

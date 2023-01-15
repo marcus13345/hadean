@@ -8,6 +8,6 @@ public interface IMouseCaptureArea {
   public void mouseDown(int button);
   public void mouseUp(int button);
 
-  public Vector4f getBox();
+  public Vector4f getGuiBox();
   public float getLayer();
 }

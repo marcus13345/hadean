@@ -45,7 +45,7 @@ public class GameScene extends SceneGraph {
     }
 
     objects.add(new SelectionLayer());
-    // objects.add(new SelectionUI());
+    objects.add(new SelectionUI());
 
     objects.add(new BuildLayer());
 

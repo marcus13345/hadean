@@ -1,6 +1,8 @@
 package xyz.valnet.hadean.input;
 
-import static xyz.valnet.engine.util.Math.lerp;
+import static xyz.valnet.engine.util.Math.*;
+
+import java.util.List;
 
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.graphics.Tile9;
@@ -222,8 +224,8 @@ public class Button extends GameObject implements IMouseCaptureArea, ITransient 
   }
 
   @Override
-  public Vector4f getGuiBox() {
-    return new Vector4f(x, y, width, height);
+  public List<Vector4f> getGuiBoxes() {
+    return List.of(new Vector4f(x, y, width, height));
   }
 
   @Override

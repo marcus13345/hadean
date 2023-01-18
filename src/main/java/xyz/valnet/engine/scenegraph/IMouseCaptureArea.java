@@ -1,5 +1,7 @@
 package xyz.valnet.engine.scenegraph;
 
+import java.util.List;
+
 import xyz.valnet.engine.math.Vector4f;
 
 public interface IMouseCaptureArea {
@@ -8,6 +10,6 @@ public interface IMouseCaptureArea {
   public void mouseDown(int button);
   public void mouseUp(int button);
 
-  public Vector4f getGuiBox();
+  public List<Vector4f> getGuiBoxes();
   public float getLayer();
 }

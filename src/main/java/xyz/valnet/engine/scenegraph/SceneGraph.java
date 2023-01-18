@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import xyz.valnet.engine.App;
+import xyz.valnet.engine.math.Vector4f;
 
 public abstract class SceneGraph implements IScene {
   protected final List<GameObject> objects = new ArrayList<GameObject>();
@@ -72,6 +73,10 @@ public abstract class SceneGraph implements IScene {
       obj.update(dTime);
     }
 
+    mouseUpdate();
+  }
+
+  private void mouseUpdate() {
     // DO MOUSE UPDATES!
     List<IMouseCaptureArea> mouseListeners = getAll(IMouseCaptureArea.class);
     mouseListeners.sort(new Comparator<IMouseCaptureArea>() {
@@ -82,22 +87,25 @@ public abstract class SceneGraph implements IScene {
         return al < bl ? 1 : bl < al ? -1 : 0;
       }
     });
+    
     for(IMouseCaptureArea listener : mouseListeners) {
-      boolean currentlyEntered = listener.getGuiBox().contains(App.mouseX, App.mouseY);
-      if(currentlyEntered) {
-        if(listener != hoveredMouseListener) {
-          if(hoveredMouseListener != null) {
-            hoveredMouseListener.mouseLeave();
+      for(Vector4f guiBox : listener.getGuiBoxes()) {
+        boolean currentlyEntered = guiBox.contains(App.mouseX, App.mouseY);
+        if(currentlyEntered) {
+          if(listener != hoveredMouseListener) {
+            if(hoveredMouseListener != null) {
+              hoveredMouseListener.mouseLeave();
+            }
+            hoveredMouseListener = listener;
+            listener.mouseEnter();
           }
-          hoveredMouseListener = listener;
-          listener.mouseEnter();
+          return;
+        } else if(listener == hoveredMouseListener) {
+          // this is the one that is currently hovered, but it isnt!
+          // turn that shit OFF
+          hoveredMouseListener.mouseLeave();
+          hoveredMouseListener = null;
         }
-        break;
-      } else if(listener == hoveredMouseListener) {
-        // this is the one that is currently hovered, but it isnt!
-        // turn that shit OFF
-        hoveredMouseListener.mouseLeave();
-        hoveredMouseListener = null;
       }
     }
   }

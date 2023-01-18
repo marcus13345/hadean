@@ -1,5 +1,7 @@
 package xyz.valnet.hadean.gameobjects.inputlayer;
 
+import java.util.List;
+
 import xyz.valnet.engine.App;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
@@ -129,8 +131,8 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
   }
 
   @Override
-  public Vector4f getGuiBox() {
-    return active ? new Vector4f(0, 0, 1024, 576) : Vector4f.zero;
+  public List<Vector4f> getGuiBoxes() {
+    return List.of(active ? new Vector4f(0, 0, 1024, 576) : Vector4f.zero);
   }
 
   @Override

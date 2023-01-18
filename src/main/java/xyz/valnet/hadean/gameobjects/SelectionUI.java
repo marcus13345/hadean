@@ -72,12 +72,6 @@ public class SelectionUI extends ImmediateUI implements ISelectionChangeListener
   }
 
   @Override
-  public Vector4f getGuiBox() {
-    if(selected.isEmpty()) return Vector4f.zero;
-    return new Vector4f(10, 576 - BottomBar.bottomBarHeight - height - padding, width, height);
-  }
-
-  @Override
   public float getLayer() {
     return Layers.GENERAL_UI;
   }

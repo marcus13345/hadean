@@ -18,13 +18,26 @@ import xyz.valnet.hadean.util.Layers;
 
 public abstract class ImmediateUI extends GameObject implements IMouseCaptureArea {
 
+  @SuppressWarnings("unused")
   private boolean active;
+  @SuppressWarnings("unused")
   private boolean mouseDown;
 
   public void render() {
     begin();
     gui();
     end();
+  }
+
+  public void renderAlpha() {
+
+    float f = 99;
+    Assets.flat.pushColor(new Vector4f(1, 0, 0, 0.3f));
+    for(Vector4f box : guiAreas) {
+      Drawing.setLayer(f += 0.001f);
+      Assets.fillColor.draw(box);
+    }
+    Assets.flat.popColor();
   }
 
   @Override
@@ -47,8 +60,6 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
     if(button == 0) mouseDown = false;
   }
 
-  public abstract Vector4f getGuiBox();
-
   @Override
   public float getLayer() {
     return Layers.GENERAL_UI_INTERACTABLE;
@@ -59,17 +70,18 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
   private record StackingContext(
     boolean fixedSize,
     Vector4f box,
-    Vector4f occlusionBox
+    Vector4f occlusionBox,
+    boolean hasRegisteredGuiArea
     // layout manager?
   ) {}
 
-  private StackingContext context;
-  private Stack<StackingContext> contextStack;
+  private transient StackingContext context;
+  private transient Stack<StackingContext> contextStack = new Stack<StackingContext>();;
 
   private transient Map<String, Button> buttons = new HashMap<String, Button>();
-  private Set<String> usedButtonId = new HashSet<String>();
+  private transient Set<String> usedButtonId = new HashSet<String>();
   private transient Map<Button, Integer> clicks = new HashMap<Button, Integer>();
-  private int buttonCount;
+  private transient int buttonCount;
 
   private String genButtonId() {
     buttonCount ++;
@@ -113,33 +125,96 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
     }
   }
 
+  @Override
+  public final List<Vector4f> getGuiBoxes() {
+    return guiAreas;
+  }
+
+  private transient List<Vector4f> guiAreas = new ArrayList<Vector4f>();
+
   // === ELEMENTS ===
+  // 
 
   protected void begin() {
     buttonCount = 0;
     usedButtonId.clear();
-    Drawing.setLayer(Layers.GENERAL_UI_INTERACTABLE);
-    context = new StackingContext(true, getGuiBox(), getGuiBox());
-    contextStack = new Stack<StackingContext>();
-    Assets.uiFrame.draw(context.occlusionBox);
-    pad();
+    contextStack.clear();
+    guiAreas.clear();
+  }
+
+  protected void root(int x, int y, int w, int h) {
+    assert context == null : "root can only be a root element";
+    Vector4f box = new Vector4f(x, y, w, h);
+    context = new StackingContext(true, box, box, false);
+  }
+
+  protected void rootEnd() {
+    assert contextStack.size() == 0 : "cannot end fixedFrame with un-ended elements inside";
+    context = null;
+  }
+
+  protected void fixedFrame(int w, int h) {
+    contextStack.push(context);
+    context = new StackingContext(
+      true,
+      new Vector4f(context.box.x, context.box.y, w, h),
+      context.occlusionBox.copy(),
+      true
+    );
+  }
+
+  protected void dynamicFrame() {
+    contextStack.push(context);
+    context = new StackingContext(
+      false,
+      new Vector4f(context.box.x, context.box.y, context.box.z, 0),
+      context.occlusionBox.copy(),
+      true
+    );
+  }
+
+  // TODO this will add _all_ frames, not just root frames to guiareas.
+  // not a problem, but not efficient. revisit.
+  protected void frameEnd() {
+    Drawing.setLayer(getLayer() + contextStack.size() - 1);
+    if(!context.fixedSize) {
+      Assets.uiFrame.draw(context.box);
+      guiAreas.add(context.box);
+    } else {
+      Assets.uiFrame.draw(context.occlusionBox);
+      guiAreas.add(context.occlusionBox);
+    }
+    context = contextStack.pop();
   }
 
   protected boolean button(String text) {
-    return button(genButtonId(), text);
+    return button(genButtonId(), text, false);
+  }
+
+  protected boolean button(String text, boolean expand) {
+    return button(genButtonId(), text, expand);
   }
 
   protected boolean button(String id, String text) {
+    return button(id, text, false);
+  }
+
+  protected boolean button(String id, String text, boolean expand) {
     float h = 32;
+    if(expand && context.fixedSize) {
+      h = context.box.w;
+    }
     Vector4f buttonBox = new Vector4f(context.box.x, context.box.y, context.box.z, h);
     Button btn = getButton(id);
+
+    if(!context.hasRegisteredGuiArea) {
+      guiAreas.add(buttonBox);
+    }
 
     btn.setText(text);
     btn.setPosition((int) buttonBox.x, (int) buttonBox.y);
     btn.setSize((int) buttonBox.z, (int) buttonBox.w);
-    btn.setLayer(Layers.GENERAL_UI_INTERACTABLE + contextStack.size());
-
-    // System.out.println("" + buttonBox);
+    btn.setLayer(getLayer() + contextStack.size() + 1);
 
     adjustBox(h);
 
@@ -160,7 +235,8 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
       new Vector4f(
         context.box.x, context.box.y, context.box.z, 0
       ),
-      context.occlusionBox.copy()
+      context.occlusionBox.copy(),
+      context.hasRegisteredGuiArea
     );
     pad();
   }
@@ -181,14 +257,16 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
         new Vector4f(
           context.box.x + 8, context.box.y + 8, context.box.z - 16, context.box.w - 16
         ),
-        context.occlusionBox.copy()
+        context.occlusionBox.copy(),
+        context.hasRegisteredGuiArea
       );
     } else {
       context = new StackingContext(false,
         new Vector4f(
           context.box.x + 8, context.box.y + 8, context.box.z - 16, 0
         ),
-        context.occlusionBox.copy()
+        context.occlusionBox.copy(),
+        context.hasRegisteredGuiArea
       );
     }
   }
@@ -200,7 +278,6 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
   }
 
   protected void end() {
-    padEnd();
 
     List<String> buttonIdsToRemove = new ArrayList<String>();
 

@@ -59,7 +59,7 @@ public class GameScene extends SceneGraph {
     objects.add(new SaveTab());
     objects.add(new LoadTab());
 
-    objects.add(new Popup());
+    // objects.add(new Popup());
     
   }
 }

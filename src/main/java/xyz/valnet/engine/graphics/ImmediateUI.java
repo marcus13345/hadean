@@ -30,14 +30,13 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
   }
 
   public void renderAlpha() {
-
-    float f = 99;
-    Assets.flat.pushColor(new Vector4f(1, 0, 0, 0.3f));
-    for(Vector4f box : guiAreas) {
-      Drawing.setLayer(f += 0.001f);
-      Assets.fillColor.draw(box);
-    }
-    Assets.flat.popColor();
+    // float f = 99;
+    // Assets.flat.pushColor(new Vector4f(1, 0, 0, 0.3f));
+    // for(Vector4f box : guiAreas) {
+    //   Drawing.setLayer(f += 0.001f);
+    //   Assets.fillColor.draw(box);
+    // }
+    // Assets.flat.popColor();
   }
 
   @Override
@@ -71,9 +70,14 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
     boolean fixedSize,
     Vector4f box,
     Vector4f occlusionBox,
-    boolean hasRegisteredGuiArea
+    boolean hasRegisteredGuiArea,
+    boolean horizontal
     // layout manager?
-  ) {}
+  ) {
+    public boolean vertical() {
+      return !horizontal;
+    }
+  }
 
   private transient StackingContext context;
   private transient Stack<StackingContext> contextStack = new Stack<StackingContext>();;
@@ -116,12 +120,22 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
     return false;
   }
 
-  private void adjustBox(float h) {
-    if(context.fixedSize) {
-      context.box.y += h;
-      context.box.w -= h;
+  private void adjustBox(float w, float h) {
+    if(context.vertical()) {
+      if(context.fixedSize) {
+        context.box.y += h;
+        context.box.w -= h;
+      } else {
+        context.box.w += h;
+      }
     } else {
-      context.box.w += h;
+      if(context.fixedSize) {
+        context.box.x += w;
+        context.box.z -= w;
+      } else {
+        context.box.z += w;
+        context.box.w = Math.max(context.box.w, h);
+      }
     }
   }
 
@@ -131,6 +145,11 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
   }
 
   private transient List<Vector4f> guiAreas = new ArrayList<Vector4f>();
+
+  @FunctionalInterface
+  public interface RenderCallback {
+    public void apply();
+  }
 
   // === ELEMENTS ===
   // 
@@ -142,10 +161,26 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
     guiAreas.clear();
   }
 
+  protected void root(int x, int y, int w, int h, RenderCallback cb) {
+    root(x, y, w, h);
+    cb.apply();
+    rootEnd();
+  }
+
+  protected void window(int x, int y, int w, int h, RenderCallback cb) {
+    root(x, y, w, h);
+    fixedFrame(w, h);
+    pad();
+    cb.apply();
+    padEnd();
+    frameEnd();
+    rootEnd();
+  }
+
   protected void root(int x, int y, int w, int h) {
     assert context == null : "root can only be a root element";
     Vector4f box = new Vector4f(x, y, w, h);
-    context = new StackingContext(true, box, box, false);
+    context = new StackingContext(true, box, box, false, false);
   }
 
   protected void rootEnd() {
@@ -159,7 +194,8 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
       true,
       new Vector4f(context.box.x, context.box.y, w, h),
       context.occlusionBox.copy(),
-      true
+      true,
+      context.horizontal
     );
   }
 
@@ -169,7 +205,8 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
       false,
       new Vector4f(context.box.x, context.box.y, context.box.z, 0),
       context.occlusionBox.copy(),
-      true
+      true,
+      context.horizontal
     );
   }
 
@@ -204,7 +241,23 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
     if(expand && context.fixedSize) {
       h = context.box.w;
     }
-    Vector4f buttonBox = new Vector4f(context.box.x, context.box.y, context.box.z, h);
+    float w = context.box.z;
+    if(context.horizontal && !context.fixedSize) {
+      w = 100;
+    }
+    
+    int x = (int) context.box.x;
+    int y = (int) context.box.y;
+
+    if(!context.fixedSize) {
+      if(context.vertical()) {
+        y += (int) context.box.w;
+      } else {
+        x += (int) context.box.z;
+      }
+    }
+
+    Vector4f buttonBox = new Vector4f(x, y, w, h);
     Button btn = getButton(id);
 
     if(!context.hasRegisteredGuiArea) {
@@ -212,21 +265,19 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
     }
 
     btn.setText(text);
-    btn.setPosition((int) buttonBox.x, (int) buttonBox.y);
+    btn.setPosition(x, y);
     btn.setSize((int) buttonBox.z, (int) buttonBox.w);
     btn.setLayer(getLayer() + contextStack.size() + 1);
 
-    adjustBox(h);
+    adjustBox(buttonBox.z, buttonBox.w);
 
     return getClick(btn);
   }
 
-  protected void horizontal(int columns) {
-    
-  }
-
-  protected void horizontalEnd() {
-
+  protected void group(RenderCallback cb) {
+    group();
+    cb.apply();
+    groupEnd();
   }
 
   protected void group() {
@@ -236,7 +287,8 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
         context.box.x, context.box.y, context.box.z, 0
       ),
       context.occlusionBox.copy(),
-      context.hasRegisteredGuiArea
+      context.hasRegisteredGuiArea,
+      context.horizontal
     );
     pad();
   }
@@ -247,7 +299,7 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
     float h = context.box.w;
     Assets.uiFrame.draw(context.box);
     context = contextStack.pop();
-    adjustBox(h);
+    adjustBox(context.box.z, h);
   }
 
   protected void pad() {
@@ -258,7 +310,8 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
           context.box.x + 8, context.box.y + 8, context.box.z - 16, context.box.w - 16
         ),
         context.occlusionBox.copy(),
-        context.hasRegisteredGuiArea
+        context.hasRegisteredGuiArea,
+        context.horizontal
       );
     } else {
       context = new StackingContext(false,
@@ -266,7 +319,8 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
           context.box.x + 8, context.box.y + 8, context.box.z - 16, 0
         ),
         context.occlusionBox.copy(),
-        context.hasRegisteredGuiArea
+        context.hasRegisteredGuiArea,
+        context.horizontal
       );
     }
   }
@@ -274,7 +328,30 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
   protected void padEnd() {
     float h = context.box.w + 16;
     context = contextStack.pop();
-    adjustBox(h);
+    adjustBox(context.box.z + 16, h);
+  }
+
+  protected void horizontal(RenderCallback cb) {
+    contextStack.push(context);
+    context = new StackingContext(
+      false,
+      new Vector4f(context.box.x, context.box.y, 0, 0),
+      context.occlusionBox,
+      context.hasRegisteredGuiArea,
+      true
+    );
+    cb.apply();
+    float w = context.box.z;
+    float h = context.box.w;
+    context = contextStack.pop();
+    adjustBox(w, h);
+  }
+
+  protected void space(int space) {
+    if(context.horizontal)
+      adjustBox(space, 1);
+    else
+      adjustBox(1, space);
   }
 
   protected void end() {
@@ -308,20 +385,19 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
     Vector4i measured = font.measure(text);
     Drawing.setLayer(getLayer() + contextStack.size());
 
-    // layout manager things...
-    if(context.fixedSize) {
-      font.drawString(text,
-        (int) context.box.x,
-        (int) context.box.y
-      );
-      context.box.y += measured.y;
-      context.box.w -= measured.y;
-    } else {
-      font.drawString(text,
-        (int) context.box.x,
-        (int) context.box.y + (int) context.box.w
-      );
-      context.box.w += measured.y;
+    int x = (int) context.box.x;
+    int y = (int) context.box.y;
+
+    if(!context.fixedSize) {
+      if(context.vertical()) {
+        y += (int) context.box.w;
+      } else {
+        x += (int) context.box.z;
+      }
     }
+
+    font.drawString(text, x, y);
+
+    adjustBox(measured.x, measured.y);
   }
 }

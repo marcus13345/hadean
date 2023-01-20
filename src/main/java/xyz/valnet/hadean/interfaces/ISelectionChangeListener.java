@@ -1,7 +1,9 @@
 package xyz.valnet.hadean.interfaces;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface ISelectionChangeListener {
+@FunctionalInterface
+public interface ISelectionChangeListener extends Serializable {
   public void selectionChanged(List<ISelectable> selected);
 }

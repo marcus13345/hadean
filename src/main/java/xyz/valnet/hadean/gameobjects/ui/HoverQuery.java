@@ -13,6 +13,7 @@ import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.BottomBar;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.Tile;
+import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
 import xyz.valnet.hadean.gameobjects.worldobjects.WorldObject;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
@@ -21,12 +22,20 @@ public class HoverQuery extends GameObject implements ITransient {
 
   private Camera camera;
 
+  private boolean visible = true;
+
   @Override
   protected void connect() {
     super.connect();
     camera = get(Camera.class);
   }
-
+  
+  @Override
+  protected void start() {
+    get(SelectionLayer.class).subscribe((selected) -> {
+      visible = selected.size() == 0;
+    });
+  }
   private List<String> thingStrings = new ArrayList<String>();
 
   @Override
@@ -53,12 +62,13 @@ public class HoverQuery extends GameObject implements ITransient {
   
   @Override
   public void render() {
+    if(!visible) return;
     Drawing.setLayer(Layers.LOW_PRIORITY_UI);
-    int i = 576 - BottomBar.bottomBarHeight - 32;
+    int i = 576 - BottomBar.bottomBarHeight - 24;
     for(String thingString : thingStrings) {
       for(String str : thingString.split("\n")) {
-        Assets.font.drawString(str, 16, i);
-        i -= 14;
+        Assets.font.drawStringOutlined(str, 8, i);
+        i -= 16;
       }
     }
   }

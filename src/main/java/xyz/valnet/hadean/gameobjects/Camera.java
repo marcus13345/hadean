@@ -7,6 +7,7 @@ import java.util.List;
 import xyz.valnet.engine.App;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.graphics.Sprite;
+import xyz.valnet.engine.graphics.Tile9;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
@@ -83,6 +84,7 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
     return screen2world(pos.x, pos.y);
   }
 
+  // !! this takes an AABB and returns and AABB
   public Vector4f world2screen(Vector4f input) {
     return new Vector4f(
       input.x * tileWidth + screenWidth / 2 - focus.x * tileWidth,
@@ -120,6 +122,12 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
     Vector2i screenPos = world2screen(x, y);
     Drawing.setLayer(layer + (((y + h) - minY) / (maxY - minY)));
     Drawing.drawSprite(sprite, (int)(screenPos.x), (int)(screenPos.y), (int)(tileWidth * w), (int)(tileWidth * h));
+  }
+
+  public void draw(float layer, Tile9 sprite, float x, float y, float w, float h) {
+    Vector2i screenPos = world2screen(x, y);
+    Drawing.setLayer(layer + (((y + h) - minY) / (maxY - minY)));
+    sprite.draw((int)(screenPos.x), (int)(screenPos.y), (int)(tileWidth * w), (int)(tileWidth * h));
   }
 
   public void drawProgressBar(float progress, Vector4f worldBox) {

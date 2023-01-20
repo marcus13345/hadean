@@ -1,6 +1,7 @@
 package xyz.valnet.engine.graphics;
 
 import xyz.valnet.engine.math.Vector4f;
+import xyz.valnet.engine.math.Vector4i;
 
 public class Tile9 {
     
@@ -37,7 +38,11 @@ public class Tile9 {
     }
 
     public void draw(Vector4f box) {
-      draw((int)box.x, (int)box.y, (int)box.z, (int)box.w);
+      draw(box.asInt());
+    }
+
+    public void draw(Vector4i box) {
+      draw(box.x, box.y, box.z, box.w);
     }
 
     public void draw(int x, int y, int w, int h) {

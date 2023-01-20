@@ -56,4 +56,23 @@ public class Vector4i implements Serializable {
 
     return vecs;
   }
+
+
+  public Vector4i toAABB() {
+    return new Vector4i(
+      x,
+      y,
+      x + z,
+      y + w
+    );
+  }
+
+  public Vector4i toXYWH() {
+    return new Vector4i(
+      x,
+      y,
+      z - x,
+      w - y
+    );
+  }
 }

@@ -79,7 +79,11 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
     return new Vector2f((x - screenWidth / 2 + focus.x * tileWidth) / tileWidth, (y - screenHeight / 2 + focus.y * tileWidth) / tileWidth);
   }
 
-  public Vector4f world2Screen(Vector4f input) {
+  public Vector2f screen2world(Vector2f pos) {
+    return screen2world(pos.x, pos.y);
+  }
+
+  public Vector4f world2screen(Vector4f input) {
     return new Vector4f(
       input.x * tileWidth + screenWidth / 2 - focus.x * tileWidth,
       input.y * tileWidth + screenHeight / 2 - focus.y * tileWidth,
@@ -120,7 +124,7 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
 
   public void drawProgressBar(float progress, Vector4f worldBox) {
     int h = 6;
-    Vector4i box = world2Screen(worldBox).toXYWH().asInt();
+    Vector4i box = world2screen(worldBox).toXYWH().asInt();
     Drawing.setLayer(Layers.GENERAL_UI);
     Assets.flat.pushColor(new Vector4f(0, 0, 0, 1));
     Assets.uiFrame.draw(box.x - h, box.y + box.w / 2 - h / 2, box.z + h * 2, h);

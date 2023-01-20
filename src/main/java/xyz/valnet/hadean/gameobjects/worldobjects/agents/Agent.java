@@ -185,7 +185,7 @@ public abstract class Agent extends WorldObject implements ISelectable {
       }
 
       Assets.selectionFrame.draw(
-        camera.world2Screen(
+        camera.world2screen(
           terrain.getTile(
             path.getDestination().getPosition()
           )

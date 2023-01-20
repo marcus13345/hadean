@@ -10,6 +10,7 @@ import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
+import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.engine.scenegraph.ITransient;
@@ -91,7 +92,13 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
     }
 
     if(initialCoords != null) {
-      Assets.selectionFrame.draw((int) initialCoords.x, (int) initialCoords.y, (int) (App.mouseX - initialCoords.x), (int) (App.mouseY - initialCoords.y));
+      Vector2i screenPos = camera.world2screen(initialCoords);
+      Assets.selectionFrame.draw(new Vector4i(
+        screenPos.x,
+        screenPos.y,
+        App.mouseX,
+        App.mouseY
+      ).toXYWH());
     }
   }
 
@@ -111,8 +118,8 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
     List<ISelectable> newSelection = new ArrayList<ISelectable>();
 
     Vector4f normalizedSelectionBoxScreen = sortVector(a);
-    Vector2f selectionBoxWorldMin = camera.screen2world(normalizedSelectionBoxScreen.x, normalizedSelectionBoxScreen.y);
-    Vector2f selectionBoxWorldMax = camera.screen2world(normalizedSelectionBoxScreen.z, normalizedSelectionBoxScreen.w);
+    Vector2f selectionBoxWorldMin = new Vector2f(normalizedSelectionBoxScreen.x, normalizedSelectionBoxScreen.y);
+    Vector2f selectionBoxWorldMax = new Vector2f(normalizedSelectionBoxScreen.z, normalizedSelectionBoxScreen.w);
 
     List<ISelectable> selectables = getAll(ISelectable.class);
 
@@ -197,7 +204,7 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
     
     if(button == 0) {
       if(initialCoords == null) {
-        initialCoords = new Vector2f(App.mouseX, App.mouseY);
+        initialCoords = camera.screen2world(new Vector2f(App.mouseX, App.mouseY));
       }
     } else if (button == 1) {
       if(selected.size() == 0) {
@@ -218,12 +225,16 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
   public void mouseUp(int button) {
     if(initialCoords != null && button == 0) {
 
-      makeSelection(new Vector4f(
+      Vector2f worldMouse = camera.screen2world(App.mouseX, App.mouseY);
+
+      Vector4f worldBox = new Vector4f(
         initialCoords.x,
         initialCoords.y,
-        App.mouseX,
-        App.mouseY
-      ));
+        worldMouse.x,
+        worldMouse.y
+      );
+
+      makeSelection(worldBox);
 
       initialCoords = null;
     }

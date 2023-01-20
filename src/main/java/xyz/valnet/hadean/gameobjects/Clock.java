@@ -30,20 +30,9 @@ public class Clock extends GameObject {
   @Override
   public void render() {
     Drawing.setLayer(Layers.GENERAL_UI);
-    String str = toString() + " (Light: " + Math.round(getSunlight() * 100) + "%)";
-    int left = 440;
-    Assets.flat.pushColor(Vector4f.black);
-    Assets.font.drawString(str, left - 1, 9);
-    Assets.font.drawString(str, left, 9);
-    Assets.font.drawString(str, left + 1, 9);
-    Assets.font.drawString(str, left - 1, 10);
-    Assets.font.drawString(str, left + 1, 10);
-    Assets.font.drawString(str, left - 1, 11);
-    Assets.font.drawString(str, left, 11);
-    Assets.font.drawString(str, left + 1, 11);
-    Assets.flat.swapColor(Vector4f.one);
-    Assets.font.drawString(str, left, 10);
-    Assets.flat.popColor();
+    String str = toString();
+    int left = 950;
+    Assets.font.drawStringOutlined(str, left, 520);
   }
 
   public float getSunlight() {

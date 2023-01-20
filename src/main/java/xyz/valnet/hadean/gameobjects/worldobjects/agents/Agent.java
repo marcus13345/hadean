@@ -165,7 +165,7 @@ public abstract class Agent extends WorldObject implements ISelectable {
       int count = 0;
       for(Node node : path) {
         glBegin(GL_LINES);
-          Vector2f u, v;
+          Vector2i u, v;
 
           Vector2i pos = getWorldPosition().xy();
           if(node.from == null) u = camera.world2screen(pos.x, pos.y);

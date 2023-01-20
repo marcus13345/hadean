@@ -1,6 +1,5 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
-import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
@@ -22,7 +21,7 @@ public class Rice extends Item {
     camera.draw(Layers.AIR, Assets.riceBag, pos.x, pos.y);
 
     Assets.flat.pushColor(Vector4f.black);
-    Vector2f screeCoords = camera.world2screen(pos.x, pos.y);
+    Vector2i screeCoords = camera.world2screen(pos.x, pos.y);
     Assets.miniFont.drawString("123", (int)screeCoords.x, (int)screeCoords.y);
     Assets.flat.popColor();
   }

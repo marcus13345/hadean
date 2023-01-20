@@ -9,7 +9,7 @@ import xyz.valnet.hadean.pathfinding.IPathable;
  
 public class Terrain extends GameObject implements IPathable, IWorldBoundsAdapter {
 
-  public static final int WORLD_SIZE = 30;
+  public static final int WORLD_SIZE = 64;
   public static final int TILE_SIZE = 8;
   // public static int left, top;
 

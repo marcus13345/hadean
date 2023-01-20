@@ -7,9 +7,11 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import xyz.valnet.engine.App;
@@ -242,5 +244,27 @@ public abstract class SceneGraph implements IScene {
     for(IMouseCaptureArea iml : getAll(IMouseCaptureArea.class)) {
       iml.mouseUp(button);
     }
+  }
+
+  private static Set<Integer> keys = new HashSet<Integer>();
+
+  @Override
+  public final void keyPress(int key) {
+    keys.add(key);
+    System.out.println("keyCode: " + key);
+  }
+  
+  @Override
+  public final void keyRelease(int key) {
+    if(keys.contains(key)) keys.remove(key);
+  }
+
+  @Override
+  public final void keyRepeat(int key) {
+    
+  }
+
+  public boolean getKey(int key) {
+    return keys.contains(key);
   }
 }

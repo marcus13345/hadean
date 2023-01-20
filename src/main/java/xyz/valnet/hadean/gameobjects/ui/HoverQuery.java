@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xyz.valnet.engine.App;
+import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.HadeanGame;
+import xyz.valnet.hadean.gameobjects.BottomBar;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.gameobjects.worldobjects.WorldObject;
 import xyz.valnet.hadean.util.Assets;
+import xyz.valnet.hadean.util.Layers;
 
 public class HoverQuery extends GameObject implements ITransient {
 
@@ -50,11 +53,12 @@ public class HoverQuery extends GameObject implements ITransient {
   
   @Override
   public void render() {
-    int i = 16;
+    Drawing.setLayer(Layers.LOW_PRIORITY_UI);
+    int i = 576 - BottomBar.bottomBarHeight - 32;
     for(String thingString : thingStrings) {
       for(String str : thingString.split("\n")) {
         Assets.font.drawString(str, 16, i);
-        i += 14;
+        i -= 14;
       }
     }
   }

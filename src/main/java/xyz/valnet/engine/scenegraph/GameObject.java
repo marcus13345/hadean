@@ -77,4 +77,8 @@ public class GameObject implements IRenderable, ITickable, Serializable {
   protected void load() {
     scene.queueLoad();
   }
+
+  protected boolean getKey(int key) {
+    return scene.getKey(key);
+  }
 }

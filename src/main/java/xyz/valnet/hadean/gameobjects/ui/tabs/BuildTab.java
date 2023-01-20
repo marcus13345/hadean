@@ -115,7 +115,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
       if(selectedBuildable == null) return;
       // draw the currently selected build item
       Assets.flat.pushColor(new Vector4f(1f, 1f, 1f, 1.0f));
-      Vector2i topLeft = camera.world2screen(x, y).asInt();
+      Vector2i topLeft = camera.world2screen(x, y);
       Assets.font.drawString(selectedBuildable.name, topLeft.x, topLeft.y - 20);
       Assets.flat.swapColor(new Vector4f(1f, 1f, 1f, 0.5f));
       for(int i = 0; i < w; i ++) for(int j = 0; j < h; j ++) {{

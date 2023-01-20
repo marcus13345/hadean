@@ -60,4 +60,16 @@ public abstract class Game {
   public final void mouseUp(int button) {
     scene.mouseUp(button);
   }
+
+  public final void keyPress(int key) {
+    scene.keyPress(key);
+  }
+
+  public final void keyRelease(int key) {
+    scene.keyRelease(key);
+  }
+
+  public final void keyRepeat(int key) {
+    scene.keyRepeat(key);
+  }
 }

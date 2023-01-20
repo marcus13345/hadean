@@ -16,6 +16,7 @@ public class Layers {
   public static final float SELECTION_IDENTIFIERS = current ++;
   public static final float AREA_SELECT_BOX = current ++;
   public static final float BUILD_INTERACTABLE = current ++;
+  public static final float LOW_PRIORITY_UI = current ++;
   public static final float GENERAL_UI = current ++;
   public static final float GENERAL_UI_INTERACTABLE = current ++;
   public static final float BOTTOM_BAR = current ++;

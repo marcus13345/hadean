@@ -1,11 +1,14 @@
 package xyz.valnet.hadean.gameobjects.inputlayer;
 
+import static xyz.valnet.engine.util.Math.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import xyz.valnet.engine.App;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2f;
+import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
@@ -16,8 +19,6 @@ import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
-
-import static xyz.valnet.engine.util.Math.lerp;
 
 public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITransient {
 
@@ -82,8 +83,8 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
 
     for(ISelectable thing : selected) {
       Vector4f box = thing.getWorldBox();
-      Vector2f min = camera.world2screen(box.x - p, box.y - p);
-      Vector2f max = camera.world2screen(box.z + p, box.w + p);
+      Vector2i min = camera.world2screen(box.x - p, box.y - p);
+      Vector2i max = camera.world2screen(box.z + p, box.w + p);
       Drawing.setLayer(Layers.SELECTION_IDENTIFIERS);
       Assets.selectedFrame.draw((int)min.x, (int)min.y, (int)(max.x - min.x), (int)(max.y - min.y));
       thing.selectedRender();

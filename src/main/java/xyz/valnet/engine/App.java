@@ -1,21 +1,26 @@
 package xyz.valnet.engine;
 
-import org.lwjgl.glfw.*;
-import org.lwjgl.openal.*;
-import org.lwjgl.opengl.*;
-import org.lwjgl.system.*;
-
-import xyz.valnet.engine.math.Matrix4f;
-
-import java.nio.*;
-
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.openal.ALC10.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-import static org.lwjgl.openal.ALC10.*;
+import java.nio.IntBuffer;
+
+import org.lwjgl.glfw.GLFWCursorPosCallback;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
+import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.openal.AL;
+import org.lwjgl.openal.ALC;
+import org.lwjgl.openal.ALCCapabilities;
+import org.lwjgl.openal.ALCapabilities;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.system.MemoryStack;
+
+import xyz.valnet.engine.math.Matrix4f;
 
 public class App {
 
@@ -34,7 +39,6 @@ public class App {
   private Game game;
 
   public void run() {
-
 
     init();
     loop();
@@ -72,10 +76,14 @@ public class App {
 
     // Setup a key callback. It will be called every time a key is pressed, repeated or released.
     glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-      if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-        glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
+      if(action == GLFW_RELEASE) {
+        game.keyRelease(key);
+      } else if(action == GLFW_PRESS) {
+        game.keyPress(key);
+      } else {
+        game.keyRepeat(key);
+      }
     });
-
 
     glfwSetCursorPosCallback(window, new GLFWCursorPosCallback() {
       @Override

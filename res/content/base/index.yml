@@ -1,0 +1,5 @@
+items:
+  - name: Log
+    plural: Logs
+    texture: [48, 96, 16, 16]
+    

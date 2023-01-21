@@ -85,29 +85,35 @@ public class App {
       }
     });
 
-    glfwSetCursorPosCallback(window, new GLFWCursorPosCallback() {
-      @Override
-      public void invoke(long window, double xpos, double ypos) {
-        mouseX = (int) xpos;
-        mouseY = (int) ypos;
-      }
+    glfwSetCursorPosCallback(window, (long window, double xpos, double ypos) -> {
+      mouseX = (int) xpos;
+      mouseY = (int) ypos;
     });
 
-    glfwSetMouseButtonCallback(window, new GLFWMouseButtonCallback() {
-      @Override
-      public void invoke(long window, int button, int action, int mods) {
+    glfwSetScrollCallback(window, (long window, double xOffset, double yOffset) -> {
+      System.out.println("Scroll " + yOffset);
+      if(yOffset > 0)
+        game.scrollUp();
+      else if(yOffset < 0)
+        game.scrollDown();
+
+      // if(yOffset > 0)
+      //   game.scrollLeft();
+      // else if(yOffset < 0)
+      //   game.scrollRight();
+    });
+
+    glfwSetMouseButtonCallback(window, (long window, int button, int action, int mods) -> {
         if(action == 1) {
           game.mouseDown(button);
         } else if(action == 0) {
           game.mouseUp(button);
         }
 
-        if(button >= 3) return;
         if(button == GLFW_MOUSE_BUTTON_LEFT) { mouseLeft = action == 1; return; }
         if(button == GLFW_MOUSE_BUTTON_RIGHT) { mouseRight = action == 1; return; }
         if(button == GLFW_MOUSE_BUTTON_MIDDLE) { mouseMiddle = action == 1; return ; }
-        
-      }
+        System.out.println("Mouse: action " + action + " : button " + button);
     });
 
     // Get the thread stack and push a new frame

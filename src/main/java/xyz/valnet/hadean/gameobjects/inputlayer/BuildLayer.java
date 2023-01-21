@@ -51,6 +51,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
   }
 
   public void activate(IBuildLayerListener listener) {
+    if(active) return;
     active = true;
     this.listener = listener;
     broadcastWorldCoords();

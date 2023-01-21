@@ -151,6 +151,14 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
     public void apply();
   }
 
+  private float getCurrentLayer() {
+    return getLayer() + contextStack.size() * 0.001f;
+  }
+
+  private float getPreviousLayer() {
+    return getLayer() + contextStack.size() * 0.001f;
+  }
+
   // === ELEMENTS ===
   // 
 
@@ -213,7 +221,7 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
   // TODO this will add _all_ frames, not just root frames to guiareas.
   // not a problem, but not efficient. revisit.
   protected void frameEnd() {
-    Drawing.setLayer(getLayer() + contextStack.size() - 1);
+    Drawing.setLayer(getPreviousLayer());
     if(!context.fixedSize) {
       Assets.uiFrame.draw(context.box);
       guiAreas.add(context.box);
@@ -267,7 +275,7 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
     btn.setText(text);
     btn.setPosition(x, y);
     btn.setSize((int) buttonBox.z, (int) buttonBox.w);
-    btn.setLayer(getLayer() + contextStack.size() + 1);
+    btn.setLayer(getCurrentLayer());
 
     adjustBox(buttonBox.z, buttonBox.w);
 
@@ -295,7 +303,7 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
 
   protected void groupEnd() {
     padEnd();
-    Drawing.setLayer(getLayer() + contextStack.size() - 1);
+    Drawing.setLayer(getPreviousLayer());
     float h = context.box.w;
     Assets.uiFrame.draw(context.box);
     context = contextStack.pop();
@@ -383,7 +391,7 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
 
   protected void text(String text, Font font) {
     Vector4i measured = font.measure(text);
-    Drawing.setLayer(getLayer() + contextStack.size());
+    Drawing.setLayer(getCurrentLayer());
 
     int x = (int) context.box.x;
     int y = (int) context.box.y;

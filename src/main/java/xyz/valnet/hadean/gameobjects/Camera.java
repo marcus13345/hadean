@@ -172,5 +172,17 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
   public float getLayer() {
     return 0;
   }
+
+  @Override
+  public void scrollDown() {
+    tileWidth /= 2;
+    tileWidth = Math.max(tileWidth, 8);
+  }
+
+  @Override
+  public void scrollUp() {
+    tileWidth *= 2;
+    tileWidth = Math.min(tileWidth, 32);
+  }
   
 }

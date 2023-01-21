@@ -9,6 +9,8 @@ public interface IMouseCaptureArea {
   public void mouseLeave();
   public void mouseDown(int button);
   public void mouseUp(int button);
+  public default void scrollUp() {}
+  public default void scrollDown() {}
 
   public List<Vector4f> getGuiBoxes();
   public float getLayer();

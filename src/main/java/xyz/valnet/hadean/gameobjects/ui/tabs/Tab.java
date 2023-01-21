@@ -1,11 +1,11 @@
 package xyz.valnet.hadean.gameobjects.ui.tabs;
 
-import xyz.valnet.engine.scenegraph.GameObject;
+import xyz.valnet.engine.graphics.ImmediateUI;
 import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.gameobjects.BottomBar;
 import xyz.valnet.hadean.interfaces.IBottomBarItem;
 
-public abstract class Tab extends GameObject implements IBottomBarItem, ITransient {
+public abstract class Tab extends ImmediateUI implements IBottomBarItem, ITransient {
 
   private BottomBar bottombar;
 
@@ -23,4 +23,6 @@ public abstract class Tab extends GameObject implements IBottomBarItem, ITransie
   public boolean isButtonClickSilent() {
     return false;
   }
+
+  public void gui() {}
 }

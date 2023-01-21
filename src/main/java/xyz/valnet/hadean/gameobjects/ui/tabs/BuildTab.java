@@ -34,27 +34,25 @@ import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.SmartBoolean;
 
-public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCaptureArea, IButtonListener {
+import static xyz.valnet.engine.util.Math.lerp;
+
+public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLayerListener {
   
   private SelectionLayer selection;
   private BuildLayer buildLayer;
   private Camera camera;
 
-  private SmartBoolean opened;
-  private int width = 200;
-
-  private int padding = 10;
+  private boolean opened;
 
   private int x, y;
   private int w, h;
 
-  private String selectedCategory = "";
+  private String selectedCategory = null;
 
   private static transient Map<String, List<BuildableRecord>> buildables = new HashMap<String, List<BuildableRecord>>();
-  private transient Map<Button, BuildableRecord> buildableButtons = null;
   private transient BuildableRecord selectedBuildable = null;
 
-  private int height = Math.max((int)Math.ceil(buildables.size() / 2f) * 24, 24*3);
+  private float openness = 0;
 
   static {
     BuildTab.registerBuildable(HaulItemDesignation.class);
@@ -109,168 +107,138 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
   public void renderAlpha () {
     Drawing.setLayer(Layers.GENERAL_UI);
 
-    if(opened.value()) {
-      Assets.uiFrame.draw(padding, 576 - BottomBar.bottomBarHeight - padding - height, width, height);
+    if(!opened || selectedBuildable == null) return;
+    // draw the currently selected build item
+    Assets.flat.pushColor(new Vector4f(1f, 1f, 1f, 1.0f));
+    Vector2i topLeft = camera.world2screen(x, y);
+    Assets.font.drawString(selectedBuildable.name, topLeft.x, topLeft.y - 20);
+    Assets.flat.swapColor(new Vector4f(1f, 1f, 1f, 0.6f));
+    camera.draw(Layers.BUILD_INTERACTABLE, Assets.selectionFrame, x, y, w, h);
+    Assets.flat.swapColor(new Vector4f(1f, 1f, 1f, 0.35f));
+    for(int i = 0; i < w; i ++) for(int j = 0; j < h; j ++) {{
+      camera.draw(Layers.BUILD_INTERACTABLE, Assets.checkerBoard, x + i, y + j);
+    }}
+    Assets.flat.popColor();
+  }
 
-      if(selectedBuildable == null) return;
-      // draw the currently selected build item
-      Assets.flat.pushColor(new Vector4f(1f, 1f, 1f, 1.0f));
-      Vector2i topLeft = camera.world2screen(x, y);
-      Assets.font.drawString(selectedBuildable.name, topLeft.x, topLeft.y - 20);
-      Assets.flat.swapColor(new Vector4f(1f, 1f, 1f, 0.6f));
-      camera.draw(Layers.BUILD_INTERACTABLE, Assets.selectionFrame, x, y, w, h);
-      Assets.flat.swapColor(new Vector4f(1f, 1f, 1f, 0.35f));
-      for(int i = 0; i < w; i ++) for(int j = 0; j < h; j ++) {{
-        camera.draw(Layers.BUILD_INTERACTABLE, Assets.checkerBoard, x + i, y + j);
-      }}
-      Assets.flat.popColor();
-    }
+  @Override
+  protected void connect() {
+    super.connect();
+    buildLayer = get(BuildLayer.class);
+    selection = get(SelectionLayer.class);
+    camera = get(Camera.class);
   }
 
   @Override
   public void start() {
     super.start();
-    buildLayer = get(BuildLayer.class);
-    selection = get(SelectionLayer.class);
-    camera = get(Camera.class);
-
-    opened = new SmartBoolean(false, new SmartBoolean.IListener() {
-
-      @Override
-      public void rise() {
-        Assets.sndBubble.play();
-        activate();
-      }
-
-      @Override
-      public void fall() {
-        Assets.sndCancel.play();
-        deactiveate();
-      }
-
-    });
-
     if(selection != null) {
       selection.subscribe(this);
     }
-
-    buildableButtons = new HashMap<Button, BuildableRecord>();
-  }
-
-  private List<Button> categoryButtons = new ArrayList<Button>();
-
-  private void deselectBuilding() {
-    if(selectedBuildable != null) buildLayer.deactiveate();
-    selectedBuildable = null;
-  }
-
-  private void selectBuildable(BuildableRecord buildableRecord) {
-    if(buildableRecord == null) deselectBuilding();
-    if (selectedBuildable == null) activateBuildLayer();
-    selectedBuildable = buildableRecord;
-    swapBuildLayerType(selectedBuildable.type);
-  }
-
-  private void swapBuildLayerType(BuildableMetadata.Type type) {
-    buildLayer.setBuildType(type);
-  }
-
-  private void activateBuildLayer() {
-    buildLayer.activate(new IBuildLayerListener() {
-      @Override
-      public void update(int nx, int ny, int nw, int nh) {
-        x = nx;
-        y = ny;
-        w = nw;
-        h = nh;
-      }
-
-      @Override
-      public void build(int x1, int y1, int x2, int y2) {
-        if(selectedBuildable == null) return;
-        try {
-          IBuildable building = selectedBuildable.constructor.newInstance();
-          if(building instanceof GameObject) {
-            add((GameObject) building);
-          }
-          building.buildAt(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
-        } catch (Exception e) {
-          System.out.println(e);
-        }
-
-        // opened.set(false);
-      }
-
-      @Override
-      public void build(int x1, int y1) {
-        if(selectedBuildable == null) return;
-        try {
-          IBuildable building = selectedBuildable.constructor.newInstance();
-          if(building instanceof GameObject) {
-            add((GameObject) building);
-          }
-          building.buildAt(x1, y1);
-        } catch (Exception e) {
-          System.out.println(e);
-        }
-
-        // opened.set(false);
-      }
-
-      @Override
-      public void cancel() {
-        if(selectedBuildable == null) {
-          opened.set(false);
-          buildLayer.deactiveate();
-        } else {
-          deselectBuilding();
-        }
-      }
-    });
-  }
-
-  private void activate() {
-
-    int i = 0;
-    categoryButtons.clear();
-    for(String c : buildables.keySet()) {
-      int left = i % 2 == 0 ? padding : padding + width / 2;
-      int y = 576 - BottomBar.bottomBarHeight - padding - height + ((int)Math.floor(i / 2)) * 24;
-      Button b = new SimpleButton(c, left, y, width / 2, 24, Layers.GENERAL_UI_INTERACTABLE);
-      b.registerClickListener(this);
-      categoryButtons.add(b);
-      add(b);
-      i ++;
-    }
-
-    constructItemButtons();
-  }
-
-  private void deactiveate() {
-    buildLayer.deactiveate();
-    if(categoryButtons != null) for(Button btn : categoryButtons) remove(btn);
-    categoryButtons.clear();
-    constructItemButtons();
   }
 
   @Override
   public void update(float dTime) {
-    
+    openness = lerp(openness, opened ? 1 : 0, dTime / 20);
+  }
+
+  public void rightClickOnWorld() {
+    if(selectedBuildable != null) {
+      selectBuildable(null);
+    } else {
+      evoke();
+    }
+  }
+
+  private void selectBuildable(BuildableRecord buildableRecord) {
+    if(buildableRecord == null) {
+      buildLayer.deactiveate();
+      selectedBuildable = null;
+      return;
+    }
+    selectedBuildable = buildableRecord;
+    buildLayer.activate(this);
+    buildLayer.setBuildType(selectedBuildable.type);
+  }
+
+  @Override
+  public void update(int nx, int ny, int nw, int nh) {
+    x = nx;
+    y = ny;
+    w = nw;
+    h = nh;
+  }
+
+  @Override
+  public void build(int x1, int y1, int x2, int y2) {
+    if(selectedBuildable == null) return;
+    try {
+      IBuildable building = selectedBuildable.constructor.newInstance();
+      if(building instanceof GameObject) {
+        add((GameObject) building);
+      }
+      building.buildAt(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
+    } catch (Exception e) {
+      System.out.println(e);
+    }
+  }
+
+  @Override
+  public void build(int x1, int y1) {
+    if(selectedBuildable == null) return;
+    try {
+      IBuildable building = selectedBuildable.constructor.newInstance();
+      if(building instanceof GameObject) {
+        add((GameObject) building);
+      }
+      building.buildAt(x1, y1);
+    } catch (Exception e) {
+      System.out.println(e);
+    }
+  }
+
+  @Override
+  public void cancel() {
+    if(selectedBuildable == null) {
+      close();
+    } else {
+      selectBuildable(null);
+    }
   }
 
   @Override
   public void selectionChanged(List<ISelectable> selected) {
     if(selected.isEmpty()) return;
-    opened.set(false);
+    opened = false;
   }
 
   @Override
   public void evoke() {
-    opened.toggle();
+    if(opened) close();
+    else open();
+  }
 
-    if(opened.value()) {
-      selection.clearSelection();
-    }
+  public void open() {
+    if(opened) return;
+    Assets.sndBubble.play();
+    opened = true;
+    reset();
+  }
+
+  public void close() {
+    if(!opened) return;
+    Assets.sndCancel.play();
+    opened = false;
+    buildLayer.deactiveate();
+  }
+
+  public void reset() {
+    selectBuildable(null);
+  }
+
+  private void selectCategory(String category) {
+    selectedCategory = category;
+    selectBuildable(null);
   }
 
   @Override
@@ -279,71 +247,51 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IMouseCap
   }
 
   @Override
-  public void mouseEnter() {}
-
-  @Override
-  public void mouseLeave() {}
-
-  @Override
-  public void mouseDown(int button) {}
-
-  @Override
-  public void mouseUp(int button) {}
-
-  @Override
-  public List<Vector4f> getGuiBoxes() {
-    return List.of(new Vector4f(padding, 576 - BottomBar.bottomBarHeight - padding - height, width, height));
-  }
-
-  @Override
   public float getLayer() {
     return Layers.GENERAL_UI;
-  }
-
-  private void constructItemButtons() {
-    for(Button btn : buildableButtons.keySet()) {
-      remove(btn);
-    }
-
-    buildableButtons.clear();
-
-    if(!opened.value()) return;
-
-    List<BuildableRecord> categoryBuildables = buildables.get(selectedCategory);
-    if(categoryBuildables == null) return;
-
-    int left = width + padding * 2;
-    int buttonHeight = 24;
-    int buttonWidth = 100;
-    int top = 576 - BottomBar.bottomBarHeight - padding - buttonHeight;
-    int i = 0;
-    for(BuildableRecord buildableRecord : categoryBuildables) {
-      int x = left + (buttonWidth + padding) * i;
-      int y = top;
-      int w = buttonWidth;
-      int h = buttonHeight;
-      i ++;
-      Button btn = new SimpleButton(buildableRecord.name, x, y, w, h, Layers.GENERAL_UI_INTERACTABLE);
-      btn.registerClickListener(this);
-      add(btn);
-      buildableButtons.put(btn, buildableRecord);
-    }
-  }
-
-  @Override
-  public void click(Button target) {
-    if(categoryButtons.contains(target)) {
-      selectedCategory = target.getText();
-      deselectBuilding();
-      constructItemButtons();
-    } else if(buildableButtons.containsKey(target)) {
-      BuildableRecord newBuildableRecord = buildableButtons.get(target);
-      selectBuildable(newBuildableRecord);
-    }
   }
 
   @Override
   public boolean isButtonClickSilent() {
     return true;
+  }
+
+  public void gui() {
+    if(openness < 0.0001f) return;
+
+    int height = 8 + 16 + 8 + buildables.size() * (32 + 8);
+
+    window((int) lerp(-180, 0, openness), 576 - BottomBar.bottomBarHeight - height + 1, 150, height, () -> {
+      text("Build");
+
+      for(String category : buildables.keySet()) {
+        space(8);
+        if(button(category)) {
+          if(selectedCategory == category) {
+            selectCategory(null);
+          } else {
+            selectCategory(category);
+          }
+        }
+      }
+    });
+
+    window(149, (int) lerp(576 + 50, 576 - BottomBar.bottomBarHeight - 16 - 32 + 1 - 24, openness), 875, 48 + 24, () -> {
+      if(selectedCategory == null) {
+        space(20);
+        text("    Select a Category...");
+        return;
+      }
+      text(selectedCategory);
+      space(8);
+      horizontal(() -> {
+        for(BuildableRecord buildableRecord : buildables.get(selectedCategory)) {
+          if(button(buildableRecord.name)) {
+            selectBuildable(buildableRecord);
+          }
+          space(8);
+        }
+      });
+    });
   }
 }

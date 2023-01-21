@@ -53,6 +53,14 @@ public abstract class Game {
 
   public abstract void updateViewMatrix(Matrix4f matrix);
 
+  public final void scrollUp() {
+    scene.scrollUp();
+  }
+
+  public final void scrollDown() {
+    scene.scrollDown();
+  }
+
   public final void mouseDown(int button) {
     scene.mouseDown(button);
   }

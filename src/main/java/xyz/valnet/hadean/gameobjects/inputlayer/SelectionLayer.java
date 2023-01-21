@@ -208,7 +208,7 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
       }
     } else if (button == 1) {
       if(selected.size() == 0) {
-        buildTab.evoke();
+        buildTab.rightClickOnWorld();
       } else {
         clearSelection();
       }

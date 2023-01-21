@@ -2,7 +2,7 @@ package xyz.valnet.hadean.gameobjects.ui.tabs;
 
 import xyz.valnet.hadean.HadeanGame;
 
-public class MenuTab extends Tab {
+public class DebugTab extends Tab {
 
   @Override
   public void evoke() {

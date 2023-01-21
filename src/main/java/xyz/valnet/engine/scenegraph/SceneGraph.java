@@ -267,4 +267,18 @@ public abstract class SceneGraph implements IScene {
   public boolean getKey(int key) {
     return keys.contains(key);
   }
+
+  @Override
+  public void scrollDown() {
+    for(IMouseCaptureArea iml : getAll(IMouseCaptureArea.class)) {
+      iml.scrollDown();
+    }
+  }
+
+  @Override
+  public void scrollUp() {
+    for(IMouseCaptureArea iml : getAll(IMouseCaptureArea.class)) {
+      iml.scrollUp();
+    }
+  }
 }

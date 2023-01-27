@@ -40,6 +40,14 @@ public class HadeanGame extends Game {
   private static Runtime runtime = Runtime.getRuntime();
   private static Color fontColor = Color.red;
 
+  public float getAverageFPS() {
+    return averageFPS;
+  }
+
+  public int getMeasuredFPS() {
+    return measuredFPS;
+  }
+
   private void renderDebugInfo() {
     
     long allocated = runtime.totalMemory();
@@ -48,11 +56,11 @@ public class HadeanGame extends Game {
     int top = 10;
 
     List<String> strings = new ArrayList<String>();
-    strings.add("     === [ DEBUG ] ===");
-    strings.add("FPS:    " + Math.round(averageFPS) + "/" + measuredFPS + " | AVG/MEASURED");
-    strings.add("Mouse:  <" + App.mouseX + ", " + App.mouseY + ">");
-    strings.add("MEMORY: " + (int)((allocated / (double)max) * 100) + "% (" + (allocated / (1024 * 1024)) + "/" + (max / (1024 * 1024)) + "MB)");
-    strings.add("dTime:  " + dTime);
+    // strings.add("     === [ DEBUG ] ===");
+    // strings.add("FPS:    " + Math.round(averageFPS) + "/" + measuredFPS + " | AVG/MEASURED");
+    // strings.add("Mouse:  <" + App.mouseX + ", " + App.mouseY + ">");
+    // strings.add();
+    // strings.add("dTime:  " + dTime);
 
     for(String str : strings) {
       Assets.flat.pushColor(Color.black);

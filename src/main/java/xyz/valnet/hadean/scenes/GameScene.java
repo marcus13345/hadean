@@ -54,10 +54,10 @@ public class GameScene extends SceneGraph {
 
     objects.add(new BottomBar());
     objects.add(new BuildTab());
-    objects.add(new JobBoardTab());
+    // objects.add(new JobBoardTab());
     objects.add(new DebugTab());
-    objects.add(new SaveTab());
-    objects.add(new LoadTab());
+    // objects.add(new SaveTab());
+    // objects.add(new LoadTab());
 
     // objects.add(new Popup());
     

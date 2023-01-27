@@ -1,7 +1,5 @@
 package xyz.valnet.hadean.gameobjects;
 
-import static xyz.valnet.engine.util.Math.*;
-
 import java.util.List;
 
 import xyz.valnet.engine.App;
@@ -20,6 +18,8 @@ import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.interfaces.IWorldBoundsAdapter;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
+
+import static xyz.valnet.engine.util.Math.lerp;
 
 public class Camera extends GameObject implements ITransient, IMouseCaptureArea {
 
@@ -43,6 +43,7 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
     return screen2world(App.mouseX, App.mouseY);
   }
 
+  @Override
   public void update(float dTime) {
     Vector2f direction = Vector2f.zero;
     if(dragOrigin == null) {

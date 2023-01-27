@@ -7,6 +7,7 @@ import java.util.List;
 
 import xyz.valnet.engine.App;
 import xyz.valnet.engine.graphics.Drawing;
+import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
@@ -92,13 +93,10 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
     }
 
     if(initialCoords != null) {
-      Vector2i screenPos = camera.world2screen(initialCoords);
-      Assets.selectionFrame.draw(new Vector4i(
-        screenPos.x,
-        screenPos.y,
-        App.mouseX,
-        App.mouseY
-      ).toXYWH());
+      camera.draw(Layers.AREA_SELECT_BOX, Assets.selectionFrame, Box.fromPoints(
+        initialCoords,
+        camera.getWorldMouse()
+      ));
     }
   }
 
@@ -189,8 +187,8 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
   }
 
   @Override
-  public List<Vector4f> getGuiBoxes() {
-    return List.of(new Vector4f(0, 0, 1000, 1000));
+  public List<Box> getGuiBoxes() {
+    return List.of(new Box(0, 0, 10000, 10000));
   }
 
   @Override

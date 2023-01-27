@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Matrix4f;
 import xyz.valnet.engine.math.Vector3f;
 import xyz.valnet.engine.math.Vector4f;
@@ -121,6 +122,11 @@ public class Shader {
 	public void setUniform4f(String name, Vector4f vector) {
 		if (!enabled) enable();
 		glUniform4f(getUniform(name), vector.x, vector.y, vector.z, vector.w);
+	}
+	
+	public void setUniform4f(String name, Color c) {
+		if (!enabled) enable();
+		glUniform4f(getUniform(name), c.r, c.g, c.b, c.a);
 	}
 	
 	public void setUniformMat4f(String name, Matrix4f matrix) {

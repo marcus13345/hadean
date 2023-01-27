@@ -5,9 +5,11 @@ import static xyz.valnet.engine.util.Math.*;
 import java.util.List;
 
 import xyz.valnet.engine.App;
+import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.graphics.Sprite;
 import xyz.valnet.engine.graphics.Tile9;
+import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
@@ -35,6 +37,10 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
     Vector4f bounds = worldBoundsAdapter.getWorldBounds();
     minY = bounds.y;
     maxY = bounds.w;
+  }
+
+  public Vector2f getWorldMouse() {
+    return screen2world(App.mouseX, App.mouseY);
   }
 
   public void update(float dTime) {
@@ -124,6 +130,10 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
     Drawing.drawSprite(sprite, (int)(screenPos.x), (int)(screenPos.y), (int)(tileWidth * w), (int)(tileWidth * h));
   }
 
+  public void draw(float layer, Tile9 sprite, Box box) {
+    draw(layer, sprite, box.x, box.y, box.w, box.h);
+  }
+
   public void draw(float layer, Tile9 sprite, float x, float y, float w, float h) {
     Vector2i screenPos = world2screen(x, y);
     Drawing.setLayer(layer + (((y + h) - minY) / (maxY - minY)));
@@ -134,9 +144,9 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
     int h = 6;
     Vector4i box = world2screen(worldBox).toXYWH().asInt();
     Drawing.setLayer(Layers.GENERAL_UI);
-    Assets.flat.pushColor(new Vector4f(0, 0, 0, 1));
+    Assets.flat.pushColor(Color.black);
     Assets.uiFrame.draw(box.x - h, box.y + box.w / 2 - h / 2, box.z + h * 2, h);
-    Assets.flat.swapColor(new Vector4f(1, 1, 0, 1));
+    Assets.flat.swapColor(Color.yellow);
     Assets.fillColor.draw(box.x + 1 - h, box.y + 1 + box.w / 2 - h / 2, (int)Math.round(lerp(0, box.z - 3 + h * 2, progress)) + 1, h - 2);
     Assets.flat.popColor();
   }
@@ -164,8 +174,8 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
   }
 
   @Override
-  public List<Vector4f> getGuiBoxes() {
-    return List.of(Vector4f.zero);
+  public List<Box> getGuiBoxes() {
+    return List.of(Box.none);
   }
 
   @Override

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
@@ -109,12 +110,12 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
 
     if(!opened || selectedBuildable == null) return;
     // draw the currently selected build item
-    Assets.flat.pushColor(new Vector4f(1f, 1f, 1f, 1.0f));
+    Assets.flat.pushColor(Color.white);
     Vector2i topLeft = camera.world2screen(x, y);
     Assets.font.drawString(selectedBuildable.name, topLeft.x, topLeft.y - 20);
-    Assets.flat.swapColor(new Vector4f(1f, 1f, 1f, 0.6f));
+    Assets.flat.swapColor(Color.white.withAlpha(0.6f));
     camera.draw(Layers.BUILD_INTERACTABLE, Assets.selectionFrame, x, y, w, h);
-    Assets.flat.swapColor(new Vector4f(1f, 1f, 1f, 0.35f));
+    Assets.flat.swapColor(Color.white.withAlpha(0.35f));
     for(int i = 0; i < w; i ++) for(int j = 0; j < h; j ++) {{
       camera.draw(Layers.BUILD_INTERACTABLE, Assets.checkerBoard, x + i, y + j);
     }}

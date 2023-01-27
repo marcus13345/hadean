@@ -1,6 +1,6 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
-import xyz.valnet.engine.math.Vector4f;
+import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.interfaces.BuildableMetadata;
@@ -16,7 +16,7 @@ public class FarmPlot extends Buildable {
   public void renderAlpha() {
     if(!visible) return;
     Vector4i pos = getWorldPosition();
-    Assets.flat.pushColor(new Vector4f(0.4f, 1f, 0.3f, 0.2f));
+    Assets.flat.pushColor(new Color(0.4f, 1f, 0.3f, 0.2f));
     camera.draw(Layers.GROUND, Assets.whiteBox, pos.x, pos.y, pos.z, pos.w);
     Assets.flat.popColor();
   }

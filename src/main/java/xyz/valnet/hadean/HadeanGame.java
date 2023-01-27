@@ -5,6 +5,7 @@ import java.util.List;
 
 import xyz.valnet.engine.App;
 import xyz.valnet.engine.Game;
+import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Matrix4f;
 import xyz.valnet.engine.math.Vector4f;
@@ -22,7 +23,7 @@ public class HadeanGame extends Game {
 
   @Override
   public void start() {
-    Assets.flat.pushColor(Vector4f.one);
+    Assets.flat.pushColor(Color.white);
     changeScene(new GameScene());
   }
 
@@ -37,7 +38,7 @@ public class HadeanGame extends Game {
   }
 
   private static Runtime runtime = Runtime.getRuntime();
-  private static Vector4f fontColor = new Vector4f(1, 0, 0, 1);
+  private static Color fontColor = Color.red;
 
   private void renderDebugInfo() {
     
@@ -54,7 +55,7 @@ public class HadeanGame extends Game {
     strings.add("dTime:  " + dTime);
 
     for(String str : strings) {
-      Assets.flat.pushColor(Vector4f.black);
+      Assets.flat.pushColor(Color.black);
       Assets.font.drawString(str, left + 1, top + 1);
       Assets.flat.swapColor(fontColor);
       Assets.font.drawString(str, left, top);

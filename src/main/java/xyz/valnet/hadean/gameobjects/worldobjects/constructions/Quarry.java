@@ -1,5 +1,6 @@
 package xyz.valnet.hadean.gameobjects.worldobjects.constructions;
 
+import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.Job;
@@ -29,7 +30,7 @@ public class Quarry extends Construction {
     } else {
       float b = 4;
 
-      Assets.flat.pushColor(new Vector4f(b, b, b, 0.5f));
+      Assets.flat.pushColor(Color.grey(b).withAlpha(0.5f));
       camera.draw(Layers.GROUND, Assets.quarry, getWorldPosition());
       Assets.flat.popColor();
 

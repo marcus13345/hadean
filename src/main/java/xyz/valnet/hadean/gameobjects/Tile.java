@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.math.Vector4i;
@@ -27,7 +28,7 @@ public class Tile extends WorldObject implements IWorkable {
   private static int greenSeed = (int)(Math.random() * 10000);
   private static int blueSeed = (int)(Math.random() * 10000);
 
-  private Vector4f color;
+  private Color color;
   private final int tileSelector = (int)Math.floor(Math.random() * 4);
   private boolean rocks = false;
 
@@ -55,7 +56,7 @@ public class Tile extends WorldObject implements IWorkable {
     float green = (float) terrain.getNoise(greenSeed, pos.x * scale, pos.y * scale);
     float blue =  (float) terrain.getNoise(blueSeed,  pos.x * scale, pos.y * scale);
 
-    if(color == null) color = new Vector4f(red * 0.1f, 0.4f + green * 0.15f, blue * 0.05f, 1f);
+    if(color == null) color = new Color(red * 0.1f, 0.4f + green * 0.15f, blue * 0.05f, 1f);
   }
 
   @Override
@@ -166,7 +167,7 @@ public class Tile extends WorldObject implements IWorkable {
       if(rocks) camera.draw(Layers.TILES, Assets.rocks, pos.x, pos.y);
     }
     if(tillLevel > 0f) {
-      Assets.flat.pushColor(Vector4f.opacity(tillLevel));
+      Assets.flat.pushColor(Color.white.withAlpha(tillLevel));
       camera.draw(Layers.TILES, Assets.farmPlot[tileSelector], pos.x, pos.y);
       Assets.flat.popColor();
     }

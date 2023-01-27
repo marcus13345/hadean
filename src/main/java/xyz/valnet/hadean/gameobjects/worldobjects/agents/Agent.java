@@ -6,6 +6,7 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glVertex3f;
 import static org.lwjgl.opengl.GL20.glVertexAttrib2f;
 
+import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
@@ -160,7 +161,7 @@ public abstract class Agent extends WorldObject implements ISelectable {
   public void renderAlpha() {
     if(!HadeanGame.debugView) return;
     Drawing.setLayer(Layers.GROUND_MARKERS);
-    Assets.flat.pushColor(Vector4f.opacity(0.6f));
+    Assets.flat.pushColor(Color.white.withAlpha(0.6f));
     if(path != null) {
       int count = 0;
       for(Node node : path) {
@@ -184,15 +185,7 @@ public abstract class Agent extends WorldObject implements ISelectable {
         count ++;
       }
 
-      Assets.selectionFrame.draw(
-        camera.world2screen(
-          terrain.getTile(
-            path.getDestination().getPosition()
-          )
-          .getWorldBox()
-        )
-        .toXYWH()
-      );
+      camera.draw(Layers.GROUND_MARKERS, Assets.selectionFrame, path.getDestination().getPosition().getTileBox());
     }
     Assets.flat.popColor();
   }

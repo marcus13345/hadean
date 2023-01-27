@@ -5,6 +5,7 @@ import static xyz.valnet.hadean.util.detail.Detail.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
@@ -111,9 +112,9 @@ public class Pawn extends Agent {
   public void render() {
     super.render();
     if(currentActivity instanceof SleepActivity) {
-      Assets.flat.pushColor(new Vector4f(0.5f, 0.5f, 0.5f, 1.0f));
+      Assets.flat.pushColor(Color.grey(0.5f));
     } else {
-      Assets.flat.pushColor(Vector4f.one);
+      Assets.flat.pushColor(Color.white);
     }
     camera.draw(Layers.PAWNS, Assets.pawn, getCalculatedPosition());
     Assets.flat.popColor();

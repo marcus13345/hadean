@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import xyz.valnet.engine.App;
+import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.Vector4f;
 
 public abstract class SceneGraph implements IScene {
@@ -91,7 +92,7 @@ public abstract class SceneGraph implements IScene {
     });
     
     for(IMouseCaptureArea listener : mouseListeners) {
-      for(Vector4f guiBox : listener.getGuiBoxes()) {
+      for(Box guiBox : listener.getGuiBoxes()) {
         boolean currentlyEntered = guiBox.contains(App.mouseX, App.mouseY);
         if(currentlyEntered) {
           if(listener != hoveredMouseListener) {

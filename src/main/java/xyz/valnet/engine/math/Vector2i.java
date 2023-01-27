@@ -55,4 +55,8 @@ public class Vector2i implements Serializable {
     return new Vector2i(x - 1, y);
   }
 
+  public Box getTileBox() {
+    return new Box(x, y, 1, 1);
+  }
+
 }

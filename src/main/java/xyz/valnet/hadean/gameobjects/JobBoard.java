@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
@@ -46,18 +47,18 @@ public class JobBoard extends GameObject {
     super.render();
     if(HadeanGame.debugView) {
       float opacity = 0.6f;
-      Assets.flat.pushColor(new Vector4f(1, 0.8f, 0, opacity));
+      Assets.flat.pushColor(Color.orange.withAlpha(opacity));
       for(Job job : availableJobs) {
         for(Vector2i position : job.getLocations()) {
           if(job.isValid()) {
-            Assets.flat.swapColor(new Vector4f(1, 0.8f, 0, opacity));
+            Assets.flat.swapColor(Color.orange.withAlpha(opacity));
           } else {
-            Assets.flat.swapColor(new Vector4f(1.0f, 0.2f, 0, opacity));
+            Assets.flat.swapColor(Color.red.withAlpha(opacity));
           }
           camera.draw(Layers.GROUND_MARKERS, Assets.fillTile, position.asFloat());
         }
       }
-      Assets.flat.swapColor(new Vector4f(0.2f, 1.0f, 0, opacity));
+      Assets.flat.swapColor(Color.lime.withAlpha(opacity));
       for(Job job : allocations.values()) {
         for(Vector2i position : job.getLocations()) {
           camera.draw(Layers.GROUND_MARKERS, Assets.fillTile, position.asFloat());

@@ -2,7 +2,6 @@ package xyz.valnet.engine.graphics;
 
 import java.util.Map;
 
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.hadean.util.Assets;
 
@@ -21,7 +20,7 @@ public class Font {
   }
 
   public void drawStringOutlined(String str, int x, int y) {
-    Assets.flat.pushColor(Vector4f.black);
+    Assets.flat.pushColor(Color.black);
     drawString(str, x - scale, y - scale);
     drawString(str, x,         y - scale);
     drawString(str, x + scale, y - scale);

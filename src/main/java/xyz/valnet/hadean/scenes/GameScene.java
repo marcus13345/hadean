@@ -10,6 +10,7 @@ import xyz.valnet.hadean.gameobjects.SelectionUI;
 import xyz.valnet.hadean.gameobjects.Terrain;
 import xyz.valnet.hadean.gameobjects.inputlayer.BuildLayer;
 import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
+import xyz.valnet.hadean.gameobjects.ui.ExclusivityManager;
 import xyz.valnet.hadean.gameobjects.ui.HoverQuery;
 import xyz.valnet.hadean.gameobjects.ui.Popup;
 import xyz.valnet.hadean.gameobjects.ui.tabs.BuildTab;
@@ -53,6 +54,7 @@ public class GameScene extends SceneGraph {
     objects.add(new HoverQuery());
 
     objects.add(new BottomBar());
+    objects.add(new ExclusivityManager());
     objects.add(new BuildTab());
     // objects.add(new JobBoardTab());
     objects.add(new DebugTab());

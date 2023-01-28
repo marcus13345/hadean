@@ -1,11 +1,12 @@
 package xyz.valnet.hadean.gameobjects.ui.tabs;
 
+import static xyz.valnet.engine.util.Math.*;
+
 import xyz.valnet.engine.graphics.ImmediateUI;
 import xyz.valnet.engine.scenegraph.ITransient;
-import static xyz.valnet.engine.util.Math.lerp;
 import xyz.valnet.hadean.gameobjects.BottomBar;
+import xyz.valnet.hadean.gameobjects.ui.ExclusivityManager;
 import xyz.valnet.hadean.interfaces.IBottomBarItem;
-import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 
 public abstract class Tab extends ImmediateUI implements IBottomBarItem, ITransient {
@@ -15,6 +16,8 @@ public abstract class Tab extends ImmediateUI implements IBottomBarItem, ITransi
   protected boolean opened = false;
   private float animation = 0f;
 
+  private ExclusivityManager exclusivityManager;
+
   @Override
   public void update(float dTime) {
     animation = lerp(animation, opened ? 1 : 0, dTime / 20);
@@ -23,6 +26,7 @@ public abstract class Tab extends ImmediateUI implements IBottomBarItem, ITransi
   @Override
   protected void connect() {
     bottombar = get(BottomBar.class);
+    exclusivityManager = get(ExclusivityManager.class);
   }
   
   @Override
@@ -56,15 +60,15 @@ public abstract class Tab extends ImmediateUI implements IBottomBarItem, ITransi
 
   public final void open() {
     if(opened) return;
-    Assets.sndBubble.play();
     opened = true;
+    exclusivityManager.switchTo(this);
     onOpen();
   }
 
   public final void close() {
     if(!opened) return;
-    Assets.sndCancel.play();
     opened = false;
+    exclusivityManager.closeCurrent();
     onClose();
   }
 

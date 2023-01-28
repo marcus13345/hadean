@@ -1,10 +1,13 @@
 package xyz.valnet.hadean.gameobjects.ui.tabs;
 
-import xyz.valnet.engine.App;
+import java.util.LinkedList;
+import java.util.List;
+
+import xyz.valnet.engine.scenegraph.IKeyboardListener;
 import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.BottomBar;
 
-public class DebugTab extends Tab {
+public class DebugTab extends Tab implements IKeyboardListener {
 
   private int width = 250;
   private static Runtime runtime = Runtime.getRuntime();
@@ -24,7 +27,16 @@ public class DebugTab extends Tab {
   protected void gui() {
     if(!shouldRender()) return;
 
-    window(animate(1200, 1024 - width), 0, width, 576 - BottomBar.bottomBarHeight + 1, () -> {
+    window(0, animate(-200, 0), 1024 - width + 1, 176, () -> {
+      for(int i = 10; i > logs.size(); i --) {
+        text(" ");
+      }
+      for(String str : logs) {
+        text(str);
+      }
+    });
+
+    window(animate(1050, 1024 - width), 0, width, 576 - BottomBar.bottomBarHeight + 1, () -> {
       text("Debug");
       space(8);
 
@@ -45,5 +57,24 @@ public class DebugTab extends Tab {
     });
     
   }
+
+  private static List<String> logs = new LinkedList<String>();
+
+  public static void log(String str) {
+    logs.add(str);
+    while(logs.size() > 10) {
+      logs.remove(0);
+    }
+  }
+
+  @Override
+  public void keyPress(int code) {
+    if(code == 96) { // tilde
+      evoke();
+    }
+  }
+
+  @Override
+  public void keyRelease(int code) {}
 
 }

@@ -128,11 +128,12 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
     }
   }
 
-  public void rightClickOnWorld() {
+  @Override
+  public void back() {
     if(selectedBuildable != null) {
       selectBuildable(null);
     } else {
-      evoke();
+      close();
     }
   }
 

@@ -251,13 +251,19 @@ public abstract class SceneGraph implements IScene {
 
   @Override
   public final void keyPress(int key) {
-    keys.add(key);
     System.out.println("keyCode: " + key);
+    keys.add(key);
+    for(IKeyboardListener ikbl : getAll(IKeyboardListener.class)) {
+      ikbl.keyPress(key);
+    }
   }
   
   @Override
   public final void keyRelease(int key) {
     if(keys.contains(key)) keys.remove(key);
+    for(IKeyboardListener ikbl : getAll(IKeyboardListener.class)) {
+      ikbl.keyRelease(key);
+    }
   }
 
   @Override

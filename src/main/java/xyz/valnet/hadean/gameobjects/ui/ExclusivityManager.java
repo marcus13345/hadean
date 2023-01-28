@@ -1,13 +1,17 @@
 package xyz.valnet.hadean.gameobjects.ui;
 
 import xyz.valnet.engine.scenegraph.GameObject;
+import xyz.valnet.engine.scenegraph.ITransient;
+import xyz.valnet.hadean.gameobjects.ui.tabs.BuildTab;
 import xyz.valnet.hadean.gameobjects.ui.tabs.Tab;
 import xyz.valnet.hadean.util.Assets;
 
-public class ExclusivityManager extends GameObject {
+public class ExclusivityManager extends GameObject implements ITransient {
   private Tab current = null;
 
   private boolean switching = false;
+
+  private Tab defaultTab = null;
   
   public void switchTo(Tab tab) {
     if(tab == current) return;
@@ -25,9 +29,20 @@ public class ExclusivityManager extends GameObject {
 
   public void closeCurrent() {
     if(switching) return;
+    if(current == null) return;
     Assets.sndCancel.play();
     current.close();
     current = null;
+  }
+
+  public void backOrDefault() {
+    if(current == null) switchTo(defaultTab);
+    else current.back();
+  }
+
+  @Override
+  protected void connect() {
+    defaultTab = get(BuildTab.class);
   }
 
 }

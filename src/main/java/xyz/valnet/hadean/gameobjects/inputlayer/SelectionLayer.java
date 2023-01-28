@@ -16,6 +16,7 @@ import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.gameobjects.Camera;
+import xyz.valnet.hadean.gameobjects.ui.ExclusivityManager;
 import xyz.valnet.hadean.gameobjects.ui.tabs.BuildTab;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
@@ -206,7 +207,7 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
       }
     } else if (button == 1) {
       if(selected.size() == 0) {
-        buildTab.rightClickOnWorld();
+        get(ExclusivityManager.class).backOrDefault();
       } else {
         clearSelection();
       }

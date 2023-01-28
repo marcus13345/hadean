@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
 import xyz.valnet.engine.math.Matrix4f;
+import xyz.valnet.hadean.gameobjects.ui.tabs.DebugTab;
 
 public class App {
 
@@ -91,7 +92,7 @@ public class App {
     });
 
     glfwSetScrollCallback(window, (long window, double xOffset, double yOffset) -> {
-      System.out.println("Scroll " + yOffset);
+      DebugTab.log("Scroll " + yOffset);
       if(yOffset > 0)
         game.scrollUp();
       else if(yOffset < 0)

@@ -72,6 +72,10 @@ public abstract class Tab extends ImmediateUI implements IBottomBarItem, ITransi
     onClose();
   }
 
+  public void back() {
+    close();
+  }
+
   protected abstract void onClose();
   protected abstract void onOpen();
 }

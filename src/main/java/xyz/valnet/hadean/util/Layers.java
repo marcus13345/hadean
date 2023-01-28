@@ -20,5 +20,6 @@ public class Layers {
   public static final float GENERAL_UI = current ++;
   public static final float GENERAL_UI_INTERACTABLE = current ++;
   public static final float BOTTOM_BAR = current ++;
-
+  public static final float PAUSE_MENU = current ++;
+  public static final float CONSOLE = current ++;
 }

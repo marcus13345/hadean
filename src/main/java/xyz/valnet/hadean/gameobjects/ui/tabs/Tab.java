@@ -1,7 +1,8 @@
 package xyz.valnet.hadean.gameobjects.ui.tabs;
 
-import static xyz.valnet.engine.util.Math.*;
+import static xyz.valnet.engine.util.Math.lerp;
 
+import xyz.valnet.engine.graphics.IModalUI;
 import xyz.valnet.engine.graphics.ImmediateUI;
 import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.gameobjects.BottomBar;
@@ -9,7 +10,7 @@ import xyz.valnet.hadean.gameobjects.ui.ExclusivityManager;
 import xyz.valnet.hadean.interfaces.IBottomBarItem;
 import xyz.valnet.hadean.util.Layers;
 
-public abstract class Tab extends ImmediateUI implements IBottomBarItem, ITransient {
+public abstract class Tab extends ImmediateUI implements IBottomBarItem, ITransient, IModalUI {
 
   private BottomBar bottombar;
 
@@ -49,7 +50,7 @@ public abstract class Tab extends ImmediateUI implements IBottomBarItem, ITransi
   }
 
   protected final int animate(float a, float b) {
-    return (int)Math.round(lerp(a, b, animation));
+    return (int) Math.round(lerp(a, b, animation));
   }
 
   @Override
@@ -58,6 +59,7 @@ public abstract class Tab extends ImmediateUI implements IBottomBarItem, ITransi
     else open();
   }
 
+  @Override
   public final void open() {
     if(opened) return;
     opened = true;
@@ -65,15 +67,12 @@ public abstract class Tab extends ImmediateUI implements IBottomBarItem, ITransi
     onOpen();
   }
 
+  @Override
   public final void close() {
     if(!opened) return;
     opened = false;
     exclusivityManager.closeCurrent();
     onClose();
-  }
-
-  public void back() {
-    close();
   }
 
   protected abstract void onClose();

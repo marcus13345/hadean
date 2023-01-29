@@ -1,6 +1,8 @@
 package xyz.valnet.engine.graphics;
 
-public class Color {
+import java.io.Serializable;
+
+public class Color implements Serializable {
   public final float r, g, b, a;
 
   public static Color black =   new Color(0, 0, 0);

@@ -1,6 +1,7 @@
 package xyz.valnet.hadean.gameobjects.ui;
 
 import xyz.valnet.engine.graphics.ImmediateUI;
+import xyz.valnet.hadean.gameobjects.ui.tabs.DebugTab;
 
 public class Popup extends ImmediateUI {
 
@@ -24,7 +25,7 @@ public class Popup extends ImmediateUI {
       text("But not this...");
   
       if(button("Click Me!")) {
-        System.out.println("The Event!");
+        DebugTab.log("The Event!");
       }
   
       text("This after button...");

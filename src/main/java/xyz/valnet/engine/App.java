@@ -92,7 +92,6 @@ public class App {
     });
 
     glfwSetScrollCallback(window, (long window, double xOffset, double yOffset) -> {
-      DebugTab.log("Scroll " + yOffset);
       if(yOffset > 0)
         game.scrollUp();
       else if(yOffset < 0)
@@ -114,7 +113,8 @@ public class App {
         if(button == GLFW_MOUSE_BUTTON_LEFT) { mouseLeft = action == 1; return; }
         if(button == GLFW_MOUSE_BUTTON_RIGHT) { mouseRight = action == 1; return; }
         if(button == GLFW_MOUSE_BUTTON_MIDDLE) { mouseMiddle = action == 1; return ; }
-        System.out.println("Mouse: action " + action + " : button " + button);
+
+        DebugTab.log("Mouse: action " + action + " : button " + button);
     });
 
     // Get the thread stack and push a new frame

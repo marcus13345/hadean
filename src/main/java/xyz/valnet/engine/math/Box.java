@@ -1,6 +1,8 @@
 package xyz.valnet.engine.math;
 
-public class Box {
+import java.io.Serializable;
+
+public class Box implements Serializable {
 
   public final float x, y, w, h, x2, y2;
   public final Vector2f a, b;

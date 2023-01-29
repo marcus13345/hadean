@@ -1,5 +1,7 @@
 package xyz.valnet.hadean.gameobjects;
 
+import static xyz.valnet.engine.util.Math.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,15 +11,15 @@ import java.util.Set;
 import xyz.valnet.engine.graphics.IModalUI;
 import xyz.valnet.engine.graphics.ImmediateUI;
 import xyz.valnet.engine.scenegraph.ITransient;
+import xyz.valnet.hadean.Constants;
 import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
 import xyz.valnet.hadean.gameobjects.ui.ExclusivityManager;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
 import xyz.valnet.hadean.util.Action;
+import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.detail.Detail;
-
-import static xyz.valnet.engine.util.Math.lerp;
 
 public class SelectionUI extends ImmediateUI implements ISelectionChangeListener, ITransient, IModalUI {
 
@@ -33,7 +35,7 @@ public class SelectionUI extends ImmediateUI implements ISelectionChangeListener
   private SelectionLayer selectionManager;
 
   private final int width = 300, height = 200;
-  private final int padding = 10;
+  private final int padding = 0;
   
   private boolean opened = false;
   private float openness = 0f;
@@ -55,7 +57,7 @@ public class SelectionUI extends ImmediateUI implements ISelectionChangeListener
 
   @Override
   public void update(float dTime) {
-    openness = lerp(openness, opened ? 1 : 0, dTime / 20);
+    openness = lerp(openness, opened ? 1 : 0, dTime / Constants.animationSpeed);
     if(newSelection != null) {
       selectionManager.updateSelection(newSelection);
       newSelection = null;
@@ -74,6 +76,10 @@ public class SelectionUI extends ImmediateUI implements ISelectionChangeListener
 
   @Override
   public void selectionChanged(List<ISelectable> newSelection) {
+
+    if(selected.size() != 0 && newSelection.size() != 0) {
+      Assets.sndBubble.play();
+    }
 
     if(newSelection.size() == 0) {
       close();
@@ -109,7 +115,6 @@ public class SelectionUI extends ImmediateUI implements ISelectionChangeListener
   }
 
   private int animate(int a, int b) {
-    System.out.println(openness);
     return (int) Math.round(lerp(a, b, openness));
   }
   
@@ -118,7 +123,8 @@ public class SelectionUI extends ImmediateUI implements ISelectionChangeListener
     // if(selected.isEmpty()) return;
     if(!opened && openness <= 0.0001f) return;
 
-    window(animate(-width - 50, padding), 576 - padding - height - BottomBar.bottomBarHeight, width, height, () -> {
+    // main window
+    window(animate(-width - 50, 0), 576 - height - BottomBar.bottomBarHeight + 1, width, height, () -> {
       if(selectedByType.size() == 1) {
         if(selectedCount == 1) {
           text(properName);
@@ -151,8 +157,9 @@ public class SelectionUI extends ImmediateUI implements ISelectionChangeListener
       }
     });
 
-    if(selectedByType.size() == 1) {
-      root(padding * 2 + width, 576 - 32 - padding - BottomBar.bottomBarHeight, 1000, 32, () -> {
+    // actions
+    window(width - 1, animate(576 + 50, 576 - 48 - BottomBar.bottomBarHeight + 1), 1024 - width + 1, 48, () -> {
+      if(selectedByType.size() == 1) {
         horizontal(() -> {
           for(Action action : actions) {
             if(button(action.name)) {
@@ -163,8 +170,11 @@ public class SelectionUI extends ImmediateUI implements ISelectionChangeListener
             space(8);
           }
         });
-      });
-    }
+      } else {
+        space(8);
+        text("  Select an Item Type");
+      }
+    });
 
   }
 

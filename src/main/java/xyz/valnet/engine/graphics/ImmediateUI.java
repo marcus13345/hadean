@@ -90,7 +90,6 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
 
   private Button getButton(String id) {
     if(hasButton(id)) return buttons.get(id);
-    System.out.println("Created new Button");
     Button btn = new Button(Assets.uiFrame, "", 0, 0, 0, 0, 0);
     btn.registerClickListener((target) -> {
       if(!clicks.containsKey(target)) clicks.put(target, 0);

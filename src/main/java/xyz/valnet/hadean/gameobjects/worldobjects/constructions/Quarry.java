@@ -50,9 +50,6 @@ public class Quarry extends Construction {
     if (digJob != null) return;
     if (terrain.getTile(getWorldPosition().xy().south().east()).has(Boulder.class)) return;
 
-
-    System.out.println("Dig job?");
-
     digJob = get(JobBoard.class)
       .postSimpleWorkJob("Mine at Quarry", new IWorkable() {
 

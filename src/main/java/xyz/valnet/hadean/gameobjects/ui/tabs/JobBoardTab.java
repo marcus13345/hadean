@@ -72,4 +72,22 @@ public class JobBoardTab extends Tab implements ISelectionChangeListener {
   public String getTabName() {
     return "Jobs";
   }
+
+  @Override
+  protected void onClose() {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  protected void onOpen() {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  protected void gui() {
+    // TODO Auto-generated method stub
+    
+  }
 }

@@ -5,6 +5,7 @@ import static xyz.valnet.engine.util.Math.lerp;
 import xyz.valnet.engine.graphics.IModalUI;
 import xyz.valnet.engine.graphics.ImmediateUI;
 import xyz.valnet.engine.scenegraph.ITransient;
+import xyz.valnet.hadean.Constants;
 import xyz.valnet.hadean.gameobjects.BottomBar;
 import xyz.valnet.hadean.gameobjects.ui.ExclusivityManager;
 import xyz.valnet.hadean.interfaces.IBottomBarItem;
@@ -21,7 +22,7 @@ public abstract class Tab extends ImmediateUI implements IBottomBarItem, ITransi
 
   @Override
   public void update(float dTime) {
-    animation = lerp(animation, opened ? 1 : 0, dTime / 20);
+    animation = lerp(animation, opened ? 1 : 0, dTime / Constants.animationSpeed);
   }
 
   @Override

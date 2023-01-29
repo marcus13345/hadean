@@ -61,8 +61,7 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
       }
       
       Vector2f move = direction.normalize().multiply(dTime / 5f);
-      // move = Vector2f.east;
-      // System.out.println(move);
+      
       focus = focus.add(move);
     } else {
       Vector2f dragDifference = screen2world(App.mouseX, App.mouseY).subtract(focus);

@@ -69,13 +69,13 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
     try {
       BuildableMetadata annotation = clazz.getAnnotation(BuildableMetadata.class);
       if(annotation == null) {
-        System.out.println(clazz + " has no buildable data annotation");
+        DebugTab.log(clazz + " has no buildable data annotation");
         return;
       }
 
       Constructor<? extends IBuildable> constructor = (Constructor<? extends IBuildable>) clazz.getConstructor();
       if(constructor.getParameterCount() != 0) {
-        System.out.println(clazz + " has no default constructor (no params)");
+        DebugTab.log(clazz + " has no default constructor (no params)");
         return;
       }
 
@@ -83,7 +83,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
       String name = annotation.name();
       BuildableMetadata.Type type = annotation.type();
 
-      System.out.println("Added " + category + " / " + name);
+      DebugTab.log("Added " + category + " / " + name);
 
       if(!buildables.containsKey(category))
         buildables.put(category, new ArrayList<BuildableRecord>());
@@ -166,7 +166,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
       }
       building.buildAt(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
     } catch (Exception e) {
-      System.out.println(e);
+      DebugTab.log(e);
     }
   }
 
@@ -180,7 +180,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
       }
       building.buildAt(x1, y1);
     } catch (Exception e) {
-      System.out.println(e);
+      DebugTab.log(e);
     }
   }
 

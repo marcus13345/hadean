@@ -14,7 +14,7 @@ public class DebugTab extends Tab implements IKeyboardListener {
 
   @Override
   public String getTabName() {
-    return "Toggle Debug";
+    return "Debug";
   }
 
   @Override
@@ -65,6 +65,10 @@ public class DebugTab extends Tab implements IKeyboardListener {
     while(logs.size() > 10) {
       logs.remove(0);
     }
+  }
+
+  public static void log(Object obj) {
+    log(obj.toString());
   }
 
   @Override

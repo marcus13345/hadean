@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import xyz.valnet.engine.App;
 import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.Vector4f;
+import xyz.valnet.hadean.gameobjects.ui.tabs.DebugTab;
 
 public abstract class SceneGraph implements IScene {
   protected final List<GameObject> objects = new ArrayList<GameObject>();
@@ -159,7 +160,7 @@ public abstract class SceneGraph implements IScene {
 
   public void dump() {
     for(GameObject go : objects)
-      System.out.println(go);
+      DebugTab.log(go);
   }
 
   private void dump(List<GameObject> objects) {
@@ -171,7 +172,7 @@ public abstract class SceneGraph implements IScene {
       count.put(clazz, count.get(clazz) + 1);
     }
     for(Entry<Class<? extends GameObject>, Integer> entry : count.entrySet()) {
-      System.out.println("" + entry.getValue() + "x " + entry.getKey().getSimpleName());
+      DebugTab.log("" + entry.getValue() + "x " + entry.getKey().getSimpleName());
     }
   }
 
@@ -186,15 +187,15 @@ public abstract class SceneGraph implements IScene {
       FileOutputStream file = new FileOutputStream("SAVE_DATA.TXT");
       ObjectOutputStream out = new ObjectOutputStream(file);
       ArrayList<GameObject> toSave = getNonTransientObjects();
-      System.out.println("=== [ SAVING ] ===");
+      DebugTab.log("=== [ SAVING ] ===");
       dump(toSave);
       out.writeObject(toSave);
       out.close();
       file.close();
-      System.out.println("=== [ SAVED ] ===");
+      DebugTab.log("=== [ SAVED ] ===");
     } catch (Exception e) {
       e.printStackTrace();
-      System.out.println("=== [ FAILED ] ===");
+      DebugTab.log("=== [ FAILED ] ===");
     }
     saveFlag = false;
   }
@@ -207,7 +208,7 @@ public abstract class SceneGraph implements IScene {
       List<GameObject> newObjects = (List<GameObject>) input.readObject();
       input.close();
       file.close();
-      System.out.println("imported " + newObjects.size() + " objects");
+      DebugTab.log("imported " + newObjects.size() + " objects");
       ArrayList<GameObject> toRemove = getNonTransientObjects();
 
       for(GameObject obj : toRemove) {
@@ -251,7 +252,7 @@ public abstract class SceneGraph implements IScene {
 
   @Override
   public final void keyPress(int key) {
-    System.out.println("keyCode: " + key);
+    DebugTab.log("keyCode: " + key);
     keys.add(key);
     for(IKeyboardListener ikbl : getAll(IKeyboardListener.class)) {
       ikbl.keyPress(key);

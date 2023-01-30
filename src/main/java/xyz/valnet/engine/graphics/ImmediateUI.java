@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.Stack;
 
 import xyz.valnet.engine.math.Box;
+import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.scenegraph.GameObject;
@@ -120,12 +121,34 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
     );
   }
 
+  private void setBoxWidth(float width) {
+    context = new StackingContext(
+      context.fixedSize,
+      new Box(context.box.x, context.box.y, width, context.box.h),
+      context.occlusionBox,
+      context.hasRegisteredGuiArea,
+      context.horizontal
+    );
+  }
+
+  private void setBoxHeight(float height) {
+    context = new StackingContext(
+      context.fixedSize,
+      new Box(context.box.x, context.box.y, context.box.w, height),
+      context.occlusionBox,
+      context.hasRegisteredGuiArea,
+      context.horizontal
+    );
+  }
+
   private void adjustBox(float w, float h) {
     if(context.vertical()) {
       if(context.fixedSize) {
         modifyBox(0, h, 0, -h);
       } else {
         modifyBox(0, 0, 0, h);
+        if (w - context.box.w > 0)
+          modifyBox(0, 0, w - context.box.w, 0);
       }
     } else {
       if(context.fixedSize) {
@@ -156,6 +179,19 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
 
   private float getPreviousLayer() {
     return getLayer() + contextStack.size() * 0.001f;
+  }
+
+  // PLEASE PLEASE INLINE THIS DOGWATER CALL
+  private final Vector2i getNextBoxLocation() {
+    if(context.fixedSize) {
+      return context.box.a.asInt();
+    } else {
+      if(context.horizontal) {
+        return new Vector2i((int) context.box.x2, (int) context.box.y);
+      } else {
+        return new Vector2i((int) context.box.x, (int) context.box.y2);
+      }
+    }
   }
 
   // === ELEMENTS ===
@@ -342,10 +378,26 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
     contextStack.push(context);
     context = new StackingContext(
       false,
-      new Box(context.box.x, context.box.y, 0, 0),
+      new Box(getNextBoxLocation(), 0, 0),
       context.occlusionBox,
       context.hasRegisteredGuiArea,
       true
+    );
+    cb.apply();
+    float w = context.box.w;
+    float h = context.box.h;
+    context = contextStack.pop();
+    adjustBox(w, h);
+  }
+
+  protected void vertical(RenderCallback cb) {
+    contextStack.push(context);
+    context = new StackingContext(
+      false,
+      new Box(getNextBoxLocation(), 0, 0),
+      context.occlusionBox,
+      context.hasRegisteredGuiArea,
+      false
     );
     cb.apply();
     float w = context.box.w;

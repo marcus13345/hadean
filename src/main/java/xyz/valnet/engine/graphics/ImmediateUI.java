@@ -10,7 +10,6 @@ import java.util.Stack;
 
 import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
@@ -115,26 +114,6 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
     context = new StackingContext(
       context.fixedSize,
       new Box(context.box.x + x, context.box.y + y, context.box.w + w, context.box.h + h),
-      context.occlusionBox,
-      context.hasRegisteredGuiArea,
-      context.horizontal
-    );
-  }
-
-  private void setBoxWidth(float width) {
-    context = new StackingContext(
-      context.fixedSize,
-      new Box(context.box.x, context.box.y, width, context.box.h),
-      context.occlusionBox,
-      context.hasRegisteredGuiArea,
-      context.horizontal
-    );
-  }
-
-  private void setBoxHeight(float height) {
-    context = new StackingContext(
-      context.fixedSize,
-      new Box(context.box.x, context.box.y, context.box.w, height),
       context.occlusionBox,
       context.hasRegisteredGuiArea,
       context.horizontal

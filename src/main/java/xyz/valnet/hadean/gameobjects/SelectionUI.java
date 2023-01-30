@@ -35,7 +35,6 @@ public class SelectionUI extends ImmediateUI implements ISelectionChangeListener
   private SelectionLayer selectionManager;
 
   private final int width = 300, height = 200;
-  private final int padding = 0;
   
   private boolean opened = false;
   private float openness = 0f;

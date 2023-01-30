@@ -29,8 +29,6 @@ import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 
-import static xyz.valnet.engine.util.Math.lerp;
-
 public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLayerListener {
   
   private SelectionLayer selection;

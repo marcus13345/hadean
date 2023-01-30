@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.graphics.Tile16.Direction;
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.Job;
 import xyz.valnet.hadean.gameobjects.JobBoard;

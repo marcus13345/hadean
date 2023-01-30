@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.Stack;
 
 import xyz.valnet.engine.math.Box;
-import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.scenegraph.GameObject;

@@ -9,9 +9,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 import java.nio.IntBuffer;
 
-import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.ALC;

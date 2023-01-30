@@ -10,7 +10,6 @@ import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.shaders.SimpleShader;
 import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.Terrain;

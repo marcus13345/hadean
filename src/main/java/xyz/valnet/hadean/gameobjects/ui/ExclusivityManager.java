@@ -6,7 +6,6 @@ import xyz.valnet.engine.scenegraph.IKeyboardListener;
 import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.gameobjects.ui.tabs.BuildTab;
 import xyz.valnet.hadean.gameobjects.ui.tabs.MenuTab;
-import xyz.valnet.hadean.gameobjects.ui.tabs.Tab;
 import xyz.valnet.hadean.util.Assets;
 
 public class ExclusivityManager extends GameObject implements ITransient, IKeyboardListener {

@@ -1,7 +1,6 @@
 package xyz.valnet.hadean.gameobjects;
 
 import xyz.valnet.engine.graphics.Drawing;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;

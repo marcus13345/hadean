@@ -2,7 +2,6 @@ package xyz.valnet.hadean.gameobjects.worldobjects.constructions;
 
 import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.Job;
 import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.gameobjects.worldobjects.Buildable;

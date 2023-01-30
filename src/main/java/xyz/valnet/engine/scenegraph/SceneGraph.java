@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 import xyz.valnet.engine.App;
 import xyz.valnet.engine.math.Box;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.ui.tabs.DebugTab;
 
 public abstract class SceneGraph implements IScene {

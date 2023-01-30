@@ -2,7 +2,6 @@ package xyz.valnet.hadean.gameobjects.worldobjects.constructions;
 
 import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.Job;
 import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Boulder;
@@ -15,7 +14,6 @@ import xyz.valnet.hadean.util.Layers;
 @BuildableMetadata(category = "Buildings", name = "Quarry", type = BuildableMetadata.Type.SINGLE)
 public class Quarry extends Construction {
 
-  private float work = 0;
   private Job digJob = null;
 
   @Override

@@ -11,13 +11,11 @@ import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
-import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.ui.ExclusivityManager;
-import xyz.valnet.hadean.gameobjects.ui.tabs.BuildTab;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
 import xyz.valnet.hadean.util.Assets;
@@ -32,12 +30,9 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
   private float animationAmplitude = 0.2f;
   private List<ISelectionChangeListener> listeners = new ArrayList<ISelectionChangeListener>();
 
-  private BuildTab buildTab;
-
   @Override
   public void start() {
     camera = get(Camera.class);
-    buildTab = get(BuildTab.class);
   }
 
   public void subscribe(ISelectionChangeListener listener) {

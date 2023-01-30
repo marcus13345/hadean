@@ -29,6 +29,42 @@ public class Box implements Serializable {
     this.a = new Vector2f(this.x, this.y);
     this.b = new Vector2f(this.x2, this.y2);
   }
+  
+  public Box(Vector2f pos, float w, float h) {
+    this(pos.x, pos.y, w, h);
+  }
+  
+  public Box(float x, float y, Vector2f dim) {
+    this(x, y, dim.x, dim.y);
+  }
+  
+  public Box(Vector2f pos, Vector2f dim) {
+    this(pos.x, pos.y, dim.x, dim.y);
+  }
+  
+  public Box(Vector2i pos, float w, float h) {
+    this(pos.x, pos.y, w, h);
+  }
+  
+  public Box(float x, float y, Vector2i dim) {
+    this(x, y, dim.x, dim.y);
+  }
+  
+  public Box(Vector2i pos, Vector2i dim) {
+    this(pos.x, pos.y, dim.x, dim.y);
+  }
+
+  public static Box fromPoints(Vector2i a, Vector2i b) {
+    return new Box(a.x, a.y, b.x - a.x, b.y - a.y);
+  }
+
+  public static Box fromPoints(Vector2i a, float x2, float y2) {
+    return new Box(a.x, a.y, x2 - a.x, y2 - a.y);
+  }
+
+  public static Box fromPoints(float x, float y, Vector2i b) {
+    return new Box(x, y, b.x - x, b.y - y);
+  }
 
   public static Box fromPoints(Vector2f a, Vector2f b) {
     return new Box(a.x, a.y, b.x - a.x, b.y - a.y);

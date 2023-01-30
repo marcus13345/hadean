@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.Stack;
 
 import xyz.valnet.engine.math.Box;
+import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.scenegraph.GameObject;
@@ -317,11 +318,11 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
 
   protected void groupEnd() {
     padEnd();
-    Drawing.setLayer(getPreviousLayer());
-    float h = context.box.h;
-    Assets.uiFrame.draw(context.box);
+    Box inner = context.box;
     context = contextStack.pop();
-    adjustBox(context.box.w, h);
+    Drawing.setLayer(getCurrentLayer());
+    Assets.uiFrame.draw(inner);
+    adjustBox(inner.w, inner.h);
   }
 
   protected void pad() {
@@ -348,9 +349,9 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
   }
 
   protected void padEnd() {
-    float h = context.box.h + 16;
+    Box inner = context.box;
     context = contextStack.pop();
-    adjustBox(context.box.w + 16, h);
+    adjustBox(inner.w + 16, inner.h + 16);
   }
 
   protected void horizontal(RenderCallback cb) {

@@ -6,6 +6,7 @@ public class Box implements Serializable {
 
   public final float x, y, w, h, x2, y2;
   public final Vector2f a, b;
+  public final Vector2f pos, dim;
 
   public static final Box none = new Box(0, 0, 0, 0);
   
@@ -28,6 +29,8 @@ public class Box implements Serializable {
     this.y2 = this.y + this.h;
     this.a = new Vector2f(this.x, this.y);
     this.b = new Vector2f(this.x2, this.y2);
+    this.pos = this.a;
+    this.dim = new Vector2f(this.w, this.h);
   }
   
   public Box(Vector2f pos, float w, float h) {

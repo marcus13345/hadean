@@ -10,13 +10,12 @@ import xyz.valnet.hadean.gameobjects.SelectionUI;
 import xyz.valnet.hadean.gameobjects.Terrain;
 import xyz.valnet.hadean.gameobjects.inputlayer.BuildLayer;
 import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
+import xyz.valnet.hadean.gameobjects.ui.ExclusivityManager;
 import xyz.valnet.hadean.gameobjects.ui.HoverQuery;
-import xyz.valnet.hadean.gameobjects.ui.Popup;
 import xyz.valnet.hadean.gameobjects.ui.tabs.BuildTab;
-import xyz.valnet.hadean.gameobjects.ui.tabs.JobBoardTab;
-import xyz.valnet.hadean.gameobjects.ui.tabs.LoadTab;
 import xyz.valnet.hadean.gameobjects.ui.tabs.DebugTab;
-import xyz.valnet.hadean.gameobjects.ui.tabs.SaveTab;
+import xyz.valnet.hadean.gameobjects.ui.tabs.JobBoardTab;
+import xyz.valnet.hadean.gameobjects.ui.tabs.MenuTab;
 import xyz.valnet.hadean.gameobjects.worldobjects.pawn.Pawn;
 
 // TODO BIG IDEAS
@@ -53,11 +52,11 @@ public class GameScene extends SceneGraph {
     objects.add(new HoverQuery());
 
     objects.add(new BottomBar());
+    objects.add(new ExclusivityManager());
     objects.add(new BuildTab());
     objects.add(new JobBoardTab());
     objects.add(new DebugTab());
-    objects.add(new SaveTab());
-    objects.add(new LoadTab());
+    objects.add(new MenuTab());
 
     // objects.add(new Popup());
     

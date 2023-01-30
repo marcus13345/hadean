@@ -7,15 +7,15 @@ import java.util.List;
 
 import xyz.valnet.engine.App;
 import xyz.valnet.engine.graphics.Drawing;
+import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
-import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.gameobjects.Camera;
-import xyz.valnet.hadean.gameobjects.ui.tabs.BuildTab;
+import xyz.valnet.hadean.gameobjects.ui.ExclusivityManager;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
 import xyz.valnet.hadean.util.Assets;
@@ -30,12 +30,9 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
   private float animationAmplitude = 0.2f;
   private List<ISelectionChangeListener> listeners = new ArrayList<ISelectionChangeListener>();
 
-  private BuildTab buildTab;
-
   @Override
   public void start() {
     camera = get(Camera.class);
-    buildTab = get(BuildTab.class);
   }
 
   public void subscribe(ISelectionChangeListener listener) {
@@ -92,13 +89,10 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
     }
 
     if(initialCoords != null) {
-      Vector2i screenPos = camera.world2screen(initialCoords);
-      Assets.selectionFrame.draw(new Vector4i(
-        screenPos.x,
-        screenPos.y,
-        App.mouseX,
-        App.mouseY
-      ).toXYWH());
+      camera.draw(Layers.AREA_SELECT_BOX, Assets.selectionFrame, Box.fromPoints(
+        initialCoords,
+        camera.getWorldMouse()
+      ));
     }
   }
 
@@ -150,9 +144,6 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
   }
 
   private void broadcastSelectionChanged() {
-    // Assets.sndSelectionChanged.play();
-    if(selected.size() > 0) Assets.sndBubble.play();
-    if(selected.size() == 0) Assets.sndCancel.play();
     
     for(ISelectionChangeListener listener : listeners) {
       listener.selectionChanged(selected);
@@ -189,8 +180,8 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
   }
 
   @Override
-  public List<Vector4f> getGuiBoxes() {
-    return List.of(new Vector4f(0, 0, 1000, 1000));
+  public List<Box> getGuiBoxes() {
+    return List.of(new Box(0, 0, 10000, 10000));
   }
 
   @Override
@@ -201,6 +192,7 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
   @Override
   public void mouseDown(int button) {
     if(!active) return;
+    if(isPaused()) return;
     
     if(button == 0) {
       if(initialCoords == null) {
@@ -208,7 +200,7 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
       }
     } else if (button == 1) {
       if(selected.size() == 0) {
-        buildTab.rightClickOnWorld();
+        get(ExclusivityManager.class).backOrDefault();
       } else {
         clearSelection();
       }
@@ -217,7 +209,7 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
 
   public void clearSelection() {
     if(selected.size() == 0) return;
-    selected.clear();
+    selected = new ArrayList<ISelectable>();
     broadcastSelectionChanged();
   }
 

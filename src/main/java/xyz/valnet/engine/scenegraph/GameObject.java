@@ -81,4 +81,8 @@ public class GameObject implements IRenderable, ITickable, Serializable {
   protected boolean getKey(int key) {
     return scene.getKey(key);
   }
+
+  protected boolean isPaused() {
+    return scene.isPaused();
+  }
 }

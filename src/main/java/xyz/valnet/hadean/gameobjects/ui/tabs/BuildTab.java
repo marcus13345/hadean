@@ -6,11 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
-import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.hadean.designation.CutTreesDesignation;
 import xyz.valnet.hadean.designation.HaulItemDesignation;
 import xyz.valnet.hadean.gameobjects.BottomBar;
@@ -22,9 +21,6 @@ import xyz.valnet.hadean.gameobjects.worldobjects.Stockpile;
 import xyz.valnet.hadean.gameobjects.worldobjects.constructions.Bed;
 import xyz.valnet.hadean.gameobjects.worldobjects.constructions.Quarry;
 import xyz.valnet.hadean.gameobjects.worldobjects.constructions.Wall;
-import xyz.valnet.hadean.input.Button;
-import xyz.valnet.hadean.input.IButtonListener;
-import xyz.valnet.hadean.input.SimpleButton;
 import xyz.valnet.hadean.interfaces.BuildableMetadata;
 import xyz.valnet.hadean.interfaces.IBuildLayerListener;
 import xyz.valnet.hadean.interfaces.IBuildable;
@@ -32,17 +28,12 @@ import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
-import xyz.valnet.hadean.util.SmartBoolean;
-
-import static xyz.valnet.engine.util.Math.lerp;
 
 public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLayerListener {
   
   private SelectionLayer selection;
   private BuildLayer buildLayer;
   private Camera camera;
-
-  private boolean opened;
 
   private int x, y;
   private int w, h;
@@ -51,8 +42,6 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
 
   private static transient Map<String, List<BuildableRecord>> buildables = new HashMap<String, List<BuildableRecord>>();
   private transient BuildableRecord selectedBuildable = null;
-
-  private float openness = 0;
 
   static {
     BuildTab.registerBuildable(HaulItemDesignation.class);
@@ -78,13 +67,13 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
     try {
       BuildableMetadata annotation = clazz.getAnnotation(BuildableMetadata.class);
       if(annotation == null) {
-        System.out.println(clazz + " has no buildable data annotation");
+        DebugTab.log(clazz + " has no buildable data annotation");
         return;
       }
 
       Constructor<? extends IBuildable> constructor = (Constructor<? extends IBuildable>) clazz.getConstructor();
       if(constructor.getParameterCount() != 0) {
-        System.out.println(clazz + " has no default constructor (no params)");
+        DebugTab.log(clazz + " has no default constructor (no params)");
         return;
       }
 
@@ -92,7 +81,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
       String name = annotation.name();
       BuildableMetadata.Type type = annotation.type();
 
-      System.out.println("Added " + category + " / " + name);
+      DebugTab.log("Added " + category + " / " + name);
 
       if(!buildables.containsKey(category))
         buildables.put(category, new ArrayList<BuildableRecord>());
@@ -109,12 +98,12 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
 
     if(!opened || selectedBuildable == null) return;
     // draw the currently selected build item
-    Assets.flat.pushColor(new Vector4f(1f, 1f, 1f, 1.0f));
+    Assets.flat.pushColor(Color.white);
     Vector2i topLeft = camera.world2screen(x, y);
     Assets.font.drawString(selectedBuildable.name, topLeft.x, topLeft.y - 20);
-    Assets.flat.swapColor(new Vector4f(1f, 1f, 1f, 0.6f));
+    Assets.flat.swapColor(Color.white.withAlpha(0.6f));
     camera.draw(Layers.BUILD_INTERACTABLE, Assets.selectionFrame, x, y, w, h);
-    Assets.flat.swapColor(new Vector4f(1f, 1f, 1f, 0.35f));
+    Assets.flat.swapColor(Color.white.withAlpha(0.35f));
     for(int i = 0; i < w; i ++) for(int j = 0; j < h; j ++) {{
       camera.draw(Layers.BUILD_INTERACTABLE, Assets.checkerBoard, x + i, y + j);
     }}
@@ -138,15 +127,11 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
   }
 
   @Override
-  public void update(float dTime) {
-    openness = lerp(openness, opened ? 1 : 0, dTime / 20);
-  }
-
-  public void rightClickOnWorld() {
+  public void back() {
     if(selectedBuildable != null) {
       selectBuildable(null);
     } else {
-      evoke();
+      close();
     }
   }
 
@@ -179,7 +164,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
       }
       building.buildAt(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
     } catch (Exception e) {
-      System.out.println(e);
+      DebugTab.log(e);
     }
   }
 
@@ -193,7 +178,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
       }
       building.buildAt(x1, y1);
     } catch (Exception e) {
-      System.out.println(e);
+      DebugTab.log(e);
     }
   }
 
@@ -209,30 +194,10 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
   @Override
   public void selectionChanged(List<ISelectable> selected) {
     if(selected.isEmpty()) return;
-    opened = false;
+    close();
   }
 
-  @Override
-  public void evoke() {
-    if(opened) close();
-    else open();
-  }
-
-  public void open() {
-    if(opened) return;
-    Assets.sndBubble.play();
-    opened = true;
-    reset();
-  }
-
-  public void close() {
-    if(!opened) return;
-    Assets.sndCancel.play();
-    opened = false;
-    buildLayer.deactiveate();
-  }
-
-  public void reset() {
+  private void reset() {
     selectBuildable(null);
   }
 
@@ -246,22 +211,12 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
     return "Build";
   }
 
-  @Override
-  public float getLayer() {
-    return Layers.GENERAL_UI;
-  }
-
-  @Override
-  public boolean isButtonClickSilent() {
-    return true;
-  }
-
   public void gui() {
-    if(openness < 0.0001f) return;
+    if(!shouldRender()) return;
 
     int height = 8 + 16 + 8 + buildables.size() * (32 + 8);
 
-    window((int) lerp(-180, 0, openness), 576 - BottomBar.bottomBarHeight - height + 1, 150, height, () -> {
+    window(animate(-180, 0), 576 - BottomBar.bottomBarHeight - height + 1, 150, height, () -> {
       text("Build");
 
       for(String category : buildables.keySet()) {
@@ -276,7 +231,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
       }
     });
 
-    window(149, (int) lerp(576 + 50, 576 - BottomBar.bottomBarHeight - 16 - 32 + 1 - 24, openness), 875, 48 + 24, () -> {
+    window(149, animate(576 + 50, 576 - BottomBar.bottomBarHeight - 16 - 32 + 1 - 24), 875, 48 + 24, () -> {
       if(selectedCategory == null) {
         space(20);
         text("    Select a Category...");
@@ -293,5 +248,15 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
         }
       });
     });
+  }
+
+  @Override
+  protected void onClose() {
+    buildLayer.deactiveate();
+  }
+
+  @Override
+  protected void onOpen() {
+    reset();
   }
 }

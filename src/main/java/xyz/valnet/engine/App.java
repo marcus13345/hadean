@@ -9,9 +9,7 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 import java.nio.IntBuffer;
 
-import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.ALC;
@@ -21,6 +19,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
 import xyz.valnet.engine.math.Matrix4f;
+import xyz.valnet.hadean.gameobjects.ui.tabs.DebugTab;
 
 public class App {
 
@@ -91,7 +90,6 @@ public class App {
     });
 
     glfwSetScrollCallback(window, (long window, double xOffset, double yOffset) -> {
-      System.out.println("Scroll " + yOffset);
       if(yOffset > 0)
         game.scrollUp();
       else if(yOffset < 0)
@@ -113,7 +111,8 @@ public class App {
         if(button == GLFW_MOUSE_BUTTON_LEFT) { mouseLeft = action == 1; return; }
         if(button == GLFW_MOUSE_BUTTON_RIGHT) { mouseRight = action == 1; return; }
         if(button == GLFW_MOUSE_BUTTON_MIDDLE) { mouseMiddle = action == 1; return ; }
-        System.out.println("Mouse: action " + action + " : button " + button);
+
+        DebugTab.log("Mouse: action " + action + " : button " + button);
     });
 
     // Get the thread stack and push a new frame

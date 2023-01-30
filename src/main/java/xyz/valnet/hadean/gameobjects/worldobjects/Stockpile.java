@@ -2,8 +2,8 @@ package xyz.valnet.hadean.gameobjects.worldobjects;
 
 import java.util.Set;
 
+import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.hadean.gameobjects.Tile;
 import xyz.valnet.hadean.interfaces.BuildableMetadata;
@@ -24,7 +24,7 @@ public class Stockpile extends Buildable {
   public void renderAlpha() {
     if(!visible) return;
     Vector4i pos = getWorldPosition();
-    Assets.flat.pushColor(new Vector4f(1f, 0.2f, 0.1f, 0.3f));
+    Assets.flat.pushColor(new Color(1f, 0.2f, 0.1f, 0.3f));
     camera.draw(Layers.TILES, Assets.whiteBox, pos.x, pos.y, pos.z, pos.w);
     Assets.flat.popColor();
   }

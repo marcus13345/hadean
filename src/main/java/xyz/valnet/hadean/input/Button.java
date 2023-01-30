@@ -4,9 +4,10 @@ import static xyz.valnet.engine.util.Math.*;
 
 import java.util.List;
 
+import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.graphics.Tile9;
-import xyz.valnet.engine.math.Vector4f;
+import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
@@ -80,10 +81,10 @@ public class Button extends GameObject implements IMouseCaptureArea, ITransient 
       Assets.uiFrame.draw(box.x, box.y, box.z, box.w);
     }
 
-    Assets.flat.pushColor(Vector4f.black);
+    Assets.flat.pushColor(Color.black);
     Assets.font.drawString(text, 1 + x + (width - textWidth) / 2, 1 + y + (height - textHeight) / 2);
 
-    Assets.flat.swapColor(Vector4f.one);
+    Assets.flat.swapColor(Color.white);
     Assets.font.drawString(text, x + (width - textWidth) / 2, y + (height - textHeight) / 2);
     
     Assets.flat.popColor();
@@ -123,12 +124,8 @@ public class Button extends GameObject implements IMouseCaptureArea, ITransient 
 
   private IButtonListener listener = null;
 
-  public void update() {
-    update(1);
-  }
-
   @Override
-  public void update(float dTime) {
+  public void fixedUpdate(float dTime) {
     box.x = x - (int)hPad;
     box.y = y - (int)vPad;
     box.z = width + ((int)hPad) * 2;
@@ -224,8 +221,8 @@ public class Button extends GameObject implements IMouseCaptureArea, ITransient 
   }
 
   @Override
-  public List<Vector4f> getGuiBoxes() {
-    return List.of(new Vector4f(x, y, width, height));
+  public List<Box> getGuiBoxes() {
+    return List.of(new Box(x, y, width, height));
   }
 
   @Override

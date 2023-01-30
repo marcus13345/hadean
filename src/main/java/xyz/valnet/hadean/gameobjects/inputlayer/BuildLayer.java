@@ -3,8 +3,8 @@ package xyz.valnet.hadean.gameobjects.inputlayer;
 import java.util.List;
 
 import xyz.valnet.engine.App;
+import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.engine.scenegraph.ITransient;
@@ -121,8 +121,6 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
     }
   }
 
-  
-
   private Vector2i[] orderCoords(Vector2i a, Vector2i b) {
     return new Vector2i[] {
       new Vector2i(Math.min(a.x, b.x), Math.min(a.y, b.y)),
@@ -132,8 +130,8 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
   }
 
   @Override
-  public List<Vector4f> getGuiBoxes() {
-    return List.of(active ? new Vector4f(0, 0, 1024, 576) : Vector4f.zero);
+  public List<Box> getGuiBoxes() {
+    return List.of(active ? new Box(0, 0, 1024, 576) : Box.none);
   }
 
   @Override

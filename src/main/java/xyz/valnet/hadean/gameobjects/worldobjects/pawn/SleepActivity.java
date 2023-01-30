@@ -29,7 +29,7 @@ public class SleepActivity extends Activity {
     // as it will induce oversleep
     WeightedAverage average = new WeightedAverage();
     average.add(needs.getSleepNeed(), 1);
-    // System.out.println(1 - 2 * clock.getSunlight());
+    
     average.add(1 - 2 * clock.getSunlight(), circadianStrength);
     return average.calculate();
   }

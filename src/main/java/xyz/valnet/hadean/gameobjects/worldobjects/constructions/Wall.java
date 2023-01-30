@@ -2,9 +2,9 @@ package xyz.valnet.hadean.gameobjects.worldobjects.constructions;
 
 import java.util.EnumSet;
 
+import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.graphics.Tile16.Direction;
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.Job;
 import xyz.valnet.hadean.gameobjects.JobBoard;
@@ -58,14 +58,14 @@ public class Wall extends Buildable implements IItemReceiver, IWorkable, IPingab
 
     if(isBuilt()) {
       float b = 0.7f;
-      Assets.flat.pushColor(new Vector4f(b, b, b, 1f));
+      Assets.flat.pushColor(Color.grey(b));
       camera.draw(Layers.GROUND, Assets.wall.getTextureFor(wallSides), pos.x, pos.y);
       Assets.flat.popColor();
     } else {
       float p = work / maxWork;
       float b = 4;
 
-      Assets.flat.pushColor(new Vector4f(b, b, b, 0.5f));
+      Assets.flat.pushColor(Color.grey(b).withAlpha(0.5f));
       camera.draw(Layers.GROUND, Assets.wall.getTextureFor(wallSides), pos.x, pos.y);
       Assets.flat.popColor();
 

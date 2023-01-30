@@ -1,7 +1,7 @@
 package xyz.valnet.hadean.gameobjects.worldobjects.constructions;
 
+import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.Job;
 import xyz.valnet.hadean.gameobjects.JobBoard;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Boulder;
@@ -14,7 +14,6 @@ import xyz.valnet.hadean.util.Layers;
 @BuildableMetadata(category = "Buildings", name = "Quarry", type = BuildableMetadata.Type.SINGLE)
 public class Quarry extends Construction {
 
-  private float work = 0;
   private Job digJob = null;
 
   @Override
@@ -29,7 +28,7 @@ public class Quarry extends Construction {
     } else {
       float b = 4;
 
-      Assets.flat.pushColor(new Vector4f(b, b, b, 0.5f));
+      Assets.flat.pushColor(Color.grey(b).withAlpha(0.5f));
       camera.draw(Layers.GROUND, Assets.quarry, getWorldPosition());
       Assets.flat.popColor();
 
@@ -48,9 +47,6 @@ public class Quarry extends Construction {
     if(!isBuilt()) return;
     if (digJob != null) return;
     if (terrain.getTile(getWorldPosition().xy().south().east()).has(Boulder.class)) return;
-
-
-    System.out.println("Dig job?");
 
     digJob = get(JobBoard.class)
       .postSimpleWorkJob("Mine at Quarry", new IWorkable() {

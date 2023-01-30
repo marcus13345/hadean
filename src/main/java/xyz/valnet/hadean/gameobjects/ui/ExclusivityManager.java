@@ -2,17 +2,20 @@ package xyz.valnet.hadean.gameobjects.ui;
 
 import xyz.valnet.engine.graphics.IModalUI;
 import xyz.valnet.engine.scenegraph.GameObject;
+import xyz.valnet.engine.scenegraph.IKeyboardListener;
 import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.gameobjects.ui.tabs.BuildTab;
+import xyz.valnet.hadean.gameobjects.ui.tabs.MenuTab;
 import xyz.valnet.hadean.gameobjects.ui.tabs.Tab;
 import xyz.valnet.hadean.util.Assets;
 
-public class ExclusivityManager extends GameObject implements ITransient {
+public class ExclusivityManager extends GameObject implements ITransient, IKeyboardListener {
   private IModalUI current = null;
 
   private boolean switching = false;
 
   private IModalUI defaultTab = null;
+  private IModalUI menuTab = null;
   
   public void switchTo(IModalUI tab) {
     if(tab == current) return;
@@ -41,9 +44,25 @@ public class ExclusivityManager extends GameObject implements ITransient {
     else current.back();
   }
 
+  private void backOrMenu() {
+    if(current == null) switchTo(menuTab);
+    else current.back();
+  }
+
   @Override
   protected void connect() {
     defaultTab = get(BuildTab.class);
+    menuTab = get(MenuTab.class);
   }
+
+  @Override
+  public void keyPress(int code) {
+    if(code == 256) { // ESCAPE
+      backOrMenu();
+    }
+  }
+
+  @Override
+  public void keyRelease(int code) {}
 
 }

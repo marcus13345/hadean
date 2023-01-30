@@ -11,7 +11,6 @@ import java.util.stream.Stream;
 
 import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.worldobjects.pawn.Pawn;
@@ -173,6 +172,40 @@ public class JobBoard extends GameObject {
   //     return allocations.get(worker);
   //   } else return null;
   // }
+
+  public String getValidJobs() {
+    Map<String, Integer> jobs = new HashMap<String, Integer>();
+    for(Job job : availableJobs) {
+      if(!job.isValid()) continue;
+      String name = job.getJobName();
+      if(!jobs.containsKey(name)) jobs.put(name, 0);
+      jobs.put(name, jobs.get(name) + 1);
+    }
+    String str = "";
+    for(Entry<String, Integer> entry : jobs.entrySet()) {
+      // int num = entry.getValue();
+      // if(num == 1) str += "    "
+      str += entry.getValue() + "x " + entry.getKey() + "\n";
+    }
+    return str.trim();
+  }
+  
+  public String getInvalidJobs() {
+    String str = "";
+    for(Job job : availableJobs) {
+      if(job.isValid()) continue;
+      str += "  " + job.getJobName() + "\n";
+    }
+    return str;
+  }
+
+  public String getTakenJobs() {
+    String str = "";
+    for(Entry<Pawn, Job> allocation : allocations.entrySet()) {
+      str += "  " + allocation.getKey().getName() + ": " + allocation.getValue().getJobName() + "\n";
+    }
+    return str;
+  }
 
   public String details() {
     

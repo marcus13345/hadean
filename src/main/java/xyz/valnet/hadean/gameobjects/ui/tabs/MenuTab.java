@@ -28,10 +28,12 @@ public class MenuTab extends Tab {
       space(8);
       if(button("Save")) {
         save();
+        close();
       }
       space(8);
       if(button("Load")) {
         load();
+        close();
       }
       space(24);
       if(button("Main Menu")) {

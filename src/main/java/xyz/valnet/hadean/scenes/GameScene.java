@@ -14,6 +14,7 @@ import xyz.valnet.hadean.gameobjects.ui.ExclusivityManager;
 import xyz.valnet.hadean.gameobjects.ui.HoverQuery;
 import xyz.valnet.hadean.gameobjects.ui.tabs.BuildTab;
 import xyz.valnet.hadean.gameobjects.ui.tabs.DebugTab;
+import xyz.valnet.hadean.gameobjects.ui.tabs.JobBoardTab;
 import xyz.valnet.hadean.gameobjects.ui.tabs.MenuTab;
 import xyz.valnet.hadean.gameobjects.worldobjects.pawn.Pawn;
 
@@ -53,7 +54,7 @@ public class GameScene extends SceneGraph {
     objects.add(new BottomBar());
     objects.add(new ExclusivityManager());
     objects.add(new BuildTab());
-    // objects.add(new JobBoardTab());
+    objects.add(new JobBoardTab());
     objects.add(new DebugTab());
     objects.add(new MenuTab());
 

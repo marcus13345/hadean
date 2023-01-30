@@ -1,93 +1,53 @@
 package xyz.valnet.hadean.gameobjects.ui.tabs;
 
-import static xyz.valnet.engine.util.Math.lerp;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.hadean.gameobjects.BottomBar;
 import xyz.valnet.hadean.gameobjects.JobBoard;
-import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
-import xyz.valnet.hadean.interfaces.ISelectable;
-import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
-import xyz.valnet.hadean.util.Assets;
-import xyz.valnet.hadean.util.Layers;
 
-public class JobBoardTab extends Tab implements ISelectionChangeListener {
+public class JobBoardTab extends Tab {
   
-  private SelectionLayer selection;
   private JobBoard jobBoard;
 
-  private boolean opened;
-  private float progress = 0f;
-  private float width = 200;
-
-  private int padding = 10;
+  private int height = 200;
 
   @Override
-  public void render() {
-    Drawing.setLayer(Layers.GENERAL_UI);
-    float left = lerp(-width - padding, padding, progress);
-    Assets.uiFrame.draw((int) left, padding, (int) width, 576 - padding * 2 - BottomBar.bottomBarHeight);
-    Assets.font.drawString(jobBoard.details(), (int) left + padding, padding * 2);
+  protected void gui() {
+    if(!shouldRender()) return;
+
+    window(0, animate(576 + 50, 576 - BottomBar.bottomBarHeight - height + 1), 1024, height, () -> {
+      horizontal(() -> {
+        vertical(() -> {
+          text("Valid");
+          text(jobBoard.getValidJobs());
+        });
+        space(32);
+        vertical(() -> {
+          text("Invalid");
+          text(jobBoard.getInvalidJobs());
+        });
+        space(32);
+        vertical(() -> {
+          text("Taken");
+          text(jobBoard.getTakenJobs());
+        });
+      });
+
+    });
   }
 
   @Override
   protected void connect() {
     super.connect();
-    selection = get(SelectionLayer.class);
     jobBoard = get(JobBoard.class);
   }
 
   @Override
-  public void start() {
-    super.start();
-    opened = false;
-    if(selection != null) selection.subscribe(this);
-
-  }
-
-  @Override
-  public void update(float dTime) {
-    progress = lerp(progress, opened ? 1 : 0, 0.05f);
-  }
-
-  @Override
-  public void selectionChanged(List<ISelectable> selected) {
-    if(selected.isEmpty()) return;
-    opened = false;
-  }
-
-  @Override
-  public void evoke() {
-    opened = !opened;
-
-    if(opened) {
-      selection.updateSelection(new ArrayList<ISelectable>());
-    }
-  }
-
-  @Override
   public String getTabName() {
-    return "Jobs";
+    return "Work";
   }
 
   @Override
-  protected void onClose() {
-    // TODO Auto-generated method stub
-    
-  }
+  protected void onClose() { }
 
   @Override
-  protected void onOpen() {
-    // TODO Auto-generated method stub
-    
-  }
-
-  @Override
-  protected void gui() {
-    // TODO Auto-generated method stub
-    
-  }
+  protected void onOpen() { }
 }

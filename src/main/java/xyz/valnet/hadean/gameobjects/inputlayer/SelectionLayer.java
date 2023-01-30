@@ -213,7 +213,7 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
 
   public void clearSelection() {
     if(selected.size() == 0) return;
-    selected.clear();
+    selected = new ArrayList<ISelectable>();
     broadcastSelectionChanged();
   }
 

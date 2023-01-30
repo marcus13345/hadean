@@ -1,9 +1,11 @@
 package xyz.valnet.hadean.gameobjects.ui.tabs;
 
-public class MenuTab extends Tab {
+import xyz.valnet.engine.scenegraph.IPauser;
+
+public class MenuTab extends Tab implements IPauser {
 
   private int width = 300;
-  private int height = 6 * 32 + 9 * 8;
+  private int height = 6 * 32 + 1 * 16 + 6 * 8 + 2 * 24;
 
   @Override
   protected void onClose() {
@@ -18,12 +20,14 @@ public class MenuTab extends Tab {
   @Override
   protected void gui() {
     window(1024 / 2 - width / 2, animate(-height - 50, 576 / 2 - height / 2), width, height, () -> {
+      text("         ===   Paused   ===");
+      space(8);
+      if(button("Resume")) {
+        close();
+      }
+      space(24);
       if(button("Options")) {
         
-      }
-      space(8);
-      if(button("Debug")) {
-        get(DebugTab.class).open();
       }
       space(8);
       if(button("Save")) {
@@ -36,7 +40,7 @@ public class MenuTab extends Tab {
         close();
       }
       space(24);
-      if(button("Main Menu")) {
+      if(button("Quit to Menu")) {
         
       }
       space(8);
@@ -49,6 +53,11 @@ public class MenuTab extends Tab {
   @Override
   public String getTabName() {
     return "Menu";
+  }
+
+  @Override
+  public boolean isPaused() {
+    return opened;
   }
 
 }

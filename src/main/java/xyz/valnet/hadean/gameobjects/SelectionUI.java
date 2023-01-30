@@ -56,7 +56,7 @@ public class SelectionUI extends ImmediateUI implements ISelectionChangeListener
   }
 
   @Override
-  public void update(float dTime) {
+  public void fixedUpdate(float dTime) {
     openness = lerp(openness, opened ? 1 : 0, dTime / Constants.animationSpeed);
     if(newSelection != null) {
       selectionManager.updateSelection(newSelection);

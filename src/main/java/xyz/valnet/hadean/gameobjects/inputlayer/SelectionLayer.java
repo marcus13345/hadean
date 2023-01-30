@@ -197,6 +197,7 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
   @Override
   public void mouseDown(int button) {
     if(!active) return;
+    if(isPaused()) return;
     
     if(button == 0) {
       if(initialCoords == null) {

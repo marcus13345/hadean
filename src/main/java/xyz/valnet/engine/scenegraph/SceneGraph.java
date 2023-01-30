@@ -72,9 +72,24 @@ public abstract class SceneGraph implements IScene {
     if(saveFlag) save();
     if(loadFlag) load();
 
-    // TICK OBJECTS
+    paused = false;
+    for(IPauser pauser : pausers) {
+      if(pauser.isPaused()) {
+        paused = true;
+        break;
+      }
+    }
+
+    if(!paused) {
+      // TICK OBJECTS
+      for(GameObject obj : objects) {
+        obj.update(dTime);
+      }
+    }
+
+    // fixed TICK OBJECTS
     for(GameObject obj : objects) {
-      obj.update(dTime);
+      obj.fixedUpdate(dTime);
     }
 
     mouseUpdate();
@@ -114,9 +129,19 @@ public abstract class SceneGraph implements IScene {
     }
   }
 
+  private boolean paused = false;
+
+  public boolean isPaused() {
+    return paused;
+  }
+
   @Override
   public void enable() {
     this.construct();
+
+    for(GameObject obj : objects) {
+      addObjectToCache(obj);
+    }
 
     for(GameObject obj : objects) {
       obj.link(this);
@@ -144,10 +169,19 @@ public abstract class SceneGraph implements IScene {
     objects.clear();
   }
 
+  private Set<IPauser> pausers = new HashSet<IPauser>();
+
   public void add(GameObject obj) {
     newObjects.add(obj);
     obj.link(this);
     obj.addedToScene();
+    addObjectToCache(obj);
+  }
+
+  private void addObjectToCache(GameObject obj) {
+    if(obj instanceof IPauser) {
+      pausers.add((IPauser) obj);
+    }
   }
 
   public void remove(GameObject obj) {

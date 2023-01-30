@@ -8,7 +8,6 @@ import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.graphics.Tile9;
 import xyz.valnet.engine.math.Box;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
@@ -125,12 +124,8 @@ public class Button extends GameObject implements IMouseCaptureArea, ITransient 
 
   private IButtonListener listener = null;
 
-  public void update() {
-    update(1);
-  }
-
   @Override
-  public void update(float dTime) {
+  public void fixedUpdate(float dTime) {
     box.x = x - (int)hPad;
     box.y = y - (int)vPad;
     box.z = width + ((int)hPad) * 2;

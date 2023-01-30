@@ -21,7 +21,7 @@ public abstract class Tab extends ImmediateUI implements IBottomBarItem, ITransi
   private ExclusivityManager exclusivityManager;
 
   @Override
-  public void update(float dTime) {
+  public void fixedUpdate(float dTime) {
     animation = lerp(animation, opened ? 1 : 0, dTime / Constants.animationSpeed);
   }
 

@@ -51,4 +51,10 @@ public class Vector2f implements Serializable {
   public String toString() {
     return "<" + x + ", " + y + ">";
   }
+
+  public Vector2f clamp(Box box) {
+    float x = Math.min(Math.max(this.x, box.x), box.x2);
+    float y = Math.min(Math.max(this.y, box.y), box.y2);
+    return new Vector2f(x, y);
+  }
 }

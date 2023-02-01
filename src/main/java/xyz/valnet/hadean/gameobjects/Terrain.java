@@ -1,5 +1,6 @@
 package xyz.valnet.hadean.gameobjects;
 
+import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.FastNoiseLite;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
@@ -42,6 +43,7 @@ public class Terrain extends GameObject implements IPathable, IWorldBoundsAdapte
   @Override
   protected void start() {
     camera.focus(WORLD_SIZE / 2, WORLD_SIZE / 2);
+    camera.setFocusBounds(new Box(0, 0, WORLD_SIZE, WORLD_SIZE));
   }
 
   public Tile getTile(int x, int y) {

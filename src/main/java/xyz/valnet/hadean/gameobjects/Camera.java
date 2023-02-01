@@ -31,12 +31,18 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
 
   private float minY, maxY;
 
+  private Box focusBounds = null;
+
   @Override
   public void start() {
     IWorldBoundsAdapter worldBoundsAdapter = get(IWorldBoundsAdapter.class);
     Vector4f bounds = worldBoundsAdapter.getWorldBounds();
     minY = bounds.y;
     maxY = bounds.w;
+  }
+
+  public void setFocusBounds(Box box) {
+    this.focusBounds = box;
   }
 
   public Vector2f getWorldMouse() {
@@ -66,6 +72,10 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
     } else {
       Vector2f dragDifference = screen2world(App.mouseX, App.mouseY).subtract(focus);
       focus = dragOrigin.subtract(dragDifference);
+    }
+
+    if(focusBounds != null) {
+      focus = focus.clamp(focusBounds);
     }
   }
 

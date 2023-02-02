@@ -1,4 +1,4 @@
-package xyz.valnet.hadean.gameobjects;
+package xyz.valnet.hadean.gameobjects.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package xyz.valnet.hadean.gameobjects;
+package xyz.valnet.hadean.gameobjects.terrain;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,11 +9,12 @@ import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.scenegraph.GameObject;
-import xyz.valnet.hadean.gameobjects.worldobjects.FarmPlot;
+import xyz.valnet.hadean.gameobjects.jobs.JobBoard;
 import xyz.valnet.hadean.gameobjects.worldobjects.Tree;
 import xyz.valnet.hadean.gameobjects.worldobjects.WorldObject;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Boulder;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
+import xyz.valnet.hadean.gameobjects.worldobjects.zones.FarmPlot;
 import xyz.valnet.hadean.interfaces.IItemPredicate;
 import xyz.valnet.hadean.interfaces.IPingable;
 import xyz.valnet.hadean.interfaces.ITileThing;

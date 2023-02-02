@@ -1,8 +1,8 @@
-package xyz.valnet.hadean.gameobjects.worldobjects.pawn;
+package xyz.valnet.hadean.gameobjects.worldobjects.agents.pawn;
 
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.hadean.gameobjects.Terrain;
-import xyz.valnet.hadean.gameobjects.Tile;
+import xyz.valnet.hadean.gameobjects.terrain.Terrain;
+import xyz.valnet.hadean.gameobjects.terrain.Tile;
 
 // TODO actually implement this activity.
 public class WanderActivity extends Activity {

@@ -2,12 +2,12 @@ package xyz.valnet.hadean.scenes;
 
 import xyz.valnet.engine.scenegraph.SceneGraph;
 import xyz.valnet.engine.util.Names;
-import xyz.valnet.hadean.gameobjects.BottomBar;
+import xyz.valnet.hadean.gameobjects.ui.BottomBar;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.Clock;
-import xyz.valnet.hadean.gameobjects.JobBoard;
-import xyz.valnet.hadean.gameobjects.SelectionUI;
-import xyz.valnet.hadean.gameobjects.Terrain;
+import xyz.valnet.hadean.gameobjects.jobs.JobBoard;
+import xyz.valnet.hadean.gameobjects.ui.SelectionUI;
+import xyz.valnet.hadean.gameobjects.terrain.Terrain;
 import xyz.valnet.hadean.gameobjects.inputlayer.BuildLayer;
 import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
 import xyz.valnet.hadean.gameobjects.ui.ExclusivityManager;
@@ -16,7 +16,7 @@ import xyz.valnet.hadean.gameobjects.ui.tabs.BuildTab;
 import xyz.valnet.hadean.gameobjects.ui.tabs.DebugTab;
 import xyz.valnet.hadean.gameobjects.ui.tabs.JobBoardTab;
 import xyz.valnet.hadean.gameobjects.ui.tabs.MenuTab;
-import xyz.valnet.hadean.gameobjects.worldobjects.pawn.Pawn;
+import xyz.valnet.hadean.gameobjects.worldobjects.agents.pawn.Pawn;
 
 // TODO BIG IDEAS
 // have caches of types that ill need (Like IMouseListener)

@@ -1,4 +1,4 @@
-package xyz.valnet.hadean.gameobjects.worldobjects.pawn;
+package xyz.valnet.hadean.gameobjects.worldobjects.agents.pawn;
 
 import java.io.Serializable;
 

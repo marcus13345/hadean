@@ -1,9 +1,9 @@
-package xyz.valnet.hadean.gameobjects.worldobjects.pawn;
+package xyz.valnet.hadean.gameobjects.worldobjects.agents.pawn;
 
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.hadean.gameobjects.Job;
-import xyz.valnet.hadean.gameobjects.Job.JobStep;
-import xyz.valnet.hadean.gameobjects.JobBoard;
+import xyz.valnet.hadean.gameobjects.jobs.Job;
+import xyz.valnet.hadean.gameobjects.jobs.Job.JobStep;
+import xyz.valnet.hadean.gameobjects.jobs.JobBoard;
 
 public class JobActivity extends Activity {
 

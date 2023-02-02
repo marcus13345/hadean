@@ -1,4 +1,4 @@
-package xyz.valnet.hadean.gameobjects;
+package xyz.valnet.hadean.gameobjects.jobs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +13,8 @@ import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.HadeanGame;
-import xyz.valnet.hadean.gameobjects.worldobjects.pawn.Pawn;
+import xyz.valnet.hadean.gameobjects.Camera;
+import xyz.valnet.hadean.gameobjects.worldobjects.agents.pawn.Pawn;
 import xyz.valnet.hadean.interfaces.IItemPredicate;
 import xyz.valnet.hadean.interfaces.IItemReceiver;
 import xyz.valnet.hadean.interfaces.IWorkable;

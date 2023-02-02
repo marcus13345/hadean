@@ -2,8 +2,8 @@ package xyz.valnet.hadean.gameobjects.worldobjects.constructions;
 
 import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.hadean.gameobjects.Job;
-import xyz.valnet.hadean.gameobjects.JobBoard;
+import xyz.valnet.hadean.gameobjects.jobs.Job;
+import xyz.valnet.hadean.gameobjects.jobs.JobBoard;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Boulder;
 import xyz.valnet.hadean.interfaces.BuildableMetadata;
 import xyz.valnet.hadean.interfaces.IItemPredicate;

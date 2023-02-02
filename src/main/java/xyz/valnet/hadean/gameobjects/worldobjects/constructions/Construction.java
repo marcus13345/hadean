@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.hadean.gameobjects.Job;
-import xyz.valnet.hadean.gameobjects.JobBoard;
+import xyz.valnet.hadean.gameobjects.jobs.Job;
+import xyz.valnet.hadean.gameobjects.jobs.JobBoard;
 import xyz.valnet.hadean.gameobjects.worldobjects.Buildable;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Boulder;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;

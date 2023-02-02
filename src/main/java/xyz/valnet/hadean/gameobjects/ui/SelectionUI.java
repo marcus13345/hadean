@@ -1,4 +1,4 @@
-package xyz.valnet.hadean.gameobjects;
+package xyz.valnet.hadean.gameobjects.ui;
 
 import static xyz.valnet.engine.util.Math.*;
 
@@ -13,7 +13,6 @@ import xyz.valnet.engine.graphics.ImmediateUI;
 import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.Constants;
 import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
-import xyz.valnet.hadean.gameobjects.ui.ExclusivityManager;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ISelectionChangeListener;
 import xyz.valnet.hadean.util.Action;

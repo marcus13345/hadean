@@ -1,4 +1,4 @@
-package xyz.valnet.hadean.gameobjects.worldobjects.pawn;
+package xyz.valnet.hadean.gameobjects.worldobjects.agents.pawn;
 
 import static xyz.valnet.hadean.util.detail.Detail.*;
 
@@ -12,8 +12,8 @@ import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.util.Names;
 import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.Clock;
-import xyz.valnet.hadean.gameobjects.JobBoard;
-import xyz.valnet.hadean.gameobjects.Terrain;
+import xyz.valnet.hadean.gameobjects.jobs.JobBoard;
+import xyz.valnet.hadean.gameobjects.terrain.Terrain;
 import xyz.valnet.hadean.gameobjects.worldobjects.agents.Agent;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
 import xyz.valnet.hadean.interfaces.IItemPredicate;

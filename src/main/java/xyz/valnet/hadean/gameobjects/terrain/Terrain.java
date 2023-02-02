@@ -1,10 +1,11 @@
-package xyz.valnet.hadean.gameobjects;
+package xyz.valnet.hadean.gameobjects.terrain;
 
 import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.FastNoiseLite;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
+import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.interfaces.IWorldBoundsAdapter;
 import xyz.valnet.hadean.pathfinding.IPathable;
  

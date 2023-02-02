@@ -6,7 +6,7 @@ import xyz.valnet.engine.graphics.IModalUI;
 import xyz.valnet.engine.graphics.ImmediateUI;
 import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.Constants;
-import xyz.valnet.hadean.gameobjects.BottomBar;
+import xyz.valnet.hadean.gameobjects.ui.BottomBar;
 import xyz.valnet.hadean.gameobjects.ui.ExclusivityManager;
 import xyz.valnet.hadean.interfaces.IBottomBarItem;
 import xyz.valnet.hadean.util.Layers;

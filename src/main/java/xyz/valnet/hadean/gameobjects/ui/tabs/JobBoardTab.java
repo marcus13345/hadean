@@ -1,7 +1,7 @@
 package xyz.valnet.hadean.gameobjects.ui.tabs;
 
-import xyz.valnet.hadean.gameobjects.BottomBar;
-import xyz.valnet.hadean.gameobjects.JobBoard;
+import xyz.valnet.hadean.gameobjects.ui.BottomBar;
+import xyz.valnet.hadean.gameobjects.jobs.JobBoard;
 
 public class JobBoardTab extends Tab {
   

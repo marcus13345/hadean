@@ -5,7 +5,7 @@ import java.util.List;
 
 import xyz.valnet.engine.scenegraph.IKeyboardListener;
 import xyz.valnet.hadean.HadeanGame;
-import xyz.valnet.hadean.gameobjects.BottomBar;
+import xyz.valnet.hadean.gameobjects.ui.BottomBar;
 
 public class DebugTab extends Tab implements IKeyboardListener {
 

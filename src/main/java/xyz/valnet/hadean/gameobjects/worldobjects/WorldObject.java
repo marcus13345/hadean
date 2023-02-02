@@ -8,8 +8,8 @@ import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.gameobjects.Camera;
-import xyz.valnet.hadean.gameobjects.Terrain;
-import xyz.valnet.hadean.gameobjects.Tile;
+import xyz.valnet.hadean.gameobjects.terrain.Terrain;
+import xyz.valnet.hadean.gameobjects.terrain.Tile;
 import xyz.valnet.hadean.interfaces.ITileThing;
 
 public abstract class WorldObject extends GameObject {

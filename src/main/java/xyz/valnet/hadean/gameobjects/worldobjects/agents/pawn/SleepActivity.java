@@ -1,4 +1,4 @@
-package xyz.valnet.hadean.gameobjects.worldobjects.pawn;
+package xyz.valnet.hadean.gameobjects.worldobjects.agents.pawn;
 
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.util.Math.WeightedAverage;

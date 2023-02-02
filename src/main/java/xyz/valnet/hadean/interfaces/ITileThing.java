@@ -1,6 +1,6 @@
 package xyz.valnet.hadean.interfaces;
 
-import xyz.valnet.hadean.gameobjects.Tile;
+import xyz.valnet.hadean.gameobjects.terrain.Tile;
 
 public interface ITileThing {
   public boolean isWalkable();

@@ -1,7 +1,7 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.hadean.gameobjects.Tile;
+import xyz.valnet.hadean.gameobjects.terrain.Tile;
 import xyz.valnet.hadean.interfaces.IBuildable;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.interfaces.ITileThing;

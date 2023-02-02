@@ -2,9 +2,9 @@ package xyz.valnet.hadean.gameobjects.worldobjects.items;
 
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4i;
-import xyz.valnet.hadean.gameobjects.Job;
-import xyz.valnet.hadean.gameobjects.JobBoard;
-import xyz.valnet.hadean.gameobjects.Tile;
+import xyz.valnet.hadean.gameobjects.jobs.Job;
+import xyz.valnet.hadean.gameobjects.jobs.JobBoard;
+import xyz.valnet.hadean.gameobjects.terrain.Tile;
 import xyz.valnet.hadean.gameobjects.worldobjects.WorldObject;
 import xyz.valnet.hadean.interfaces.IItemPredicate;
 import xyz.valnet.hadean.interfaces.ISelectable;

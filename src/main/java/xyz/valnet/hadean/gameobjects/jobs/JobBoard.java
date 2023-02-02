@@ -208,6 +208,7 @@ public class JobBoard extends GameObject {
     return str;
   }
 
+  @Deprecated
   public String details() {
     
     String takenJobsString = "";

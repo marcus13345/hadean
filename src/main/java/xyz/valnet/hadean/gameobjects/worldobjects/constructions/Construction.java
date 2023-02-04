@@ -3,6 +3,8 @@ package xyz.valnet.hadean.gameobjects.worldobjects.constructions;
 import java.util.ArrayList;
 import java.util.List;
 
+import xyz.valnet.engine.graphics.Color;
+import xyz.valnet.engine.graphics.Sprite;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.hadean.gameobjects.jobs.Job;
 import xyz.valnet.hadean.gameobjects.jobs.JobBoard;
@@ -12,6 +14,8 @@ import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
 import xyz.valnet.hadean.interfaces.IItemPredicate;
 import xyz.valnet.hadean.interfaces.IItemReceiver;
 import xyz.valnet.hadean.interfaces.IWorkable;
+import xyz.valnet.hadean.util.Assets;
+import xyz.valnet.hadean.util.Layers;
 
 public abstract class Construction extends Buildable implements IItemReceiver {
 
@@ -120,4 +124,23 @@ public abstract class Construction extends Buildable implements IItemReceiver {
   public Vector2i[] getItemDropoffLocations() {
     return getWorldBox().toXYWH().asInt().getBorders();
   }
+
+
+  @Override
+  public void render() {
+    Sprite sprite = getDefaultSprite();
+    if(isBuilt()) {
+      camera.draw(Layers.TILES, sprite, getWorldPosition());
+    } else {
+      float b = 4;
+
+      Assets.flat.pushColor(Color.grey(b).withAlpha(0.5f));
+      camera.draw(Layers.GROUND, Assets.quarry, getWorldPosition());
+      Assets.flat.popColor();
+
+      camera.drawProgressBar(getBuildProgress(), getWorldBox());
+    }
+  }
+
+  protected abstract Sprite getDefaultSprite();
 }

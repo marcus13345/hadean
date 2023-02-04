@@ -1,6 +1,7 @@
 package xyz.valnet.hadean.gameobjects.worldobjects.constructions;
 
 import xyz.valnet.engine.graphics.Color;
+import xyz.valnet.engine.graphics.Sprite;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.hadean.gameobjects.jobs.Job;
 import xyz.valnet.hadean.gameobjects.jobs.JobBoard;
@@ -15,26 +16,6 @@ import xyz.valnet.hadean.util.Layers;
 public class Quarry extends Construction {
 
   private Job digJob = null;
-
-  @Override
-  public void render() {
-    if(isBuilt()) {
-      camera.draw(Layers.TILES, Assets.quarry, getWorldPosition());
-
-      if(digJob != null && !digJob.isCompleted()) {
-        camera.drawProgressBar(digProgress, getWorldBox());
-      }
-
-    } else {
-      float b = 4;
-
-      Assets.flat.pushColor(Color.grey(b).withAlpha(0.5f));
-      camera.draw(Layers.GROUND, Assets.quarry, getWorldPosition());
-      Assets.flat.popColor();
-
-      camera.drawProgressBar(getBuildProgress(), getWorldBox());
-    }
-  }
 
   @Override
   public Vector2i getDimensions() {
@@ -117,5 +98,20 @@ public class Quarry extends Construction {
   @Override
   protected int getBuildingMaterialCount() {
     return 0;
+  }
+
+  @Override
+  protected final Sprite getDefaultSprite() {
+    return Assets.quarry;
+  }
+
+  @Override
+  public void render() {
+    super.render();
+    if(!isBuilt()) return;
+
+    if(digJob != null && !digJob.isCompleted() && digProgress > 0) {
+      camera.drawProgressBar(digProgress, getWorldBox());
+    }
   }
 }

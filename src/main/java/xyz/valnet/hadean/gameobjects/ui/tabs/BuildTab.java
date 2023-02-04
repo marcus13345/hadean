@@ -178,7 +178,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
       if(building instanceof GameObject) {
         add((GameObject) building);
       }
-      building.buildAt(x1, y1);
+      building.buildAt(x1, y1, 1, 1);
     } catch (Exception e) {
       DebugTab.log(e);
     }

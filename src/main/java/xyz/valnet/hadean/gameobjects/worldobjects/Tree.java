@@ -18,9 +18,6 @@ import xyz.valnet.hadean.util.detail.PercentDetail;
 
 public class Tree extends WorldObject implements ITileThing, ISelectable, IWorkable {
 
-  private static int counter = 0;
-  private String name = "Tree " + (++ counter);
-
   private Job chopJob = null;
 
   public Tree(int x, int y) {

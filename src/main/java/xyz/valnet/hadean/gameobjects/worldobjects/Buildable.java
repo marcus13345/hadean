@@ -20,12 +20,6 @@ public abstract class Buildable extends WorldObject implements IBuildable, ITile
   }
 
   @Override
-  public void buildAt(int x, int y) {
-    Vector2i dim = getDimensions();
-    setPosition(x, y, dim.x, dim.y);
-  }
-
-  @Override
   public void onPlaced(Tile tile) {}
 
   @Override

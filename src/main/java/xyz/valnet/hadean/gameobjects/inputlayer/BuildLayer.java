@@ -9,7 +9,7 @@ import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
 import xyz.valnet.engine.scenegraph.ITransient;
 import xyz.valnet.hadean.gameobjects.Camera;
-import xyz.valnet.hadean.interfaces.BuildableMetadata;
+import xyz.valnet.hadean.interfaces.BuildType;
 import xyz.valnet.hadean.interfaces.IBuildLayerListener;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
@@ -24,9 +24,9 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
 
   private IBuildLayerListener listener = null;
 
-  private BuildableMetadata.Type type = BuildableMetadata.Type.AREA;
+  private BuildType type = BuildType.AREA;
 
-  public void setBuildType(BuildableMetadata.Type type) {
+  public void setBuildType(BuildType type) {
     this.type = type;
   }
 
@@ -38,7 +38,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
   @Override
   public void update(float dTime) {
     if(listener == null) return;
-    if(type == BuildableMetadata.Type.SINGLE && mouseDown) return;
+    if(type == BuildType.SINGLE && mouseDown) return;
     
     broadcastWorldCoords();
   }
@@ -96,7 +96,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
       mouseDown = true;
       x = worldcoords.x;
       y = worldcoords.y;
-      if(type == BuildableMetadata.Type.SINGLE) {
+      if(type == BuildType.SINGLE) {
         listener.build(x, y);
       }
     }
@@ -106,7 +106,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
   public void mouseUp(int button) {
     if(button == 0 && active && mouseDown) {
       mouseDown = false;
-      if(type == BuildableMetadata.Type.AREA) {
+      if(type == BuildType.AREA) {
         Vector2i worldcoords = camera.screen2world(App.mouseX, App.mouseY).asInt();
         int x1 = x;
         int y1 = y;

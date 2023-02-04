@@ -6,16 +6,13 @@ import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.hadean.gameobjects.terrain.Tile;
-import xyz.valnet.hadean.gameobjects.worldobjects.Buildable;
-import xyz.valnet.hadean.interfaces.BuildableMetadata;
 import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.detail.Detail;
 
-@BuildableMetadata(category = "Zones", name = "Stockpile")
-public class Stockpile extends Buildable {
+public class Stockpile extends Zone {
 
   @Override
   public void render() {

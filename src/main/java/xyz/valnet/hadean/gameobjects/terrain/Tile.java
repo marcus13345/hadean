@@ -124,7 +124,7 @@ public class Tile extends WorldObject implements IWorkable {
     pingNeighbors();
 
     if(thing instanceof FarmPlot) {
-      get(JobBoard.class).postSimpleWorkJob("Till Soil", this);
+      get(JobBoard.class).postSimpleWorkJob(this);
     }
   }
 

@@ -43,4 +43,9 @@ public abstract class Buildable extends WorldObject implements IBuildable, ITile
   public Detail[] getDetails() {
     return new Detail[] {};
   }
+
+  @Override
+  public String getBuildTabName() {
+    return getName();
+  }
 }

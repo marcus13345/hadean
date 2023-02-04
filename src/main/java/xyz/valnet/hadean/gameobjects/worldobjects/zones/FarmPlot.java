@@ -3,15 +3,12 @@ package xyz.valnet.hadean.gameobjects.worldobjects.zones;
 import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.hadean.gameobjects.terrain.Tile;
-import xyz.valnet.hadean.gameobjects.worldobjects.Buildable;
-import xyz.valnet.hadean.interfaces.BuildableMetadata;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 import xyz.valnet.hadean.util.detail.Detail;
 
-@BuildableMetadata(category = "Zones", name = "Farm Plot")
-public class FarmPlot extends Buildable {
+public class FarmPlot extends Zone {
 
   @Override
   public void renderAlpha() {

@@ -21,7 +21,7 @@ import xyz.valnet.hadean.gameobjects.worldobjects.zones.Stockpile;
 import xyz.valnet.hadean.gameobjects.worldobjects.constructions.Bed;
 import xyz.valnet.hadean.gameobjects.worldobjects.constructions.Quarry;
 import xyz.valnet.hadean.gameobjects.worldobjects.constructions.Wall;
-import xyz.valnet.hadean.interfaces.BuildableMetadata;
+import xyz.valnet.hadean.interfaces.BuildType;
 import xyz.valnet.hadean.interfaces.IBuildLayerListener;
 import xyz.valnet.hadean.interfaces.IBuildable;
 import xyz.valnet.hadean.interfaces.ISelectable;
@@ -60,16 +60,16 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
   public record BuildableRecord(
     String name,
     Constructor<? extends IBuildable> constructor,
-    BuildableMetadata.Type type
+    BuildType type
   ) {}
 
   public static void registerBuildable(Class<? extends IBuildable> clazz) {
     try {
-      BuildableMetadata annotation = clazz.getAnnotation(BuildableMetadata.class);
-      if(annotation == null) {
-        DebugTab.log(clazz + " has no buildable data annotation");
-        return;
-      }
+      // BuildableMetadata annotation = clazz.getAnnotation(BuildableMetadata.class);
+      // if(annotation == null) {
+        // DebugTab.log(clazz + " has no buildable data annotation");
+        // return;
+      // }
 
       Constructor<? extends IBuildable> constructor = (Constructor<? extends IBuildable>) clazz.getConstructor();
       if(constructor.getParameterCount() != 0) {
@@ -77,9 +77,11 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
         return;
       }
 
-      String category = annotation.category();
-      String name = annotation.name();
-      BuildableMetadata.Type type = annotation.type();
+      IBuildable buildable = constructor.newInstance();
+
+      String category = buildable.getBuildTabCategory();
+      String name = buildable.getBuildTabName();
+      BuildType type = buildable.getBuildType();
 
       DebugTab.log("Added " + category + " / " + name);
 

@@ -28,8 +28,8 @@ public class JobBoard extends GameObject {
   private List<Job> toRemove = new ArrayList<Job>();
   private Map<Pawn, Job> allocations = new HashMap<Pawn, Job>();
 
-  public Job postSimpleWorkJob(String name, IWorkable subject) {
-    Job job = add(new Job(name));
+  public Job postSimpleWorkJob(IWorkable subject) {
+    Job job = add(new Job(subject.getJobName()));
     job.addStep(job.new Work(subject));
     postJob(job);
     return job;
@@ -236,5 +236,4 @@ public class JobBoard extends GameObject {
            "Taken Jobs: " + allocations.size() + "\n" + takenJobsString +
            "Impossible Jobs: " + impossibleJobs + "\n" + impossibleJobsString;
   }
-
 }

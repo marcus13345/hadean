@@ -11,9 +11,11 @@ import xyz.valnet.hadean.gameobjects.jobs.JobBoard;
 import xyz.valnet.hadean.gameobjects.worldobjects.Buildable;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Boulder;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
+import xyz.valnet.hadean.interfaces.BuildType;
 import xyz.valnet.hadean.interfaces.IItemPredicate;
 import xyz.valnet.hadean.interfaces.IItemReceiver;
 import xyz.valnet.hadean.interfaces.IWorkable;
+import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 
@@ -47,7 +49,6 @@ public abstract class Construction extends Buildable implements IItemReceiver {
     }
     if(!isBuilt()) {
       Job job = get(JobBoard.class).postSimpleWorkJob(
-        "Build " + getName(),
         new IWorkable() {
           @Override
           public boolean doWork(float dTime) {
@@ -77,7 +78,7 @@ public abstract class Construction extends Buildable implements IItemReceiver {
     return 1000;
   }
 
-  public boolean isBuilt() {
+  public final boolean isBuilt() {
     return work >= getMaxWork();
   }
 
@@ -112,7 +113,7 @@ public abstract class Construction extends Buildable implements IItemReceiver {
   }
 
   @Override
-  public boolean receive(Item item) {
+  public final boolean receive(Item item) {
     if(item == null) return false;
     if(!item.matches(Boulder.BOULDER_PREDICATE)) return false;
     remove(item);
@@ -125,7 +126,6 @@ public abstract class Construction extends Buildable implements IItemReceiver {
     return getWorldBox().toXYWH().asInt().getBorders();
   }
 
-
   @Override
   public void render() {
     Sprite sprite = getDefaultSprite();
@@ -135,12 +135,35 @@ public abstract class Construction extends Buildable implements IItemReceiver {
       float b = 4;
 
       Assets.flat.pushColor(Color.grey(b).withAlpha(0.5f));
-      camera.draw(Layers.GROUND, Assets.quarry, getWorldPosition());
+      camera.draw(Layers.GROUND, getDefaultSprite(), getWorldPosition());
       Assets.flat.popColor();
 
-      camera.drawProgressBar(getBuildProgress(), getWorldBox());
+      if(getBuildProgress() > 0) {
+        camera.drawProgressBar(getBuildProgress(), getWorldBox());
+      }
     }
   }
 
   protected abstract Sprite getDefaultSprite();
+
+  @Override
+  public BuildType getBuildType() {
+    return BuildType.SINGLE;
+  }
+  @Override
+  public String getBuildTabCategory() {
+    return "Buildings";
+  }
+  @Override
+  public String getBuildTabName() {
+    return getName();
+  }
+
+  @Override
+  public Action[] getActions() {
+    return new Action[0];
+  }
+
+  @Override
+  public void runAction(Action action) {}
 }

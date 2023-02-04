@@ -59,7 +59,7 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
   public void runAction(Action action) {
     if(action == ACTION_CHOP) {
       if(chopJob == null) {
-        chopJob = get(JobBoard.class).postSimpleWorkJob("Chop Tree", this);
+        chopJob = get(JobBoard.class).postSimpleWorkJob(this);
       } else {
         chopJob.close();
         chopJob = null;
@@ -125,7 +125,7 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
 
   @Override
   public String getJobName() {
-    return "Chop " + name;
+    return "Chop Tree";
   }
 
   @Override

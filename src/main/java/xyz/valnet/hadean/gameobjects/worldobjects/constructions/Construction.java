@@ -26,9 +26,6 @@ public abstract class Construction extends Buildable implements IItemReceiver {
 
   protected abstract IItemPredicate getBuildingMaterial();
   protected abstract int getBuildingMaterialCount();
-  protected Vector2i getDimensions() {
-    return new Vector2i(1, 1);
-  }
 
   private final boolean isBuildingMaterialSatisfied() {
     return containedItems.size() >= getBuildingMaterialCount();
@@ -147,7 +144,7 @@ public abstract class Construction extends Buildable implements IItemReceiver {
 
   @Override
   public BuildType getBuildType() {
-    return BuildType.AREA;
+    return BuildType.SINGLE;
   }
   @Override
   public String getBuildTabCategory() {

@@ -64,7 +64,11 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
       listener.update(ords[0].x, ords[0].y, ords[2].x + 1, ords[2].y + 1);
       return;
     }
-    listener.update(worldcoords.x, worldcoords.y, 1, 1);
+    if(type == BuildType.SINGLE && dimensions != null) {
+      listener.update(worldcoords.x, worldcoords.y, dimensions.x, dimensions.y);
+    } else {
+      listener.update(worldcoords.x, worldcoords.y, 1, 1);
+    }
   }
 
   public void deactiveate() {
@@ -85,6 +89,12 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
   private int x, y;
   private boolean mouseDown = false;
 
+  private Vector2i dimensions = new Vector2i(1, 1);
+
+  public void setDimensions(Vector2i dimensions) {
+    this.dimensions = dimensions;
+  }
+
   @Override
   public void mouseDown(int button) {
     if(button == 1 && active && hovered) {
@@ -97,7 +107,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
       x = worldcoords.x;
       y = worldcoords.y;
       if(type == BuildType.SINGLE) {
-        listener.build(x, y);
+        listener.build(x, y, x + dimensions.x - 1, y + dimensions.y - 1);
       }
     }
   }
@@ -121,6 +131,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
     }
   }
 
+  @Deprecated(since = "What is this abomination", forRemoval = true)
   private Vector2i[] orderCoords(Vector2i a, Vector2i b) {
     return new Vector2i[] {
       new Vector2i(Math.min(a.x, b.x), Math.min(a.y, b.y)),

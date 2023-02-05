@@ -62,7 +62,8 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
   public record BuildableRecord(
     String name,
     Constructor<? extends IBuildable> constructor,
-    BuildType type
+    BuildType type,
+    Vector2i dimensions
   ) {}
 
   public static void registerBuildable(Class<? extends IBuildable> clazz) {
@@ -84,12 +85,13 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
       String category = buildable.getBuildTabCategory();
       String name = buildable.getBuildTabName();
       BuildType type = buildable.getBuildType();
+      Vector2i dim = buildable.getDimensions();
 
       DebugTab.log("Added " + category + " / " + name);
 
       if(!buildables.containsKey(category))
         buildables.put(category, new ArrayList<BuildableRecord>());
-      buildables.get(category).add(new BuildableRecord(name, constructor, type));
+      buildables.get(category).add(new BuildableRecord(name, constructor, type, dim));
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -148,6 +150,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
     selectedBuildable = buildableRecord;
     buildLayer.activate(this);
     buildLayer.setBuildType(selectedBuildable.type);
+    buildLayer.setDimensions(selectedBuildable.dimensions);
   }
 
   @Override
@@ -167,20 +170,6 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
         add((GameObject) building);
       }
       building.buildAt(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
-    } catch (Exception e) {
-      DebugTab.log(e);
-    }
-  }
-
-  @Override
-  public void build(int x1, int y1) {
-    if(selectedBuildable == null) return;
-    try {
-      IBuildable building = selectedBuildable.constructor.newInstance();
-      if(building instanceof GameObject) {
-        add((GameObject) building);
-      }
-      building.buildAt(x1, y1, 1, 1);
     } catch (Exception e) {
       DebugTab.log(e);
     }

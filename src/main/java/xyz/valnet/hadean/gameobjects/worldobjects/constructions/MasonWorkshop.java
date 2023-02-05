@@ -34,7 +34,7 @@ public class MasonWorkshop extends Construction {
   }
 
   @Override
-  protected Vector2i getDimensions() {
+  public Vector2i getDimensions() {
     return new Vector2i(3, 3);
   }
   

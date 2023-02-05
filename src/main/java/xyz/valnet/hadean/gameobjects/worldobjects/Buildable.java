@@ -10,10 +10,6 @@ import xyz.valnet.hadean.util.detail.Detail;
 
 public abstract class Buildable extends WorldObject implements IBuildable, ITileThing, ISelectable {
 
-  protected Vector2i getDimensions() {
-    return new Vector2i(1, 1);
-  }
-
   @Override
   public void buildAt(int x, int y, int w, int h) {
     setPosition(x, y, w, h);

@@ -9,7 +9,7 @@ import xyz.valnet.hadean.util.Assets;
 public class Bed extends Construction {
 
   @Override
-  protected Vector2i getDimensions() {
+  public Vector2i getDimensions() {
     return new Vector2i(1, 2);
   }
 

@@ -14,6 +14,7 @@ import xyz.valnet.hadean.gameobjects.worldobjects.Tree;
 import xyz.valnet.hadean.gameobjects.worldobjects.WorldObject;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Boulder;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
+import xyz.valnet.hadean.gameobjects.worldobjects.items.Log;
 import xyz.valnet.hadean.gameobjects.worldobjects.zones.FarmPlot;
 import xyz.valnet.hadean.interfaces.IItemPredicate;
 import xyz.valnet.hadean.interfaces.IPingable;
@@ -69,7 +70,7 @@ public class Tile extends WorldObject implements IWorkable {
       add(new Tree(pos.x, pos.y));
     } else if(Math.random() > 0.98) {
       rocks = false;
-      add(new Boulder(pos.x, pos.y));
+      add(new Log(pos.x, pos.y));
     }
   }
 

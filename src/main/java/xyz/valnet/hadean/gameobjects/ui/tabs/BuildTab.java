@@ -19,6 +19,7 @@ import xyz.valnet.hadean.gameobjects.inputlayer.SelectionLayer;
 import xyz.valnet.hadean.gameobjects.worldobjects.zones.FarmPlot;
 import xyz.valnet.hadean.gameobjects.worldobjects.zones.Stockpile;
 import xyz.valnet.hadean.gameobjects.worldobjects.constructions.Bed;
+import xyz.valnet.hadean.gameobjects.worldobjects.constructions.MasonWorkshop;
 import xyz.valnet.hadean.gameobjects.worldobjects.constructions.Quarry;
 import xyz.valnet.hadean.gameobjects.worldobjects.constructions.Wall;
 import xyz.valnet.hadean.interfaces.BuildType;
@@ -55,6 +56,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
     
     BuildTab.registerBuildable(FarmPlot.class);
     BuildTab.registerBuildable(Stockpile.class);
+    BuildTab.registerBuildable(MasonWorkshop.class);
   }
 
   public record BuildableRecord(

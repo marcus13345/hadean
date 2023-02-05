@@ -132,7 +132,7 @@ public class SelectionUI extends ImmediateUI implements ISelectionChangeListener
             if(details.length == 0) {
               text("No details available.");
             } else for(Detail detail : details) {
-              text(detail.toString(15));
+              text(detail.toString(30));
             }
           });
         } else {

@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import xyz.valnet.engine.App;
 import xyz.valnet.engine.math.Box;
+import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.ui.tabs.DebugTab;
 
 public abstract class SceneGraph implements IScene {
@@ -49,6 +50,7 @@ public abstract class SceneGraph implements IScene {
 
   @Override
   public void update(float dTime) {
+    dTime = 1;
     // ADD OBJECTS
     if(!newObjects.isEmpty()) {
       List<GameObject> added = new ArrayList<GameObject>();

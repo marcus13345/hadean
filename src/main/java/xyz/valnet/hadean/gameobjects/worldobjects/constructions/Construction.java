@@ -9,7 +9,6 @@ import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.hadean.gameobjects.jobs.Job;
 import xyz.valnet.hadean.gameobjects.jobs.JobBoard;
 import xyz.valnet.hadean.gameobjects.worldobjects.Buildable;
-import xyz.valnet.hadean.gameobjects.worldobjects.items.Boulder;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
 import xyz.valnet.hadean.interfaces.BuildType;
 import xyz.valnet.hadean.interfaces.IItemPredicate;
@@ -55,7 +54,7 @@ public abstract class Construction extends Buildable implements IItemReceiver {
             work += dTime;
             return isBuilt();
           }
-    
+
           @Override
           public Vector2i[] getWorkablePositions() {
             return getWorldBox().toXYWH().asInt().getBorders();
@@ -115,9 +114,9 @@ public abstract class Construction extends Buildable implements IItemReceiver {
   @Override
   public final boolean receive(Item item) {
     if(item == null) return false;
-    if(!item.matches(Boulder.BOULDER_PREDICATE)) return false;
+    if(!item.matches(getBuildingMaterial())) return false;
     remove(item);
-    // boulders ++;
+    containedItems.add(item);
     return true;
   }
 
@@ -148,7 +147,7 @@ public abstract class Construction extends Buildable implements IItemReceiver {
 
   @Override
   public BuildType getBuildType() {
-    return BuildType.SINGLE;
+    return BuildType.AREA;
   }
   @Override
   public String getBuildTabCategory() {

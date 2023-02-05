@@ -24,7 +24,6 @@ public abstract class Buildable extends WorldObject implements IBuildable, ITile
 
   @Override
   public Action[] getActions() {
-    // TODO Auto-generated method stub
     return new Action[] {};
   }
 

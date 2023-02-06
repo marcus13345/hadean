@@ -23,7 +23,7 @@ public class Vector2f implements Serializable {
 	}
 
   public Vector2i asInt() {
-    return new Vector2i((int)x, (int)y);
+    return new Vector2i((int)Math.floor(x), (int)Math.floor(y));
   }
 
   public boolean equals(Vector2f v) {

@@ -1,9 +1,11 @@
 package xyz.valnet.hadean.interfaces;
 
+import xyz.valnet.engine.math.Box;
+
 public interface IBuildLayerListener {
-  @Deprecated
-  public void update(int x, int y, int w, int h);
-  @Deprecated
-  public void build(int x, int y, int w, int h);
+  
+  public void update(Box box);
+  public void build(Box box);
+
   public void cancel();
 }

@@ -41,11 +41,11 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
     maxY = bounds.w;
   }
 
-  public void setFocusBounds(Box box) {
+  public final void setFocusBounds(Box box) {
     this.focusBounds = box;
   }
 
-  public Vector2f getWorldMouse() {
+  public final Vector2f getWorldMouse() {
     return screen2world(App.mouseX, App.mouseY);
   }
 
@@ -84,24 +84,28 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
     this.focus.y = y;
   }
 
-  public Vector2i world2screen(float x, float y) {
+  public final Box world2screen(Box box) {
+    return Box.fromPoints(world2screen(box.a), world2screen(box.b));
+  }
+
+  public final Vector2i world2screen(float x, float y) {
     return new Vector2i((int)(x * tileWidth + screenWidth / 2 - focus.x * tileWidth), (int)(y * tileWidth + screenHeight / 2 - focus.y * tileWidth));
   }
 
-  public Vector2i world2screen(Vector2f pos) {
+  public final Vector2i world2screen(Vector2f pos) {
     return world2screen(pos.x, pos.y);
   }
 
-  public Vector2f screen2world(float x, float y) {
+  public final Vector2f screen2world(float x, float y) {
     return new Vector2f((x - screenWidth / 2 + focus.x * tileWidth) / tileWidth, (y - screenHeight / 2 + focus.y * tileWidth) / tileWidth);
   }
 
-  public Vector2f screen2world(Vector2f pos) {
+  public final Vector2f screen2world(Vector2f pos) {
     return screen2world(pos.x, pos.y);
   }
 
   // !! this takes an AABB and returns and AABB
-  public Vector4f world2screen(Vector4f input) {
+  public final Vector4f world2screen(Vector4f input) {
     return new Vector4f(
       input.x * tileWidth + screenWidth / 2 - focus.x * tileWidth,
       input.y * tileWidth + screenHeight / 2 - focus.y * tileWidth,
@@ -111,53 +115,53 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
   }
 
   @Deprecated
-  public void draw(Sprite sprite, float x, float y) {
+  public final void draw(Sprite sprite, float x, float y) {
     Vector2i screenPos = world2screen(x, y);
     Drawing.drawSprite(sprite, (screenPos.x), (screenPos.y), tileWidth, tileWidth);
   }
 
   @Deprecated
-  public void draw(Sprite sprite, float x, float y, float w, float h) {
+  public final void draw(Sprite sprite, float x, float y, float w, float h) {
     Vector2i screenPos = world2screen(x, y);
     Drawing.drawSprite(sprite, (screenPos.x), (screenPos.y), (int)(tileWidth * w), (int)(tileWidth * h));
   }
 
-  public void draw(float layer, Sprite sprite, float x, float y) {
+  public final void draw(float layer, Sprite sprite, float x, float y) {
     draw(layer, sprite, x, y, 1, 1);
   }
 
-  public void draw(float layer, Sprite sprite, Vector2f pos) {
+  public final void draw(float layer, Sprite sprite, Vector2f pos) {
     draw(layer, sprite, pos.x, pos.y, 1, 1);
   }
 
-  public void draw(float layer, Sprite sprite, Vector4i pos) {
+  public final void draw(float layer, Sprite sprite, Vector4i pos) {
     draw(layer, sprite, pos.x, pos.y, pos.z, pos.w);
   }
 
-  public void draw(float layer, Sprite sprite, float x, float y, float w, float h) {
+  public final void draw(float layer, Sprite sprite, float x, float y, float w, float h) {
     Vector2i screenPos = world2screen(x, y);
     Drawing.setLayer(layer + (((y + h) - minY) / (maxY - minY)));
     Drawing.drawSprite(sprite, (int)(screenPos.x), (int)(screenPos.y), (int)(tileWidth * w), (int)(tileWidth * h));
   }
 
-  public void draw(float layer, Tile9 sprite, Box box) {
+  public final void draw(float layer, Tile9 sprite, Box box) {
     draw(layer, sprite, box.x, box.y, box.w, box.h);
   }
 
-  public void draw(float layer, Tile9 sprite, float x, float y, float w, float h) {
+  public final void draw(float layer, Tile9 sprite, float x, float y, float w, float h) {
     Vector2i screenPos = world2screen(x, y);
     Drawing.setLayer(layer + (((y + h) - minY) / (maxY - minY)));
     sprite.draw((int)(screenPos.x), (int)(screenPos.y), (int)(tileWidth * w), (int)(tileWidth * h));
   }
 
-  public void drawProgressBar(float progress, Vector4f worldBox) {
+  public final void drawProgressBar(float progress, Box worldBox) {
     int h = 6;
-    Vector4i box = world2screen(worldBox).toXYWH().asInt();
+    Box box = world2screen(worldBox);
     Drawing.setLayer(Layers.GENERAL_UI);
     Assets.flat.pushColor(Color.black);
-    Assets.uiFrame.draw(box.x - h, box.y + box.w / 2 - h / 2, box.z + h * 2, h);
+    Assets.uiFrame.draw((int)(box.x - h), (int)(box.y + box.h / 2 - h / 2), (int)(box.w + h * 2), h);
     Assets.flat.swapColor(Color.yellow);
-    Assets.fillColor.draw(box.x + 1 - h, box.y + 1 + box.w / 2 - h / 2, (int)Math.round(lerp(0, box.z - 3 + h * 2, progress)) + 1, h - 2);
+    Assets.fillColor.draw((int)(box.x + 1 - h), (int)(box.y + 1 + box.h / 2 - h / 2), (int)Math.round(lerp(0, box.w - 3 + h * 2, progress)) + 1, h - 2);
     Assets.flat.popColor();
   }
 

@@ -21,7 +21,7 @@ public abstract class Game {
     if(this.scene != null) {
       this.scene.disable();
     }
-    scene.enable();
+    scene.enable(this);
     this.scene = scene;
   }
   
@@ -49,6 +49,14 @@ public abstract class Game {
       framesSinceKeyframe = 0;
       lastKeyframe += 1_000_000_000;
     }
+  }
+
+  public final float getAverageFPS() {
+    return averageFPS;
+  }
+
+  public final int getMeasuredFPS() {
+    return measuredFPS;
   }
 
   public abstract void updateViewMatrix(Matrix4f matrix);

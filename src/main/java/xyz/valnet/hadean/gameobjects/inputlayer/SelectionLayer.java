@@ -80,11 +80,8 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
     float p = lerp(animationAmplitude, 0, t);
 
     for(ISelectable thing : selected) {
-      Vector4f box = thing.getWorldBox();
-      Vector2i min = camera.world2screen(box.x - p, box.y - p);
-      Vector2i max = camera.world2screen(box.z + p, box.w + p);
-      Drawing.setLayer(Layers.SELECTION_IDENTIFIERS);
-      Assets.selectedFrame.draw((int)min.x, (int)min.y, (int)(max.x - min.x), (int)(max.y - min.y));
+      Box box = thing.getWorldBox().outset(p);
+      camera.draw(Layers.SELECTION_IDENTIFIERS, Assets.selectedFrame, box);
       thing.selectedRender();
     }
 
@@ -96,37 +93,17 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
     }
   }
 
-  // this will take any x1, y1, x2, y2 vector and make x1 < x2 and y1 < y2;
-  private Vector4f sortVector(Vector4f vector) {
-    return new Vector4f(
-      Math.min(vector.x, vector.z),
-      Math.min(vector.y, vector.w),
-      Math.max(vector.x, vector.z),
-      Math.max(vector.y, vector.w)
-    );
-  }
-
   private List<ISelectable> selected = new ArrayList<ISelectable>();
 
-  private void makeSelection(Vector4f a) {
+  private void makeSelection(Box selectionBox) {
     List<ISelectable> newSelection = new ArrayList<ISelectable>();
-
-    Vector4f normalizedSelectionBoxScreen = sortVector(a);
-    Vector2f selectionBoxWorldMin = new Vector2f(normalizedSelectionBoxScreen.x, normalizedSelectionBoxScreen.y);
-    Vector2f selectionBoxWorldMax = new Vector2f(normalizedSelectionBoxScreen.z, normalizedSelectionBoxScreen.w);
-
     List<ISelectable> selectables = getAll(ISelectable.class);
 
     int prio = Integer.MIN_VALUE;
 
     for(ISelectable thing : selectables) {
-      Vector4f thingBox = thing.getWorldBox();
-      if(rectanglesIntersect(
-        selectionBoxWorldMin.x, selectionBoxWorldMin.y,
-        selectionBoxWorldMax.x, selectionBoxWorldMax.y,
-        thingBox.x, thingBox.y,
-        thingBox.z, thingBox.w
-      )) {
+      Box thingBox = thing.getWorldBox();
+      if(selectionBox.intersects(thingBox)) {
         int thingPrio = thing.getSelectPriority().toValue();
         if(thingPrio > prio) {
           newSelection.clear();
@@ -216,18 +193,7 @@ public class SelectionLayer extends GameObject implements IMouseCaptureArea, ITr
   @Override
   public void mouseUp(int button) {
     if(initialCoords != null && button == 0) {
-
-      Vector2f worldMouse = camera.screen2world(App.mouseX, App.mouseY);
-
-      Vector4f worldBox = new Vector4f(
-        initialCoords.x,
-        initialCoords.y,
-        worldMouse.x,
-        worldMouse.y
-      );
-
-      makeSelection(worldBox);
-
+      makeSelection(Box.fromPoints(initialCoords, camera.getWorldMouse()));
       initialCoords = null;
     }
   }

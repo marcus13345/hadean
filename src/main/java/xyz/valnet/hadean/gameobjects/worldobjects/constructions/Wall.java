@@ -55,7 +55,7 @@ public class Wall extends Construction implements IPingable {
 
   @Override
   public void ping() {
-    Vector2i pos = getWorldBox().asInt().xy();
+    Vector2i pos = getWorldBox().a.asInt();
     wallSides = EnumSet.noneOf(Direction.class);
     
     Tile north = terrain.getTile(pos.x, pos.y - 1);

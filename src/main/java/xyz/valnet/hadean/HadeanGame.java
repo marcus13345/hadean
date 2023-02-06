@@ -31,14 +31,6 @@ public class HadeanGame extends Game {
     if(!debugView) return;
   }
 
-  public float getAverageFPS() {
-    return averageFPS;
-  }
-
-  public int getMeasuredFPS() {
-    return measuredFPS;
-  }
-
   // receive the updated matrix every frame for the actual window.
   @Override
   public void updateViewMatrix(Matrix4f matrix) {

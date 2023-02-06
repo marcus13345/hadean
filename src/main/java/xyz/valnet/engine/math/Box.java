@@ -85,11 +85,62 @@ public class Box implements Serializable {
     return new Box(x, y, x2 - x, y2 - y);
   }
 
+  public static Box fromPoints(Vector2f a, Vector2i b) {
+    return new Box(a.x, a.y, b.x - a.x, b.y - a.y);
+  }
+
+  public static Box fromPoints(Vector2i a, Vector2f b) {
+    return new Box(a.x, a.y, b.x - a.x, b.y - a.y);
+  }
+
   public Box copy() {
     return new Box(x, y, w, h);
   }
 
   public boolean contains(float x, float y) {
     return x >= this.x && x < this.x2 && y >= this.y && y < this.y2;
+  }
+
+  public boolean contains(Vector2f pos) {
+    return contains(pos.x, pos.y);
+  }
+
+  public boolean intersects(Box other) {
+    boolean aLeftOfB = x2 <= other.x;
+    boolean aRightOfB = x >= other.x2;
+    boolean aAboveB = y >= other.y2;
+    boolean aBelowB = y2 <= other.y;
+
+    return !( aLeftOfB || aRightOfB || aAboveB || aBelowB );
+  }
+
+  public Vector2i[] getBorders() {
+
+    // TODO this could be bad, idk man. maybe define an intbox...
+    int x = (int) Math.round(this.x);
+    int y = (int) Math.round(this.y);
+    int w = (int) Math.round(this.w);
+    int h = (int) Math.round(this.h);
+
+    int size = 2 * w + 2 * h;
+    Vector2i[] vecs = new Vector2i[size];
+
+    // top / bottom row
+    for(int i = 0; i < h; i ++) {
+      vecs[i] = new Vector2i(x + i, y - 1);
+      vecs[size - i - 1] = new Vector2i(x + i, y + h);
+    }
+
+    // middle pillars
+    for(int i = 0; i < h; i ++) {
+      vecs[w + i * 2] = new Vector2i(x - 1, y + i);
+      vecs[w + i * 2 + 1] = new Vector2i(x + h, y + i);
+    }
+
+    return vecs;
+  }
+
+  public Box outset(float f) {
+    return new Box(x - f, y - f, w + 2 * f, h + 2 * f);
   }
 }

@@ -58,16 +58,16 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
   }
 
   private void broadcastWorldCoords() {
-    Vector2i worldcoords = camera.screen2world(App.mouseX, App.mouseY).asInt();
+    Vector2i worldcoords = camera.getWorldMouse().asInt();
     if(mouseDown) {
-      Vector2i[] ords = orderCoords(new Vector2i(x, y), worldcoords);
-      listener.update(ords[0].x, ords[0].y, ords[2].x + 1, ords[2].y + 1);
+      Vector2i[] ords = orderCoords(startingPoint, worldcoords);
+      listener.update(new Box(ords[0].x, ords[0].y, ords[2].x + 1, ords[2].y + 1));
       return;
     }
     if(type == BuildType.SINGLE && dimensions != null) {
-      listener.update(worldcoords.x, worldcoords.y, dimensions.x, dimensions.y);
+      listener.update(new Box(worldcoords, dimensions));
     } else {
-      listener.update(worldcoords.x, worldcoords.y, 1, 1);
+      listener.update(new Box(worldcoords, 1, 1));
     }
   }
 
@@ -86,7 +86,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
     hovered = false;
   }
 
-  private int x, y;
+  private Vector2i startingPoint = null;
   private boolean mouseDown = false;
 
   private Vector2i dimensions = new Vector2i(1, 1);
@@ -102,12 +102,10 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
       listener.cancel();
     } else if(button == 0 && active && hovered) {
       // TODO this conversion in negative numbers definitely works wrong.
-      Vector2i worldcoords = camera.screen2world(App.mouseX, App.mouseY).asInt();
+      startingPoint = camera.getWorldMouse().asInt();
       mouseDown = true;
-      x = worldcoords.x;
-      y = worldcoords.y;
       if(type == BuildType.SINGLE) {
-        listener.build(x, y, x + dimensions.x - 1, y + dimensions.y - 1);
+        listener.build(new Box(startingPoint, dimensions));
       }
     }
   }
@@ -117,27 +115,9 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
     if(button == 0 && active && mouseDown) {
       mouseDown = false;
       if(type == BuildType.AREA) {
-        Vector2i worldcoords = camera.screen2world(App.mouseX, App.mouseY).asInt();
-        int x1 = x;
-        int y1 = y;
-        int x2 = worldcoords.x;
-        int y2 = worldcoords.y;
-        int minX = Math.min(x1, x2);
-        int minY = Math.min(y1, y2);
-        int maxX = Math.max(x1, x2);
-        int maxY = Math.max(y1, y2);
-        listener.build(minX, minY, maxX, maxY);
+        listener.build(Box.fromPoints(camera.getWorldMouse(), startingPoint));
       }
     }
-  }
-
-  @Deprecated(since = "What is this abomination", forRemoval = true)
-  private Vector2i[] orderCoords(Vector2i a, Vector2i b) {
-    return new Vector2i[] {
-      new Vector2i(Math.min(a.x, b.x), Math.min(a.y, b.y)),
-      new Vector2i(Math.max(a.x, b.x), Math.max(a.y, b.y)),
-      new Vector2i(Math.max(a.x, b.x) - Math.min(a.x, b.x), Math.max(a.y, b.y) - Math.min(a.y, b.y))
-    };
   }
 
   @Override

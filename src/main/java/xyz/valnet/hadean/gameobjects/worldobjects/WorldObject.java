@@ -3,6 +3,7 @@ package xyz.valnet.hadean.gameobjects.worldobjects;
 import java.util.HashSet;
 import java.util.Set;
 
+import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.math.Vector4i;
@@ -14,6 +15,7 @@ import xyz.valnet.hadean.interfaces.ITileThing;
 
 public abstract class WorldObject extends GameObject {
   
+  // TODO make it just a box lawl
   private int x;
   private int y;
   private int w;
@@ -93,6 +95,10 @@ public abstract class WorldObject extends GameObject {
     setPosition(x, y, 1, 1);
   }
 
+  protected void setPosition(Box box) {
+    setPosition((int) box.x, (int) box.y, (int) box.w, (int) box.h);
+  }
+
   protected void setPosition(int x, int y, int w, int h) {
     this.x = x;
     this.y = y;
@@ -124,8 +130,8 @@ public abstract class WorldObject extends GameObject {
 
   public abstract String getName();
   
-  public Vector4f getWorldBox() {
-    return new Vector4f(x, y, x + w, y + h);
+  public Box getWorldBox() {
+    return new Box(x, y, w, h);
   }
 
 }

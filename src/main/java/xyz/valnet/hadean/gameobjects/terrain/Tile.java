@@ -70,7 +70,7 @@ public class Tile extends WorldObject implements IWorkable {
       add(new Tree(pos.x, pos.y));
     } else if(Math.random() > 0.98) {
       rocks = false;
-      add(new Log(pos.x, pos.y));
+      add(new Boulder(pos.x, pos.y));
     }
   }
 

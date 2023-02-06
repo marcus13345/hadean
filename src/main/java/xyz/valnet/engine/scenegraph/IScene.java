@@ -1,5 +1,7 @@
 package xyz.valnet.engine.scenegraph;
 
+import xyz.valnet.engine.Game;
+
 public interface IScene {
     public void render();
     public void update(float dTime);
@@ -14,6 +16,6 @@ public interface IScene {
     public void keyRelease(int key);
     public void keyRepeat(int key);
 
-    public void enable();
+    public void enable(Game game);
     public void disable();
 }

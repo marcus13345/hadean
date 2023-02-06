@@ -59,4 +59,8 @@ public class Vector2i implements Serializable {
     return new Box(x, y, 1, 1);
   }
 
+  public String toString() {
+    return "<" + x + ", " + y + ">";
+  }
+
 }

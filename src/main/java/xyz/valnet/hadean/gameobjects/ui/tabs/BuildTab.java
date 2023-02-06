@@ -8,6 +8,7 @@ import java.util.Map;
 
 import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.graphics.Drawing;
+import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.designation.CutTreesDesignation;
@@ -36,8 +37,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
   private BuildLayer buildLayer;
   private Camera camera;
 
-  private int x, y;
-  private int w, h;
+  private Box renderBox = Box.none;
 
   private String selectedCategory = null;
 
@@ -105,13 +105,13 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
     if(!opened || selectedBuildable == null) return;
     // draw the currently selected build item
     Assets.flat.pushColor(Color.white);
-    Vector2i topLeft = camera.world2screen(x, y);
+    Vector2i topLeft = camera.world2screen(renderBox.a);
     Assets.font.drawString(selectedBuildable.name, topLeft.x, topLeft.y - 20);
     Assets.flat.swapColor(Color.white.withAlpha(0.6f));
-    camera.draw(Layers.BUILD_INTERACTABLE, Assets.selectionFrame, x, y, w, h);
+    camera.draw(Layers.BUILD_INTERACTABLE, Assets.selectionFrame, renderBox);
     Assets.flat.swapColor(Color.white.withAlpha(0.35f));
-    for(int i = 0; i < w; i ++) for(int j = 0; j < h; j ++) {{
-      camera.draw(Layers.BUILD_INTERACTABLE, Assets.checkerBoard, x + i, y + j);
+    for(int i = 0; i < renderBox.w; i ++) for(int j = 0; j < renderBox.h; j ++) {{
+      camera.draw(Layers.BUILD_INTERACTABLE, Assets.checkerBoard, renderBox.x + i, renderBox.y + j);
     }}
     Assets.flat.popColor();
   }
@@ -151,28 +151,6 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
     buildLayer.activate(this);
     buildLayer.setBuildType(selectedBuildable.type);
     buildLayer.setDimensions(selectedBuildable.dimensions);
-  }
-
-  @Override
-  public void update(int nx, int ny, int nw, int nh) {
-    x = nx;
-    y = ny;
-    w = nw;
-    h = nh;
-  }
-
-  @Override
-  public void build(int x1, int y1, int x2, int y2) {
-    if(selectedBuildable == null) return;
-    try {
-      IBuildable building = selectedBuildable.constructor.newInstance();
-      if(building instanceof GameObject) {
-        add((GameObject) building);
-      }
-      building.buildAt(x1, y1, x2 - x1 + 1, y2 - y1 + 1);
-    } catch (Exception e) {
-      DebugTab.log(e);
-    }
   }
 
   @Override
@@ -251,5 +229,24 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
   @Override
   protected void onOpen() {
     reset();
+  }
+
+  @Override
+  public void update(Box box) {
+    renderBox = box;
+  }
+
+  @Override
+  public void build(Box box) {
+    if(selectedBuildable == null) return;
+    try {
+      IBuildable building = selectedBuildable.constructor.newInstance();
+      if(building instanceof GameObject) {
+        add((GameObject) building);
+      }
+      building.buildAt(box);
+    } catch (Exception e) {
+      DebugTab.log(e);
+    }
   }
 }

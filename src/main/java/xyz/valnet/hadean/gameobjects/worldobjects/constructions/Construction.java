@@ -54,7 +54,7 @@ public abstract class Construction extends Buildable implements IItemReceiver {
 
           @Override
           public Vector2i[] getWorkablePositions() {
-            return getWorldBox().toXYWH().asInt().getBorders();
+            return getWorldBox().getBorders();
           }
     
           @Override
@@ -119,7 +119,7 @@ public abstract class Construction extends Buildable implements IItemReceiver {
 
   @Override
   public Vector2i[] getItemDropoffLocations() {
-    return getWorldBox().toXYWH().asInt().getBorders();
+    return getWorldBox().getBorders();
   }
 
   @Override

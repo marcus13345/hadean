@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import xyz.valnet.engine.graphics.Color;
+import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.util.Names;
 import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.Clock;
@@ -154,9 +154,9 @@ public class Pawn extends Agent {
   }
 
   @Override
-  public Vector4f getWorldBox() {
+  public Box getWorldBox() {
     Vector2f pos = getCalculatedPosition();
-    return new Vector4f(pos.x, pos.y, pos.x+1, pos.y+1);
+    return new Box(pos, 1, 1);
   }
 
   @Override

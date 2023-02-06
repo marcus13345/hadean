@@ -15,9 +15,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import xyz.valnet.engine.App;
+import xyz.valnet.engine.Game;
 import xyz.valnet.engine.math.Box;
 import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.ui.tabs.DebugTab;
+import xyz.valnet.hadean.util.Pair;
 
 public abstract class SceneGraph implements IScene {
   protected final List<GameObject> objects = new ArrayList<GameObject>();
@@ -131,13 +133,15 @@ public abstract class SceneGraph implements IScene {
   }
 
   private boolean paused = false;
+  private Game game;
 
   public boolean isPaused() {
     return paused;
   }
 
   @Override
-  public void enable() {
+  public void enable(Game game) {
+    this.game = game;
     this.construct();
 
     for(GameObject obj : objects) {
@@ -323,5 +327,9 @@ public abstract class SceneGraph implements IScene {
     for(IMouseCaptureArea iml : getAll(IMouseCaptureArea.class)) {
       iml.scrollUp();
     }
+  }
+
+  public Pair<Float, Integer> getFPS() {
+    return new Pair<Float, Integer>(game.getAverageFPS(), game.getMeasuredFPS());
   }
 }

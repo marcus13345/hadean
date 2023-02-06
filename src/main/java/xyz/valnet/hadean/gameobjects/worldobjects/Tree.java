@@ -1,5 +1,6 @@
 package xyz.valnet.hadean.gameobjects.worldobjects;
 
+import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.hadean.gameobjects.jobs.Job;
@@ -32,7 +33,7 @@ public class Tree extends WorldObject implements ITileThing, ISelectable, IWorka
     // Assets.flat.popColor();
     if(chopJob != null) {
       if(getProgress() > 0) {
-        camera.drawProgressBar(getProgress(), new Vector4f(pos.x - 1, pos.y - 2, pos.x + 2, pos.y + 1));
+        camera.drawProgressBar(getProgress(), new Box(pos.x - 1, pos.y - 2, 3, 3));
       }
       camera.draw(Layers.MARKERS, Assets.lilAxe, pos.x, pos.y);
     }

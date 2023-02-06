@@ -5,6 +5,7 @@ import java.util.List;
 
 import xyz.valnet.engine.App;
 import xyz.valnet.engine.graphics.Drawing;
+import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.scenegraph.GameObject;
@@ -42,13 +43,8 @@ public class HoverQuery extends GameObject implements ITransient {
     Vector2f position = camera.screen2world(App.mouseX, App.mouseY);
     thingStrings.clear();
     for(WorldObject obj : getAll(WorldObject.class)) {
-      Vector4f box = obj.getWorldBox();
-      if(
-        position.x >= box.x &&
-        position.x < box.z &&
-        position.y >= box.y &&
-        position.y < box.w
-      ) {
+      Box box = obj.getWorldBox();
+      if(box.contains(position)) {
         thingStrings.add(obj.getName());
         if (!HadeanGame.debugView) continue;
         

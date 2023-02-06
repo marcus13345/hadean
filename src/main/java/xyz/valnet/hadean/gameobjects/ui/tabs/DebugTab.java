@@ -44,6 +44,10 @@ public class DebugTab extends Tab implements IKeyboardListener {
       space(8);
       text(System.getProperty("java.version"));
       space(8);
+      var fps = getFPS();
+      text("FPS: " + fps.first());
+      text("MEASURED FPS: " + fps.second());
+      space(8);
 
       long allocated = runtime.totalMemory();
       long max = runtime.maxMemory();
@@ -65,6 +69,7 @@ public class DebugTab extends Tab implements IKeyboardListener {
     while(logs.size() > 10) {
       logs.remove(0);
     }
+    System.out.println(str);
   }
 
   public static void log(Object obj) {

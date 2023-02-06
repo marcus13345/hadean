@@ -3,6 +3,8 @@ package xyz.valnet.engine.scenegraph;
 import java.io.Serializable;
 import java.util.List;
 
+import xyz.valnet.hadean.util.Pair;
+
 public class GameObject implements IRenderable, ITickable, Serializable {
   private transient SceneGraph scene;
 
@@ -84,5 +86,9 @@ public class GameObject implements IRenderable, ITickable, Serializable {
 
   protected boolean isPaused() {
     return scene.isPaused();
+  }
+
+  protected Pair<Float, Integer> getFPS() {
+    return scene.getFPS();
   }
 }

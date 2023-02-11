@@ -3,6 +3,7 @@ package xyz.valnet.engine.scenegraph;
 import java.io.Serializable;
 import java.util.List;
 
+import xyz.valnet.engine.scenegraph.SceneGraph.GameObjectCallback;
 import xyz.valnet.hadean.util.Pair;
 
 public class GameObject implements IRenderable, ITickable, Serializable {
@@ -90,5 +91,13 @@ public class GameObject implements IRenderable, ITickable, Serializable {
 
   protected Pair<Float, Integer> getFPS() {
     return scene.getFPS();
+  }
+
+  protected void onAddGameObject(GameObjectCallback listener) {
+    scene.registerAddListener(listener);
+  }
+
+  protected void onRemoveGameObject(GameObjectCallback listener) {
+    scene.registerRemoveListener(listener);
   }
 }

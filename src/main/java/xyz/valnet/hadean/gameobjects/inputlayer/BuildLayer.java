@@ -60,8 +60,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
   private void broadcastWorldCoords() {
     Vector2i worldcoords = camera.getWorldMouse().asInt();
     if(mouseDown) {
-      Vector2i[] ords = orderCoords(startingPoint, worldcoords);
-      listener.update(new Box(ords[0].x, ords[0].y, ords[2].x + 1, ords[2].y + 1));
+      listener.update(Box.fromPoints(startingPoint, camera.getWorldMouse()));
       return;
     }
     if(type == BuildType.SINGLE && dimensions != null) {

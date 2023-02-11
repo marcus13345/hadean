@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -17,7 +18,6 @@ import java.util.stream.Collectors;
 import xyz.valnet.engine.App;
 import xyz.valnet.engine.Game;
 import xyz.valnet.engine.math.Box;
-import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.ui.tabs.DebugTab;
 import xyz.valnet.hadean.util.Pair;
 
@@ -30,6 +30,22 @@ public abstract class SceneGraph implements IScene {
 
   private boolean loadFlag = false;
   private boolean saveFlag = false;
+
+  @FunctionalInterface
+  public interface GameObjectCallback extends Serializable {
+    public void apply(GameObject obj);
+  }
+
+  private Set<GameObjectCallback> onAddListeners = new HashSet<>();
+  private Set<GameObjectCallback> onRemoveListeners = new HashSet<>();
+
+  public void registerAddListener(GameObjectCallback cb) {
+    onAddListeners.add(cb);
+  }
+
+  public void registerRemoveListener(GameObjectCallback cb) {
+    onRemoveListeners.add(cb);
+  }
 
   public <T> T get(Class<T> clazz) {
     for(GameObject obj : objects) {
@@ -52,7 +68,7 @@ public abstract class SceneGraph implements IScene {
 
   @Override
   public void update(float dTime) {
-    dTime = 1;
+    dTime = Math.min(dTime, 6);
     // ADD OBJECTS
     if(!newObjects.isEmpty()) {
       List<GameObject> added = new ArrayList<GameObject>();
@@ -155,6 +171,12 @@ public abstract class SceneGraph implements IScene {
     for(GameObject obj : objects) {
       obj.addedToScene();
     }
+
+    for(GameObject obj : objects) {
+      for(GameObjectCallback listener : onAddListeners) {
+        listener.apply(obj);
+      }
+    }
   }
 
   @Override
@@ -180,6 +202,9 @@ public abstract class SceneGraph implements IScene {
     newObjects.add(obj);
     obj.link(this);
     obj.addedToScene();
+    for(GameObjectCallback listener : onAddListeners) {
+      listener.apply(obj);
+    }
     addObjectToCache(obj);
   }
 
@@ -191,6 +216,9 @@ public abstract class SceneGraph implements IScene {
 
   public void remove(GameObject obj) {
     removeObjects.add(obj);
+    for(GameObjectCallback listener : onRemoveListeners) {
+      listener.apply(obj);
+    }
   }
 
   public boolean inScene(GameObject gameObject) {

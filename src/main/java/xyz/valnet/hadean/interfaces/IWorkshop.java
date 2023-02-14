@@ -1,5 +1,5 @@
 package xyz.valnet.hadean.interfaces;
 
-public interface IWorkshop {
+public interface IWorkshop extends ISelectable {
 
 }

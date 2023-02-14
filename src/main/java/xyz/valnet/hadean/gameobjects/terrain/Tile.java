@@ -14,7 +14,6 @@ import xyz.valnet.hadean.gameobjects.worldobjects.Tree;
 import xyz.valnet.hadean.gameobjects.worldobjects.WorldObject;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Boulder;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
-import xyz.valnet.hadean.gameobjects.worldobjects.items.Log;
 import xyz.valnet.hadean.gameobjects.worldobjects.zones.FarmPlot;
 import xyz.valnet.hadean.interfaces.IItemPredicate;
 import xyz.valnet.hadean.interfaces.IPingable;

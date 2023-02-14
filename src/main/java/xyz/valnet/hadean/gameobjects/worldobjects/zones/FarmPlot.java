@@ -3,6 +3,7 @@ package xyz.valnet.hadean.gameobjects.worldobjects.zones;
 import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.hadean.gameobjects.terrain.Tile;
+import xyz.valnet.hadean.interfaces.ISelectable;
 import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
@@ -15,7 +16,7 @@ public class FarmPlot extends Zone {
     if(!visible) return;
     Vector4i pos = getWorldPosition();
     Assets.flat.pushColor(new Color(0.4f, 1f, 0.3f, 0.2f));
-    camera.draw(Layers.GROUND, Assets.whiteBox, pos.x, pos.y, pos.z, pos.w);
+    camera.draw(Layers.TILES, Assets.whiteBox, pos.x, pos.y, pos.z, pos.w);
     Assets.flat.popColor();
   }
 
@@ -63,4 +64,8 @@ public class FarmPlot extends Zone {
   @Override
   public void onPlaced(Tile tile) {}
 
+  @Override
+  public ISelectable.Priority getSelectPriority() {
+    return ISelectable.Priority.LOW;
+  }
 }

@@ -143,4 +143,13 @@ public class Box implements Serializable {
   public Box outset(float f) {
     return new Box(x - f, y - f, w + 2 * f, h + 2 * f);
   }
+
+  public Box quantize() {
+    return Box.fromPoints(
+      (float) Math.floor(x),
+      (float) Math.floor(y),
+      (float) Math.ceil(x2),
+      (float) Math.ceil(y2)
+    );
+  }
 }

@@ -6,6 +6,7 @@ import xyz.valnet.hadean.gameobjects.ui.BottomBar;
 import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.Clock;
 import xyz.valnet.hadean.gameobjects.jobs.JobBoard;
+import xyz.valnet.hadean.gameobjects.jobs.WorkOrderManager;
 import xyz.valnet.hadean.gameobjects.ui.SelectionUI;
 import xyz.valnet.hadean.gameobjects.ui.WorkshopOrdersUI;
 import xyz.valnet.hadean.gameobjects.terrain.Terrain;
@@ -44,16 +45,18 @@ public class GameScene extends SceneGraph {
       objects.add(new Pawn());
     }
 
-    objects.add(new WorkshopOrdersUI());
-    objects.add(new SelectionLayer());
-    objects.add(new SelectionUI());
+    objects.add(new WorkOrderManager());
+    objects.add(new ExclusivityManager());
 
+    objects.add(new SelectionLayer());
     objects.add(new BuildLayer());
+
+    objects.add(new WorkshopOrdersUI());
+    objects.add(new SelectionUI());
 
     objects.add(new HoverQuery());
 
     objects.add(new BottomBar());
-    objects.add(new ExclusivityManager());
     objects.add(new BuildTab());
     objects.add(new JobBoardTab());
     objects.add(new DebugTab());

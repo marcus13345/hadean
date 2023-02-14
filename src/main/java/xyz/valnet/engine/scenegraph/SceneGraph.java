@@ -249,6 +249,12 @@ public abstract class SceneGraph implements IScene {
         .collect(Collectors.toList()));
   }
 
+  private ArrayList<GameObject> getTransientObjects() {
+    return new ArrayList<GameObject>(objects.stream()
+        .filter(go -> (go instanceof ITransient))
+        .collect(Collectors.toList()));
+  }
+
   private void save() {
     try {
       FileOutputStream file = new FileOutputStream("SAVE_DATA.TXT");
@@ -276,6 +282,7 @@ public abstract class SceneGraph implements IScene {
       input.close();
       file.close();
       DebugTab.log("imported " + newObjects.size() + " objects");
+      dump(newObjects);
       ArrayList<GameObject> toRemove = getNonTransientObjects();
 
       for(GameObject obj : toRemove) {
@@ -286,6 +293,12 @@ public abstract class SceneGraph implements IScene {
 
       for(GameObject obj : newObjects) obj.link(this);
       for(GameObject obj : newObjects) obj.addedToScene();
+
+      // transients that survive a scene load, should be
+      // re-connected to the new scene
+      for(GameObject obj : getTransientObjects()) {
+        obj.connect();
+      }
 
     } catch (Exception e) {
       e.printStackTrace();

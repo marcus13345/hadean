@@ -5,7 +5,6 @@ import java.util.Set;
 
 import xyz.valnet.engine.math.Box;
 import xyz.valnet.engine.math.Vector2i;
-import xyz.valnet.engine.math.Vector4f;
 import xyz.valnet.engine.math.Vector4i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.gameobjects.Camera;

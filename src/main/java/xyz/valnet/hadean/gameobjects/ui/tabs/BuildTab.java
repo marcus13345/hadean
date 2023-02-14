@@ -8,7 +8,7 @@ import java.util.Map;
 
 import xyz.valnet.engine.graphics.Color;
 import xyz.valnet.engine.graphics.Drawing;
-import xyz.valnet.engine.math.Box;
+import xyz.valnet.engine.math.TileBox;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.designation.CutTreesDesignation;
@@ -37,7 +37,7 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
   private BuildLayer buildLayer;
   private Camera camera;
 
-  private Box renderBox = Box.none;
+  private TileBox renderBox = null;
 
   private String selectedCategory = null;
 
@@ -104,15 +104,19 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
 
     if(!opened || selectedBuildable == null) return;
     // draw the currently selected build item
+    
     Assets.flat.pushColor(Color.white);
-    Vector2i topLeft = camera.world2screen(renderBox.a);
+    Vector2i topLeft = camera.world2screen(renderBox.topLeft);
     Assets.font.drawString(selectedBuildable.name, topLeft.x, topLeft.y - 20);
+    
     Assets.flat.swapColor(Color.white.withAlpha(0.6f));
     camera.draw(Layers.BUILD_INTERACTABLE, Assets.selectionFrame, renderBox);
+    
     Assets.flat.swapColor(Color.white.withAlpha(0.35f));
     for(int i = 0; i < renderBox.w; i ++) for(int j = 0; j < renderBox.h; j ++) {{
       camera.draw(Layers.BUILD_INTERACTABLE, Assets.checkerBoard, renderBox.x + i, renderBox.y + j);
     }}
+
     Assets.flat.popColor();
   }
 
@@ -232,12 +236,12 @@ public class BuildTab extends Tab implements ISelectionChangeListener, IBuildLay
   }
 
   @Override
-  public void update(Box box) {
+  public void update(TileBox box) {
     renderBox = box;
   }
 
   @Override
-  public void build(Box box) {
+  public void build(TileBox box) {
     if(selectedBuildable == null) return;
     try {
       IBuildable building = selectedBuildable.constructor.newInstance();

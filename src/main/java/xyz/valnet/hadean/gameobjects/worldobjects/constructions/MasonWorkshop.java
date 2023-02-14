@@ -46,7 +46,9 @@ public class MasonWorkshop extends Construction implements IWorkshop {
 
   @Override
   public Action[] getActions() {
-    return new Action[] { OPEN_ORDERS };
+    if(isBuilt()) {
+      return new Action[] { OPEN_ORDERS };
+    } else return new Action[0];
   }
 
   @Override
@@ -60,6 +62,16 @@ public class MasonWorkshop extends Construction implements IWorkshop {
   protected void connect() {
     super.connect();
     ordersWindow = get(WorkshopOrdersUI.class);
+  }
+
+  @Override
+  public String getBuildTabName() {
+    return "Mason";
+  }
+
+  @Override
+  public String getBuildTabCategory() {
+    return "Workshops";
   }
   
 }

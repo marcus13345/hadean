@@ -4,6 +4,7 @@ import java.util.List;
 
 import xyz.valnet.engine.App;
 import xyz.valnet.engine.math.Box;
+import xyz.valnet.engine.math.TileBox;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.engine.scenegraph.IMouseCaptureArea;
@@ -60,13 +61,13 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
   private void broadcastWorldCoords() {
     Vector2i worldcoords = camera.getWorldMouse().asInt();
     if(mouseDown) {
-      listener.update(Box.fromPoints(startingPoint, camera.getWorldMouse()));
+      listener.update(TileBox.fromPoints(startingPoint, camera.getWorldMouse().asInt()));
       return;
     }
     if(type == BuildType.SINGLE && dimensions != null) {
-      listener.update(new Box(worldcoords, dimensions));
+      listener.update(new TileBox(worldcoords, dimensions));
     } else {
-      listener.update(new Box(worldcoords, 1, 1));
+      listener.update(new TileBox(worldcoords, Vector2i.one));
     }
   }
 
@@ -104,7 +105,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
       startingPoint = camera.getWorldMouse().asInt();
       mouseDown = true;
       if(type == BuildType.SINGLE) {
-        listener.build(new Box(startingPoint, dimensions));
+        listener.build(new TileBox(startingPoint, dimensions));
       }
     }
   }
@@ -114,7 +115,7 @@ public class BuildLayer extends GameObject implements IMouseCaptureArea, ITransi
     if(button == 0 && active && mouseDown) {
       mouseDown = false;
       if(type == BuildType.AREA) {
-        listener.build(Box.fromPoints(camera.getWorldMouse(), startingPoint));
+        listener.build(TileBox.fromPoints(camera.getWorldMouse().asInt(), startingPoint));
       }
     }
   }

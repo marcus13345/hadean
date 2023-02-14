@@ -1,11 +1,11 @@
 package xyz.valnet.hadean.interfaces;
 
-import xyz.valnet.engine.math.Box;
+import xyz.valnet.engine.math.TileBox;
 import xyz.valnet.engine.math.Vector2i;
 
 public interface IBuildable {
 
-  public void buildAt(Box box);
+  public void buildAt(TileBox box);
 
   public String getBuildTabCategory();
   public BuildType getBuildType();

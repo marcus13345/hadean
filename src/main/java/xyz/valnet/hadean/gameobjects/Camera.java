@@ -8,6 +8,7 @@ import xyz.valnet.engine.graphics.Drawing;
 import xyz.valnet.engine.graphics.Sprite;
 import xyz.valnet.engine.graphics.Tile9;
 import xyz.valnet.engine.math.Box;
+import xyz.valnet.engine.math.TileBox;
 import xyz.valnet.engine.math.Vector2f;
 import xyz.valnet.engine.math.Vector2i;
 import xyz.valnet.engine.math.Vector4f;
@@ -96,6 +97,10 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
     return world2screen(pos.x, pos.y);
   }
 
+  public final Vector2i world2screen(Vector2i pos) {
+    return world2screen(pos.x, pos.y);
+  }
+
   public final Vector2f screen2world(float x, float y) {
     return new Vector2f((x - screenWidth / 2 + focus.x * tileWidth) / tileWidth, (y - screenHeight / 2 + focus.y * tileWidth) / tileWidth);
   }
@@ -144,7 +149,12 @@ public class Camera extends GameObject implements ITransient, IMouseCaptureArea 
     Drawing.drawSprite(sprite, (int)(screenPos.x), (int)(screenPos.y), (int)(tileWidth * w), (int)(tileWidth * h));
   }
 
+  @Deprecated
   public final void draw(float layer, Tile9 sprite, Box box) {
+    draw(layer, sprite, box.x, box.y, box.w, box.h);
+  }
+
+  public final void draw(float layer, Tile9 sprite, TileBox box) {
     draw(layer, sprite, box.x, box.y, box.w, box.h);
   }
 

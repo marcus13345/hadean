@@ -6,6 +6,9 @@ public class Vector2i implements Serializable {
 
 	public int x, y;
 
+  public static Vector2i one = new Vector2i(1, 1);
+  public static Vector2i zero = new Vector2i(0, 0);
+
 	public Vector2i() {
 		x = 0;
 		y = 0;
@@ -55,12 +58,16 @@ public class Vector2i implements Serializable {
     return new Vector2i(x - 1, y);
   }
 
-  public Box getTileBox() {
-    return new Box(x, y, 1, 1);
+  public TileBox getTileBox() {
+    return new TileBox(x, y, 1, 1);
   }
 
   public String toString() {
     return "<" + x + ", " + y + ">";
+  }
+
+  public Vector2i sub(Vector2i b) {
+    return new Vector2i(this.x - b.x, this.y - b.y);
   }
 
 }

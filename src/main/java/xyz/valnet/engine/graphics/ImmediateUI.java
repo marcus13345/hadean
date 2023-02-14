@@ -173,6 +173,30 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
     }
   }
 
+  private final Vector2i getNextBoxDimensions() {
+    if(context.fixedSize) {
+      return context.box.dim.asInt();
+    } else {
+      return Vector2i.zero;
+    }
+  }
+
+  private LayoutStyle getDefaultLayoutStyle() {
+    if(context.fixedSize) {
+      if(context.horizontal) {
+        return LayoutStyle.shrink; // IDK if thats a good default...
+      } else {
+        return LayoutStyle.expandWidth;
+      }
+    } else {
+      if(context.horizontal) {
+        return LayoutStyle.normal;
+      } else {
+        return LayoutStyle.normal;
+      }
+    }
+  }
+
   // === ELEMENTS ===
   // 
 
@@ -247,39 +271,26 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
   }
 
   protected boolean button(String text) {
-    return button(genButtonId(), text, false);
+    return button(genButtonId(), text, getDefaultLayoutStyle());
   }
 
-  protected boolean button(String text, boolean expand) {
-    return button(genButtonId(), text, expand);
+  protected boolean button(String text, LayoutStyle style) {
+    return button(genButtonId(), text, style);
   }
 
   protected boolean button(String id, String text) {
-    return button(id, text, false);
+    return button(id, text, getDefaultLayoutStyle());
   }
 
-  protected boolean button(String id, String text, boolean expand) {
-    int h = 32;
-    if(expand && context.fixedSize) {
-      h = (int) context.box.h;
-    }
-    int w = (int) context.box.w;
-    if(context.horizontal && !context.fixedSize) {
-      w = 100;
-    }
-    
-    int x = (int) context.box.x;
-    int y = (int) context.box.y;
+  protected boolean button(String id, String text, LayoutStyle style) {
+    Vector2i position = getNextBoxLocation();
+    Vector2i availableSpace = getNextBoxDimensions();
 
-    if(!context.fixedSize) {
-      if(context.vertical()) {
-        y += (int) context.box.h;
-      } else {
-        x += (int) context.box.w;
-      }
-    }
-
-    Box buttonBox = new Box(x, y, w, h);
+    Box buttonBox = new Box(
+      position,
+      availableSpace.x == 0 ? style.width : (float) Math.min(style.width, availableSpace.x),
+      availableSpace.y == 0 ? style.height : (float) Math.min(style.height, availableSpace.y)
+    );
     Button btn = getButton(id);
 
     if(!context.hasRegisteredGuiArea) {
@@ -287,8 +298,8 @@ public abstract class ImmediateUI extends GameObject implements IMouseCaptureAre
     }
 
     btn.setText(text);
-    btn.setPosition(x, y);
-    btn.setSize(w, h);
+    btn.setPosition((int) buttonBox.x, (int) buttonBox.y);
+    btn.setSize((int) buttonBox.w, (int) buttonBox.h);
     btn.setLayer(getCurrentLayer());
 
     adjustBox(buttonBox.w, buttonBox.h);

@@ -3,6 +3,7 @@ package xyz.valnet.hadean.designation;
 import java.util.List;
 
 import xyz.valnet.engine.math.Box;
+import xyz.valnet.engine.math.TileBox;
 import xyz.valnet.engine.scenegraph.GameObject;
 import xyz.valnet.hadean.interfaces.BuildType;
 import xyz.valnet.hadean.interfaces.IBuildable;
@@ -12,7 +13,8 @@ public abstract class Designation<T extends ISelectable> extends GameObject impl
 
   @Override
   @SuppressWarnings("unchecked")
-  public void buildAt(Box box) {
+  public void buildAt(TileBox tileBox) {
+    Box box = tileBox.asBox();
     Class<T> type = getType();
     List<T> things = getAll(type);
     for(ISelectable thing : things) {

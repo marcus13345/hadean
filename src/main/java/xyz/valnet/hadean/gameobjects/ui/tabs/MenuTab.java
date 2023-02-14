@@ -19,6 +19,8 @@ public class MenuTab extends Tab implements IPauser {
 
   @Override
   protected void gui() {
+    if(!shouldRender()) return;
+    
     window(1024 / 2 - width / 2, animate(-height - 50, 576 / 2 - height / 2), width, height, () -> {
       text("         ===   Paused   ===");
       space(8);

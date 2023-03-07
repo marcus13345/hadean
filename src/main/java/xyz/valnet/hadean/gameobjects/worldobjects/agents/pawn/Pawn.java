@@ -14,6 +14,7 @@ import xyz.valnet.hadean.HadeanGame;
 import xyz.valnet.hadean.gameobjects.Clock;
 import xyz.valnet.hadean.gameobjects.jobs.JobBoard;
 import xyz.valnet.hadean.gameobjects.terrain.Terrain;
+import xyz.valnet.hadean.gameobjects.ui.tabs.DebugTab;
 import xyz.valnet.hadean.gameobjects.worldobjects.agents.Agent;
 import xyz.valnet.hadean.gameobjects.worldobjects.items.Item;
 import xyz.valnet.hadean.interfaces.IItemPredicate;
@@ -42,6 +43,9 @@ public class Pawn extends Agent {
 
   public void pickupItemByPredicate(IItemPredicate itemPredicate) {
     Item item = getTile().pickupByItemPredicate(itemPredicate);
+    if(item == null) {
+      DebugTab.log("This is an issue");
+    }
     inventory.add(item);
   }
 
@@ -66,7 +70,8 @@ public class Pawn extends Agent {
       return;
     }
     inventory.remove(item);
-    add(item);
+    // TODO this might need to exist at some point
+    // add(item);
     receiver.receive(item);
   }
 

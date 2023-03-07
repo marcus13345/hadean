@@ -11,8 +11,9 @@ import xyz.valnet.hadean.gameobjects.Camera;
 import xyz.valnet.hadean.gameobjects.terrain.Terrain;
 import xyz.valnet.hadean.gameobjects.terrain.Tile;
 import xyz.valnet.hadean.interfaces.ITileThing;
+import xyz.valnet.hadean.interfaces.IWorldObject;
 
-public abstract class WorldObject extends GameObject {
+public abstract class WorldObject extends GameObject implements IWorldObject {
   
   // TODO make it just a box lawl
   private int x;
@@ -116,6 +117,10 @@ public abstract class WorldObject extends GameObject {
   }
 
   public Tile getTile() {
+    return terrain.getTile(x, y);
+  }
+
+  public Tile getTile(int x, int y) {
     return terrain.getTile(x, y);
   }
 

@@ -77,6 +77,7 @@ public class JobBoard extends GameObject {
   }
 
   public void postJob(Job job) {
+    if(!job.inScene()) add(job);
     job.registerClosedListener(() -> {
       if(allocations.values().contains(job)) {
         List<Pawn> toFire = new ArrayList<Pawn>();

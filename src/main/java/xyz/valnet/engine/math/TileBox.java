@@ -1,6 +1,10 @@
 package xyz.valnet.engine.math;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class TileBox implements Serializable {
   public final int x, y;
@@ -47,6 +51,16 @@ public class TileBox implements Serializable {
         cb.apply(x + i, y + j);
       }
     }
+  }
+
+  public List<Vector2i> getTiles() {
+    List<Vector2i> tiles = new ArrayList<>();
+    for(int i = 0; i < w; i ++) {
+      for(int j = 0; j < h; j ++) {
+        tiles.add(new Vector2i(x + i, y + j));
+      }
+    }
+    return tiles;
   }
 
   public static TileBox fromPoints(int x, int y, int x2, int y2) {

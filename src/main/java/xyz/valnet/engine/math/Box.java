@@ -152,4 +152,8 @@ public class Box implements Serializable {
       (float) Math.ceil(y2)
     );
   }
+
+  public TileBox asTileBox() {
+    return new TileBox(pos.asInt(), dim.asInt());
+  }
 }

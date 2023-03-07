@@ -18,7 +18,7 @@ import xyz.valnet.hadean.util.Action;
 import xyz.valnet.hadean.util.Assets;
 import xyz.valnet.hadean.util.Layers;
 
-public abstract class Construction extends Buildable implements IItemReceiver {
+public abstract class Construction extends Buildable {
 
   private float work = 0;
 
@@ -36,7 +36,23 @@ public abstract class Construction extends Buildable implements IItemReceiver {
       Job job = get(JobBoard.class).postSimpleItemRequirementJob(
         "Haul items to building",
         getBuildingMaterial(),
-        this
+        new IItemReceiver() {
+
+          @Override
+          public final boolean receive(Item item) {
+            if(item == null) return false;
+            if(!item.matches(getBuildingMaterial())) return false;
+            remove(item);
+            containedItems.add(item);
+            return true;
+          }
+        
+          @Override
+          public Vector2i[] getItemDropoffLocations() {
+            return getWorldBox().getBorders();
+          }
+          
+        }
       );
       job.registerClosedListener(() -> {
         postNextJob();
@@ -106,20 +122,6 @@ public abstract class Construction extends Buildable implements IItemReceiver {
 
   protected final float getBuildProgress() {
     return work / getMaxWork();
-  }
-
-  @Override
-  public final boolean receive(Item item) {
-    if(item == null) return false;
-    if(!item.matches(getBuildingMaterial())) return false;
-    remove(item);
-    containedItems.add(item);
-    return true;
-  }
-
-  @Override
-  public Vector2i[] getItemDropoffLocations() {
-    return getWorldBox().getBorders();
   }
 
   @Override

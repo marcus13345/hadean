@@ -16,6 +16,6 @@ public class CutTreesDesignation extends Designation<Tree> {
 
   @Override
   public String getBuildTabName() {
-    return "ChopTrees";
+    return "Chop Trees";
   }
 }

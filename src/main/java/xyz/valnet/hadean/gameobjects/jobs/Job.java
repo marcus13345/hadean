@@ -18,6 +18,7 @@ public class Job extends GameObject {
 
   private Job that = this;
   private List<Callback> closedListeners = new ArrayList<Callback>();
+  private List<Callback> completedListeners = new ArrayList<Callback>();
 
   public abstract class JobStep implements Serializable {
     public abstract Vector2i[] getLocations();
@@ -27,6 +28,10 @@ public class Job extends GameObject {
     public abstract boolean isValid();
   }
 
+  // pickup and dropoff should be all in one step, as each step should 
+  // only need state tracked for the job, not the worker.
+  // workers can change between steps. 
+  @Deprecated
   public class PickupItem extends JobStep {
     public Item item;
     
@@ -66,6 +71,10 @@ public class Job extends GameObject {
     }
   }
 
+  // pickup and dropoff should be all in one step, as each step should 
+  // only need state tracked for the job, not the worker.
+  // workers can change between steps. 
+  @Deprecated
   public class PickupItemByPredicate extends JobStep {
     public IItemPredicate predicate;
     
@@ -156,6 +165,7 @@ public class Job extends GameObject {
   private String name;
   private int step;
   private boolean hasClosed = false;
+  private boolean hasCompleted = false;
 
   public void reset() {
     step = 0;
@@ -179,7 +189,7 @@ public class Job extends GameObject {
   public void nextStep() {
     step ++;
     if(isCompleted()) {
-      close();
+      completed();
       remove(this);
     }
   }
@@ -202,6 +212,15 @@ public class Job extends GameObject {
     public void apply();
   }
 
+  private final void completed() {
+    if(hasCompleted) return;
+    hasCompleted = true;
+    for(Callback callback : completedListeners) {
+      callback.apply();
+    }
+    close();
+  }
+
   public void close() {
     if(hasClosed) return;
     hasClosed = true;
@@ -216,6 +235,14 @@ public class Job extends GameObject {
 
   public void unregisterClosedListener(Callback callback) {
     closedListeners.remove(callback);
+  }
+
+  public void registerCompletedListener(Callback callback) {
+    completedListeners.add(callback);
+  }
+
+  public void unregisterCompletedListener(Callback callback) {
+    completedListeners.remove(callback);
   }
 
   public boolean isValid() {
